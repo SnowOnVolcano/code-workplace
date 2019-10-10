@@ -1,0 +1,25 @@
+const int identifier11 = 1, identifier10 = 2;
+const char identifier12 = '+';
+const char identifier13 = '*';
+const char identifier14 = 'a';
+const char identifier15 = '1';
+int identifier16;
+char identifier17;
+int identifier18[1];
+char identifier19[1];
+
+void function9(char parameter) {
+    int count;
+    count = 10;
+    do
+    {
+        count = count - 1;
+    } while (count);
+    return;
+}
+
+void main() {
+    const int identifier11 = 1;
+    int identifier16;
+    return;
+}

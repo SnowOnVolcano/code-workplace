@@ -1,0 +1,38 @@
+CONSTTK const
+INTTK int
+IDENFR const1
+ASSIGN =
+INTCON 1
+COMMA ,
+<无符号整数>
+<整数>
+IDENFR const2
+ASSIGN =
+MINU -
+INTCON 100
+SEMICN ;
+<无符号整数>
+<整数>
+<常量定义>
+CONSTTK const
+CHARTK char
+IDENFR const3
+ASSIGN =
+CHARCON _
+SEMICN ;
+<常量定义>
+INTTK int
+<常量说明>
+IDENFR change1
+SEMICN ;
+<变量定义>
+CHARTK char
+IDENFR change3
+SEMICN ;
+<变量定义>
+INTTK int
+IDENFR gets1
+LPARENT (
+<变量定义>
+<变量说明>
+<程序>

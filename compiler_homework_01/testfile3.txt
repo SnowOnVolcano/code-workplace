@@ -1,0 +1,28 @@
+int identifier1, identifier2[1];
+char identifier3;
+int identifier4[1];
+char identifier5[1];
+
+int function5(int _parameter) {
+    return ((-1) * _parameter);
+}
+int function6(char para_meter_0) {
+    return (-para_meter_0);
+}
+char function7(int _parameter) {
+    return ('1');
+}
+char function8(char para_meter_0) {
+    return ('a');
+}
+
+void main() {
+    int identifier6, identifier7[10];
+    char identifier8, identifier9;
+    int identifier10[1];
+    char identifier11[1];
+    scanf(identifier6);
+    scanf(identifier8);
+    identifier10[0] = 1;
+    return;
+}

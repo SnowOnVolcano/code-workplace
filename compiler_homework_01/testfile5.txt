@@ -1,0 +1,4 @@
+const int identifier = 1;
+void main() {
+    return;
+}

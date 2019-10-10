@@ -1,0 +1,58 @@
+int function1() {
+    if (-1 * 2 >= 0)
+    {
+        return (-+1*2);
+    }
+    return (0);
+}
+
+int function2(int parameter) {
+    return (+parameter);
+}
+
+int function3(char _110) {
+    return (-_110 + 110);
+}
+
+
+void function7() {
+    return;
+}
+void function8(int parameter) {
+    const int max = 10;
+    int i;
+    while (-1 * i * -1 < 10)
+    {
+        i = i + 1;
+    }
+    return;
+}
+
+void main() {
+    const int ITEM = -1;
+    int array[10];
+    int temp;
+    int identifier, identifier1, identifier2;
+    
+    for (identifier = function1(); identifier == 0; identifier = identifier - 0)
+    {
+        identifier = -1 + identifier;
+    }
+
+    function1();
+    function2(ITEM + array[1] * (ITEM + ITEM) * 1 - 0 * -1 * function1() / 1);
+    
+    function7();
+    function8((ITEM + ITEM));
+    
+
+    temp = array[ITEM * 0];
+    for(temp = 1; temp <= 5; temp = temp + 1);
+    scanf(identifier1, identifier2);
+
+    printf("string",0);
+    printf(ITEM + ITEM);
+
+    return;
+
+}
