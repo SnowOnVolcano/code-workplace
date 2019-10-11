@@ -93,9 +93,9 @@ extern int reserver();
 extern void saveCurrentSym();
 extern void restorePreviousSym();
 extern int init_getsym();
-extern int getsym_noprint();
+extern int getsym_print();
 extern int getsym();
-extern void output_sym();
+extern bool print_sym();
 
 
 #endif

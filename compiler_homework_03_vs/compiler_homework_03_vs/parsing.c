@@ -1,14 +1,20 @@
 #include "parsing.h"
 
+// 字符串
+void string() {
+	(symbol == STRCON && print_sym()) ? getsym() : error();
+	fprintf(fpOut, "<字符串>\n");
+}
+
 // 程序
 void program() {
-	if (symbol == CONSTTK) {
+	while (symbol == CONSTTK) {
 		con_info();
 	}
-	if (symbol == INTTK || symbol == CHARTK) {
+	while (symbol == INTTK || symbol == CHARTK) {
 		saveCurrentSym();
-		getsym_noprint();
-		getsym_noprint();
+		getsym();
+		getsym();
 		if (symbol == LPARENT) {
 			restorePreviousSym();
 			re_func_definition();
@@ -18,9 +24,9 @@ void program() {
 			var_info();
 		}
 	}
-	if (symbol == VOIDTK) {
+	while (symbol == VOIDTK) {
 		saveCurrentSym();
-		getsym_noprint();
+		getsym();
 		if (symbol == MAINTK) {
 			restorePreviousSym();
 			mainFunction();
@@ -28,27 +34,25 @@ void program() {
 		else {
 			restorePreviousSym();
 			unre_func_definition();
-			(symbol == VOIDTK) ? getsym() : error();
-			(symbol == MAINTK) ? getsym() : error();
+			(symbol == VOIDTK && print_sym()) ? getsym() : error();
+			(symbol == MAINTK && print_sym()) ? getsym() : error();
 			mainFunction();
 		}
-	}
-	else {
-		error();
 	}
 	fprintf(fpOut, "<程序>\n");
 }
 
 // 常量说明
 void con_info() {
-	(symbol == CONSTTK) ? getsym() : error();
+	(symbol == CONSTTK && print_sym()) ? getsym() : error();
 	con_definition();
-	(symbol == SEMICN) ? getsym() : error();
+	(symbol == SEMICN && print_sym()) ? getsym() : error();
 	while (symbol == CONSTTK)
 	{
+		print_sym();
 		getsym();
 		con_definition();
-		(symbol == SEMICN) ? getsym() : error();
+		(symbol == SEMICN && print_sym()) ? getsym() : error();
 	}
 	fprintf(fpOut, "<常量说明>\n");
 }
@@ -58,22 +62,23 @@ void con_definition() {
 	if (symbol == INTTK) {
 		do
 		{
+			print_sym();
 			getsym();
-			(symbol == IDENFR) ? add_sym(token, ST_CONST_IDEN) : error(); // 加入符号表
+			(symbol == IDENFR && print_sym()) ? add_sym(token, ST_CONST_IDEN) : error(); // 加入符号表
 			getsym();			
-			(symbol == ASSIGN) ? getsym() : error();
+			(symbol == ASSIGN && print_sym()) ? getsym() : error();
 			integer();
 		} while (symbol == COMMA);
-		
 	}
 	else if (symbol == CHARTK) {
+		print_sym();
 		getsym();
 		do
 		{
-			(symbol == IDENFR) ? add_sym(token, ST_CONST_IDEN) : error(); // 加入符号表
+			(symbol == IDENFR && print_sym()) ? add_sym(token, ST_CONST_IDEN) : error(); // 加入符号表
 			getsym();
-			(symbol == ASSIGN) ? getsym() : error();
-			(symbol == CHARCON) ? getsym() : error();
+			(symbol == ASSIGN && print_sym()) ? getsym() : error();
+			(symbol == CHARCON && print_sym()) ? getsym() : error();
 		} while (symbol == COMMA);
 	}
 	else {
@@ -84,13 +89,14 @@ void con_definition() {
 
 // 无符号整数
 void unsigned_integer() {
-	(symbol == INTCON) ? getsym() : error();
+	(symbol == INTCON && print_sym()) ? getsym() : error();
 	fprintf(fpOut, "<无符号整数>\n");
 }
 
 // 整数
 void integer() {
 	if (symbol == PLUS || symbol == MINU) {
+		print_sym();
 		getsym();
 	}
 	unsigned_integer();
@@ -99,8 +105,8 @@ void integer() {
 
 // 声明头部
 void declarator() {
-	(symbol == INTTK || symbol == CHARTK) ? getsym() : error();
-	(symbol == IDENFR) ? add_sym(token, ST_HAS_RETURN_FUNC) : error();		// 加入符号表
+	((symbol == INTTK || symbol == CHARTK) && print_sym()) ? getsym() : error();
+	(symbol == IDENFR && print_sym()) ? add_sym(token, ST_HAS_RETURN_FUNC) : error();		// 加入符号表
 	getsym();	
 	fprintf(fpOut, "<声明头部>\n");
 }
@@ -108,25 +114,36 @@ void declarator() {
 // 变量说明
 void var_info() {
 	var_definition();
-	(symbol == SEMICN) ? getsym() : error();
-	while (symbol == INTTK || symbol == CHARTK) {
-		var_definition();
-		(symbol == SEMICN) ? getsym() : error();
+	(symbol == SEMICN && print_sym()) ? getsym() : error();
+	while (true) {
+		saveCurrentSym();
+		getsym();
+		getsym();
+		if (symbol != LPARENT) {
+			restorePreviousSym();
+			var_definition();
+			(symbol == SEMICN && print_sym()) ? getsym() : error();
+		}
+		else {
+			restorePreviousSym();
+			break;
+		}
 	}
 	fprintf(fpOut, "<变量说明>\n");
 }
 
 // 变量定义
 void var_definition() {
-	(symbol == INTTK || symbol == CHARTK) ? getsym() : error();
+	((symbol == INTTK || symbol == CHARTK) && print_sym()) ? getsym() : error();
 	do
 	{
-		(symbol == IDENFR) ? add_sym(token, ST_VARIABLE_IDEN) : error(); // 加入符号表
+		(symbol == IDENFR && print_sym()) ? add_sym(token, ST_VARIABLE_IDEN) : error(); // 加入符号表
 		getsym();
 		if (symbol == LBRACK) {
+			print_sym();
 			getsym();
 			unsigned_integer();
-			(symbol == RBRACK) ? getsym() : error();
+			(symbol == RBRACK && print_sym()) ? getsym() : error();
 		}
 	} while (symbol == COMMA);
 	fprintf(fpOut, "<变量定义>\n");
@@ -135,35 +152,37 @@ void var_definition() {
 // 有返回值函数定义
 void re_func_definition() {
 	declarator();
-	(symbol == LPARENT) ? getsym() : error();
+	(symbol == LPARENT && print_sym()) ? getsym() : error();
 	paraList();
-	(symbol == RPARENT) ? getsym() : error();
-	(symbol == LBRACE) ? getsym() : error();
+	(symbol == RPARENT && print_sym()) ? getsym() : error();
+	(symbol == LBRACE && print_sym()) ? getsym() : error();
 	compoundStatement();
-	(symbol == RBRACE) ? getsym() : error();
+	(symbol == RBRACE && print_sym()) ? getsym() : error();
 	fprintf(fpOut, "<有返回值函数定义>\n");
 }
 
 // 无返回值函数定义
 void unre_func_definition() {
-	(symbol == VOIDTK) ? getsym() : error();
-	(symbol == IDENFR) ? add_sym(token, ST_NON_RETURN_FUNC) : error(); // 加入符号表
+	(symbol == VOIDTK && print_sym()) ? getsym() : error();
+	(symbol == IDENFR && print_sym()) ? add_sym(token, ST_NON_RETURN_FUNC) : error(); // 加入符号表
 	getsym();
-	(symbol == LPARENT) ? getsym() : error();
+	(symbol == LPARENT && print_sym()) ? getsym() : error();
 	paraList();
-	(symbol == RPARENT) ? getsym() : error();
-	(symbol == LBRACE) ? getsym() : error();
+	(symbol == RPARENT && print_sym()) ? getsym() : error();
+	(symbol == LBRACE && print_sym()) ? getsym() : error();
 	compoundStatement();
-	(symbol == RBRACE) ? getsym() : error();
+	(symbol == RBRACE && print_sym()) ? getsym() : error();
 	fprintf(fpOut, "<无返回值函数定义>\n");
 }
 
 // 复合语句
 void compoundStatement() {
 	if (symbol == CONSTTK) {
+		print_sym();
 		con_info();
 	}
 	if (symbol == INTTK || symbol == CHARTK) {
+		print_sym();
 		var_info();
 	}
 	statecolumn();
@@ -173,11 +192,14 @@ void compoundStatement() {
 // 参数表
 void paraList() {
 	if (symbol == INTTK || symbol == CHARTK) {
-		(symbol == IDENFR) ? getsym() : error();
+		print_sym();
+		getsym();
+		(symbol == IDENFR && print_sym()) ? getsym() : error();
 		while (symbol == COMMA) {
+			print_sym();
 			getsym();
-			(symbol == INTTK || symbol == CHARTK) ? getsym() : error();
-			(symbol == IDENFR) ? getsym() : error();
+			((symbol == INTTK || symbol == CHARTK) && print_sym()) ? getsym() : error();
+			(symbol == IDENFR && print_sym()) ? getsym() : error(); // 局部变量在符号表中应该怎么处置？
 		}
 	}
 	else {
@@ -188,24 +210,26 @@ void paraList() {
 
 // 主函数
 void mainFunction() {
-	(symbol == VOIDTK) ? getsym() : error();
-	(symbol == MAINTK) ? getsym() : error();
-	(symbol == LPARENT) ? getsym() : error();
-	(symbol == RPARENT) ? getsym() : error();
-	(symbol == LBRACE) ? getsym() : error();
+	(symbol == VOIDTK && print_sym()) ? getsym() : error();
+	(symbol == MAINTK && print_sym()) ? getsym() : error();
+	(symbol == LPARENT && print_sym()) ? getsym() : error();
+	(symbol == RPARENT && print_sym()) ? getsym() : error();
+	(symbol == LBRACE && print_sym()) ? getsym() : error();
 	compoundStatement();
-	(symbol == RBRACE) ? getsym() : error();
+	(symbol == RBRACE && print_sym()) ? getsym() : error();
 	fprintf(fpOut, "<主函数>\n");
 }
 
 // 表达式
 void expression() {
 	if (symbol == PLUS || symbol == MINU) {
+		print_sym();
 		getsym();
 	}
 	term();
 	while (symbol == PLUS || symbol == MINU)
 	{
+		print_sym();
 		getsym();
 		term();
 	}
@@ -217,6 +241,7 @@ void term() {
 	factor();
 	while (symbol == MULT || symbol == DIV)
 	{
+		print_sym();
 		getsym();
 		factor();
 	}
@@ -230,19 +255,21 @@ void factor() {
 			refunc_callStatement();
 		}
 		else {
+			print_sym();
 			getsym();
 			if (symbol == LBRACK) {
 				expression();
-				(symbol == RBRACK) ? getsym() : error();
+				(symbol == RBRACK && print_sym()) ? getsym() : error();
 			}
 		}
 	}
 	else if (symbol == LPARENT) {		// '('表达式ʽ')'
 		expression();
-		(symbol == RPARENT) ? getsym() : error();
+		(symbol == RPARENT && print_sym()) ? getsym() : error();
 	}
 	else if (symbol == CHARCON)			// 字符
 	{
+		print_sym();
 		getsym();
 	}
 	else {								// 整数
@@ -263,36 +290,35 @@ int statement() {
 		stateType = S_LOOP;
 	}
 	else if (symbol == LBRACE) {		// 语句列
+		print_sym();
 		getsym();
 		statecolumn();
-		(symbol == RBRACE) ? getsym() : error();
+		(symbol == RBRACE && print_sym()) ? getsym() : error();
 		stateType = S_STATECOLUMN;
 	}
 	else if (symbol == IDENFR) {		// 有、无返回值函数调用语句 | 赋值语句
 		int temp = iden_statement();
-		(symbol == SEMICN) ? getsym() : error();
+		(symbol == SEMICN && print_sym()) ? getsym() : error();
 		stateType = temp;
 	}
 	else if (symbol == SCANFTK) {		// 读语句
-		getsym();
 		readStatement();
-		(symbol == SEMICN) ? getsym() : error();
+		(symbol == SEMICN && print_sym()) ? getsym() : error();
 		stateType = S_READ;
 	}
 	else if (symbol == PRINTFTK) {		// 写语句
-		getsym();
 		printStatement();
-		(symbol == SEMICN) ? getsym() : error();
+		(symbol == SEMICN && print_sym()) ? getsym() : error();
 		stateType = S_PRINT;
 	}
 	else if (symbol == SEMICN) {		// 空语句
+		print_sym();
 		getsym();
 		stateType = S_NULL;
 	}
 	else if (symbol == RETURNTK) {		// 返回语句
-		getsym();
-		readStatement();
-		(symbol == SEMICN) ? getsym() : error();
+		returnStatement();
+		(symbol == SEMICN && print_sym()) ? getsym() : error();
 		stateType = S_RETURN;
 	}
 	else {
@@ -325,16 +351,18 @@ int iden_statement() {
 
 // 赋值语句
 void assignStatement() {
-	(symbol == IDENFR) ? getsym() : error();
+	(symbol == IDENFR && print_sym()) ? getsym() : error();
 	if (symbol == ASSIGN) {
+		print_sym();
 		getsym();
 		expression();
 	}
 	else if (symbol == LBRACK) {
+		print_sym();
 		getsym();
 		expression();
-		(symbol == RBRACK) ? getsym() : error();
-		(symbol == ASSIGN) ? getsym() : error();
+		(symbol == RBRACK && print_sym()) ? getsym() : error();
+		(symbol == ASSIGN && print_sym()) ? getsym() : error();
 		expression();
 	}
 	else {
@@ -345,34 +373,35 @@ void assignStatement() {
 
 // 有返回值函数调用语句
 void refunc_callStatement() {
-	(symbol == IDENFR) ? getsym() : error();
-	(symbol == LPARENT) ? getsym() : error();
+	(symbol == IDENFR && print_sym()) ? getsym() : error();
+	(symbol == LPARENT && print_sym()) ? getsym() : error();
 
 	valueparaList();
-	(symbol == RPARENT) ? getsym() : error();
+	(symbol == RPARENT && print_sym()) ? getsym() : error();
 
 	fprintf(fpOut, "<有返回值函数调用语句>\n");
 }
 
 // 无返回值函数调用语句
 void unrefunc_callStatement() {
-	(symbol == IDENFR) ? getsym() : error();
-	(symbol == LPARENT) ? getsym() : error();
+	(symbol == IDENFR && print_sym()) ? getsym() : error();
+	(symbol == LPARENT && print_sym()) ? getsym() : error();
 
 	valueparaList();
-	(symbol == RPARENT) ? getsym() : error();
+	(symbol == RPARENT && print_sym()) ? getsym() : error();
 
 	fprintf(fpOut, "<无返回值函数调用语句>\n");
 }
 
 // 条件语句
 void conditionalStatement() {
-	(symbol == IFTK) ? getsym() : error();
-	(symbol == LPARENT) ? getsym() : error();
+	(symbol == IFTK && print_sym()) ? getsym() : error();
+	(symbol == LPARENT && print_sym()) ? getsym() : error();
 	condition();
-	(symbol == RPARENT) ? getsym() : error();
+	(symbol == RPARENT && print_sym()) ? getsym() : error();
 	statement();
 	if (symbol == ELSETK) {
+		print_sym();
 		getsym();
 		statement();
 	}
@@ -383,6 +412,7 @@ void conditionalStatement() {
 void condition() {
 	expression();
 	if (symbol >= LSS && symbol <= NEQ) {
+		print_sym();
 		getsym();
 		expression();
 	}
@@ -392,36 +422,39 @@ void condition() {
 // 循环语句
 void loopStatement() {
 	if (symbol == WHILETK) {
+		print_sym();
 		getsym();
-		(symbol == LPARENT) ? getsym() : error();
+		(symbol == LPARENT && print_sym()) ? getsym() : error();
 		condition();
-		(symbol == RPARENT) ? getsym() : error();
+		(symbol == RPARENT && print_sym()) ? getsym() : error();
 		statement();
 	}
 	else if (symbol == DOTK) {
+		print_sym();
 		getsym();
 		statement();
-		(symbol == WHILETK) ? getsym() : error();
-		(symbol == LPARENT) ? getsym() : error();
+		(symbol == WHILETK && print_sym()) ? getsym() : error();
+		(symbol == LPARENT && print_sym()) ? getsym() : error();
 		condition();
-		(symbol == RPARENT) ? getsym() : error();
+		(symbol == RPARENT && print_sym()) ? getsym() : error();
 	}
 	else if (symbol == FORTK)
 	{
+		print_sym();
 		getsym();
-		(symbol == LPARENT) ? getsym() : error();
-		(symbol == IDENFR) ? getsym() : error();
-		(symbol == ASSIGN) ? getsym() : error();
+		(symbol == LPARENT && print_sym()) ? getsym() : error();
+		(symbol == IDENFR && print_sym()) ? getsym() : error();
+		(symbol == ASSIGN && print_sym()) ? getsym() : error();
 		expression();
-		(symbol == SEMICN) ? getsym() : error();
+		(symbol == SEMICN && print_sym()) ? getsym() : error();
 		condition();
-		(symbol == SEMICN) ? getsym() : error();
-		(symbol == IDENFR) ? getsym() : error();
-		(symbol == ASSIGN) ? getsym() : error();
-		(symbol == IDENFR) ? getsym() : error();
-		(symbol == PLUS || symbol == MINU) ? getsym() : error();
+		(symbol == SEMICN && print_sym()) ? getsym() : error();
+		(symbol == IDENFR && print_sym()) ? getsym() : error();
+		(symbol == ASSIGN && print_sym()) ? getsym() : error();
+		(symbol == IDENFR && print_sym()) ? getsym() : error();
+		((symbol == PLUS || symbol == MINU) && print_sym()) ? getsym() : error();
 		stride();
-		(symbol == RPARENT) ? getsym() : error();
+		(symbol == RPARENT && print_sym()) ? getsym() : error();
 		statement();
 	}
 	else {
@@ -438,10 +471,12 @@ void stride() {
 // 值参数表
 void valueparaList() {
 	if (symbol != RPARENT /* 值参数表不为空 */) {
-		do
-		{
+		expression();
+		while (symbol == COMMA) {
+			print_sym();
+			getsym();
 			expression();
-		} while (symbol == COMMA);
+		}
 	}
 	fprintf(fpOut, "<值参数表>\n");
 }
@@ -454,23 +489,27 @@ void statecolumn() {
 
 // 读语句
 void readStatement() {
-	(symbol == LPARENT) ? getsym() : error();
-	(symbol == IDENFR) ? getsym() : error();
+	(symbol == SCANFTK && print_sym()) ? getsym() : error();
+	(symbol == LPARENT && print_sym()) ? getsym() : error();
+	(symbol == IDENFR && print_sym()) ? getsym() : error();
 	while (symbol == COMMA)
 	{
+		print_sym();
 		getsym();
-		(symbol == IDENFR) ? getsym() : error();
+		(symbol == IDENFR && print_sym()) ? getsym() : error();
 	}
-	(symbol == RPARENT) ? getsym() : error();
+	(symbol == RPARENT && print_sym()) ? getsym() : error();
 	fprintf(fpOut, "<读语句>\n");
 }
 
 // 写语句
 void printStatement() {
-	(symbol == LPARENT) ? getsym() : error();
+	(symbol == PRINTFTK && print_sym()) ? getsym() : error();
+	(symbol == LPARENT && print_sym()) ? getsym() : error();
 	if (symbol == STRCON) {
-		getsym();
+		string();
 		if (symbol == COMMA) {
+			print_sym();
 			getsym();
 			expression();
 		}
@@ -478,17 +517,19 @@ void printStatement() {
 	else {
 		expression();
 	}
-	(symbol == RPARENT) ? getsym() : error();
+	(symbol == RPARENT && print_sym()) ? getsym() : error();
 	fprintf(fpOut, "<写语句>\n");
 }
 
 // 返回语句
 void returnStatement() {
+	(symbol == RETURNTK && print_sym()) ? getsym() : error();
 	while (symbol == LPARENT)
 	{
+		print_sym();
 		getsym();
 		expression();
-		(symbol == RPARENT) ? getsym() : error();
+		(symbol == RPARENT && print_sym()) ? getsym() : error();
 	}
 	fprintf(fpOut, "<返回语句>\n");
 }

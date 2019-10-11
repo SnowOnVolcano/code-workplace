@@ -29,6 +29,7 @@ enum statement_types
 	S_RETURN
 };
 
+void string();					// 字符串
 void program();					// 程序
 void con_info();				// 常量说明
 void con_definition();			// 常量定义

@@ -88,7 +88,7 @@ int init_getsym() {
 	}
 }
 
-int getsym_noprint() {
+int getsym() {
 	clearToken();
 	do {
 		getNext();
@@ -226,14 +226,16 @@ int getsym_noprint() {
 	return 0;
 }
 
-int getsym() {
-	int r = getsym_noprint();
-	output_sym();
+int getsym_print() {
+	int r = getsym();
+	print_sym();
 	return r;
 }
 
-void output_sym() {
+bool print_sym() {
 	fprintf(fpOut, "%s %s\n", mnemonices[symbol], token);
+	printf("%s %s\n", mnemonices[symbol], token);
+	return true;
 }
 
 //void output() {
