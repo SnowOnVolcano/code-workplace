@@ -234,7 +234,7 @@ int getsym_print() {
 
 bool print_sym() {
 	fprintf(fpOut, "%s %s\n", mnemonices[symbol], token);
-	printf("%s %s\n", mnemonices[symbol], token);
+	// printf("%s %s\n", mnemonices[symbol], token);
 	return true;
 }
 

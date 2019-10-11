@@ -34,9 +34,6 @@ void program() {
 		else {
 			restorePreviousSym();
 			unre_func_definition();
-			(symbol == VOIDTK && print_sym()) ? getsym() : error();
-			(symbol == MAINTK && print_sym()) ? getsym() : error();
-			mainFunction();
 		}
 	}
 	fprintf(fpOut, "<程序>\n");
@@ -71,10 +68,10 @@ void con_definition() {
 		} while (symbol == COMMA);
 	}
 	else if (symbol == CHARTK) {
-		print_sym();
-		getsym();
 		do
 		{
+			print_sym();
+			getsym(); 
 			(symbol == IDENFR && print_sym()) ? add_sym(token, ST_CONST_IDEN) : error(); // 加入符号表
 			getsym();
 			(symbol == ASSIGN && print_sym()) ? getsym() : error();
@@ -115,7 +112,7 @@ void declarator() {
 void var_info() {
 	var_definition();
 	(symbol == SEMICN && print_sym()) ? getsym() : error();
-	while (true) {
+	while (symbol == INTTK || symbol == CHARTK) {
 		saveCurrentSym();
 		getsym();
 		getsym();
@@ -134,18 +131,24 @@ void var_info() {
 
 // 变量定义
 void var_definition() {
-	((symbol == INTTK || symbol == CHARTK) && print_sym()) ? getsym() : error();
-	do
-	{
-		(symbol == IDENFR && print_sym()) ? add_sym(token, ST_VARIABLE_IDEN) : error(); // 加入符号表
-		getsym();
-		if (symbol == LBRACK) {
+	if (symbol == INTTK || symbol == CHARTK) {
+		do {
 			print_sym();
 			getsym();
-			unsigned_integer();
-			(symbol == RBRACK && print_sym()) ? getsym() : error();
-		}
-	} while (symbol == COMMA);
+			(symbol == IDENFR && print_sym()) ? add_sym(token, ST_VARIABLE_IDEN) : error(); // 加入符号表
+			getsym();
+			if (symbol == LBRACK) {
+				print_sym();
+				getsym();
+				unsigned_integer();
+				(symbol == RBRACK && print_sym()) ? getsym() : error();
+			}
+		} while (symbol == COMMA);
+	}
+	else {
+		error();
+	}
+
 	fprintf(fpOut, "<变量定义>\n");
 }
 
@@ -178,11 +181,9 @@ void unre_func_definition() {
 // 复合语句
 void compoundStatement() {
 	if (symbol == CONSTTK) {
-		print_sym();
 		con_info();
 	}
 	if (symbol == INTTK || symbol == CHARTK) {
-		print_sym();
 		var_info();
 	}
 	statecolumn();
@@ -258,12 +259,16 @@ void factor() {
 			print_sym();
 			getsym();
 			if (symbol == LBRACK) {
+				print_sym();
+				getsym();
 				expression();
 				(symbol == RBRACK && print_sym()) ? getsym() : error();
 			}
 		}
 	}
 	else if (symbol == LPARENT) {		// '('表达式ʽ')'
+		print_sym();
+		getsym();
 		expression();
 		(symbol == RPARENT && print_sym()) ? getsym() : error();
 	}
@@ -466,6 +471,7 @@ void loopStatement() {
 // 步长
 void stride() {
 	unsigned_integer();
+	fprintf(fpOut, "<步长>\n");
 }
 
 // 值参数表

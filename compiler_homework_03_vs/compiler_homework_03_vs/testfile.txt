@@ -1,12 +1,120 @@
-const int const1 = 1, const2 = -100;
-const char const3 = '_';
-int change1;
-char change3;
-int gets1(int var1,int var2){
-    change1 = var1 + var2;
-    return (change1);
+const int consta=10,constb=-10,constc=+0,constd=-0,conste=0,constf=-456789876;
+const char constaa='+',constbb='-',constcc='*',constdd='/',constee='_',constff1='b',constgg='S',constff2='z',constgg2='Z',constjj1='0',constjj2='9';
+
+int vara1,vara2,vara3,varb[66],varb2[0],tempIn;
+char varaa1,varaa2,varbb[1],varbb2[9];
+
+int funcA1(int A2para1, char A2para2, char A2para3, int A2para4) {
+    const int A1consta=-0,A1constb=+9999999,A1constc=-678;
+    const char A1constaa='_',A1constbb='Z',A1constcc='u',A1constdd='0',A1constdd2='1',A1constee1='-',A1constff='/';
+    int ret[9],xiabiao,rett;
+    ret[0]=A2para1;
+    ret[1]=A2para2*A2para1;
+    ret[2]=A2para3*A2para2*A2para1;
+    xiabiao=-109;
+    ret[3]=A2para4*A2para3*A2para2*A2para1;
+    if (ret[3]>0) {
+        for(xiabiao=4;xiabiao<9;xiabiao=xiabiao+1) {
+            ret[xiabiao] = (ret[xiabiao-1]+constf)/constbb;
+        }
+    } else {
+        xiabiao=A1constdd2*3+A1consta;
+        while (ret[xiabiao]<=0){
+            if (xiabiao==8) {
+                rett = ret[8];
+                return (rett);
+            } else {
+                xiabiao=xiabiao+A1constdd2;
+            }
+            ret[xiabiao]=ret[xiabiao-2]-A1constc;
+        }
+    }
+    rett = ret[8];
+    return (rett);
 }
-void main(){
-    printf("Hello World");
-    printf(gets1(10, 20));
+
+char funcA2() {
+    const int A1consta=98631,A2consta=+1672,A1constc=+592,A1constcc=45;
+    const char A2constcc='p',A1constb='a',A2constaa='i';
+    int ret[1000],step,xiabiao,rett;
+    xiabiao=2;
+    printf("Input\ta\vnumber:");
+    scanf(tempIn);
+    ret[1]=tempIn;
+    for (step=1;ret[xiabiao]<A1consta;xiabiao=xiabiao+1) {
+        ret[xiabiao]=ret[xiabiao-1]*A1constb+A1constc;
+    }
+    rett = ret[xiabiao/2+A1constcc-A1consta/9090];
+    printf(rett);
+    return (varbb2[3]);
+}
+
+void funcB() {
+    const int Bconsta=567;
+    int var1,var2,var3;
+    char var4,var5,var6;
+    printf("Lets play a game~\n");
+    var4='g';var5='z';var6='8';
+    printf("I need you to guess the address\b of Bconsta!\n\b");
+    do {
+        scanf(tempIn);
+        var1=tempIn;
+        if (var1 < Bconsta) {
+            printf("0000000 %d too maa\blllllll00000000",var1-1);
+        } else {
+            if (var1 > Bconsta) {
+                printf("00000\t00 %d too bi\bggggggg\vggg ggggg00000000",var1+1);
+            } else {
+                printf("You have magic!\n\r");
+            }
+        }
+    } while (var1!=Bconsta);
+}
+
+void main() {
+    const char mconst1a='7',mconst2a='*',mconstb='-';
+    int var1,var3,varb,varc1,vard87888,vare08976,var213f;
+    char var1a,vara1,var1b,var1c;
+
+    varbb2[3]='_';
+    if (var1!=9) {
+        if (vara2<-var3) {
+            if (var213f!=-var213f+var1-funcA1()) {
+                for (var1a='z';varb>=consta;varb=varb-1) {
+                    var1b=funcA2();
+                    printf("\t\v\r%d\n\t\a",-funcA1()*mconst2a-mconstb);
+                }
+                scanf(tempIn);
+                varc1=tempIn;
+            } else {
+                scanf(tempIn);
+                var1b='0';
+                do {
+                    vara1=funcA2();
+                    scanf(var1c);
+                    if (var1b>var1c) {
+                        printf("var1b is decreasing from %d to\n",var1b);
+                        printf(var1c);
+                        var1b=var1c;
+                    }
+                } while (var1b>constbb);
+            }
+        }
+    } else {
+        if (var1==9) {
+            printf("Amazing!\r\v");
+            printf(-var1);
+            printf(" is exactly 9 before init!");
+            printf("Please input a number:\f");
+            scanf(tempIn);
+            vard87888=tempIn;
+            while (vard87888<=0) {
+                printf("Your number if too small! Reput a number:");
+                scanf(tempIn);
+                vard87888=tempIn;
+            }
+        }
+        funcB();
+        printf(funcA2());
+    }
 }
