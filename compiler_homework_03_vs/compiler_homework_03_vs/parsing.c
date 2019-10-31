@@ -1,45 +1,48 @@
 #include "parsing.h"
 
-// 字符串
+// 字符串		::= "｛十进制编码为32,33,35-126的ASCII字符｝"
 void string() {
 	(symbol == STRCON && print_sym()) ? getsym() : error();
 	fprintf(fpOut, "<字符串>\n");
 }
 
-// 程序
+// 程序			::= ［＜常量说明＞］［＜变量说明＞］{＜有返回值函数定义＞|＜无返回值函数定义＞}＜主函数＞
 void program() {
 	while (symbol == CONSTTK) {
 		con_info();
 	}
-	while (symbol == INTTK || symbol == CHARTK) {
-		saveCurrentSym();
-		getsym();
-		getsym();
-		if (symbol == LPARENT) {
-			restorePreviousSym();
-			re_func_definition();
+	while (symbol == INTTK || symbol == CHARTK || symbol == VOIDTK) {
+		if (symbol == INTTK || symbol == CHARTK) {
+			saveCurrentSym();
+			getsym();
+			getsym();
+			if (symbol == LPARENT) {
+				restorePreviousSym();
+				re_func_definition();
+			}
+			else {
+				restorePreviousSym();
+				var_info();
+			}
 		}
 		else {
-			restorePreviousSym();
-			var_info();
+			saveCurrentSym();
+			getsym();
+			if (symbol == MAINTK) {
+				restorePreviousSym();
+				mainFunction();
+			}
+			else {
+				restorePreviousSym();
+				unre_func_definition();
+			}
 		}
-	}
-	while (symbol == VOIDTK) {
-		saveCurrentSym();
-		getsym();
-		if (symbol == MAINTK) {
-			restorePreviousSym();
-			mainFunction();
-		}
-		else {
-			restorePreviousSym();
-			unre_func_definition();
-		}
+		
 	}
 	fprintf(fpOut, "<程序>\n");
 }
 
-// 常量说明
+// 常量说明		::=  const＜常量定义＞;{ const＜常量定义＞;}
 void con_info() {
 	(symbol == CONSTTK && print_sym()) ? getsym() : error();
 	con_definition();
@@ -54,7 +57,8 @@ void con_info() {
 	fprintf(fpOut, "<常量说明>\n");
 }
 
-// 常量定义
+/* 常量定义		::=   int＜标识符＞＝＜整数＞{,＜标识符＞＝＜整数＞} | 
+						char＜标识符＞＝＜字符＞{ ,＜标识符＞＝＜字符＞ } */
 void con_definition() {
 	if (symbol == INTTK) {
 		do
@@ -84,13 +88,13 @@ void con_definition() {
 	fprintf(fpOut, "<常量定义>\n");
 }
 
-// 无符号整数
+// 无符号整数	::= ＜非零数字＞｛＜数字＞｝| 0
 void unsigned_integer() {
 	(symbol == INTCON && print_sym()) ? getsym() : error();
 	fprintf(fpOut, "<无符号整数>\n");
 }
 
-// 整数
+// 整数			::= ［＋｜－］＜无符号整数＞
 void integer() {
 	if (symbol == PLUS || symbol == MINU) {
 		print_sym();
@@ -100,7 +104,7 @@ void integer() {
 	fprintf(fpOut, "<整数>\n");
 }
 
-// 声明头部
+// 声明头部		::=  int＜标识符＞ | char＜标识符＞
 void declarator() {
 	((symbol == INTTK || symbol == CHARTK) && print_sym()) ? getsym() : error();
 	(symbol == IDENFR && print_sym()) ? add_sym(token, ST_HAS_RETURN_FUNC) : error();		// 加入符号表
@@ -108,7 +112,7 @@ void declarator() {
 	fprintf(fpOut, "<声明头部>\n");
 }
 
-// 变量说明
+// 变量说明		::= ＜变量定义＞;{＜变量定义＞;}
 void var_info() {
 	var_definition();
 	(symbol == SEMICN && print_sym()) ? getsym() : error();
@@ -129,7 +133,7 @@ void var_info() {
 	fprintf(fpOut, "<变量说明>\n");
 }
 
-// 变量定义
+// 变量定义		::= ＜类型标识符＞(＜标识符＞|＜标识符＞'['＜无符号整数＞']'){,(＜标识符＞|＜标识符＞'['＜无符号整数＞']' )}
 void var_definition() {
 	if (symbol == INTTK || symbol == CHARTK) {
 		do {
@@ -152,7 +156,10 @@ void var_definition() {
 	fprintf(fpOut, "<变量定义>\n");
 }
 
-// 有返回值函数定义
+// 类型标识符	::=  int | char
+
+
+// 有返回值函数定义	::=  ＜声明头部＞'('＜参数表＞')' '{'＜复合语句＞'}'
 void re_func_definition() {
 	declarator();
 	(symbol == LPARENT && print_sym()) ? getsym() : error();
@@ -164,7 +171,7 @@ void re_func_definition() {
 	fprintf(fpOut, "<有返回值函数定义>\n");
 }
 
-// 无返回值函数定义
+// 无返回值函数定义	::= void＜标识符＞'('＜参数表＞')''{'＜复合语句＞'}'
 void unre_func_definition() {
 	(symbol == VOIDTK && print_sym()) ? getsym() : error();
 	(symbol == IDENFR && print_sym()) ? add_sym(token, ST_NON_RETURN_FUNC) : error(); // 加入符号表
@@ -178,7 +185,7 @@ void unre_func_definition() {
 	fprintf(fpOut, "<无返回值函数定义>\n");
 }
 
-// 复合语句
+// 复合语句		::=  ［＜常量说明＞］［＜变量说明＞］＜语句列＞
 void compoundStatement() {
 	if (symbol == CONSTTK) {
 		con_info();
@@ -190,17 +197,19 @@ void compoundStatement() {
 	fprintf(fpOut, "<复合语句>\n");
 }
 
-// 参数表
+// 参数表		::=  ＜类型标识符＞＜标识符＞{,＜类型标识符＞＜标识符＞} | ＜空＞
 void paraList() {
 	if (symbol == INTTK || symbol == CHARTK) {
 		print_sym();
 		getsym();
-		(symbol == IDENFR && print_sym()) ? getsym() : error();
+		(symbol == IDENFR && print_sym()) ? add_sym(token, ST_VARIABLE_IDEN) : error();
+		getsym();
 		while (symbol == COMMA) {
 			print_sym();
 			getsym();
 			((symbol == INTTK || symbol == CHARTK) && print_sym()) ? getsym() : error();
-			(symbol == IDENFR && print_sym()) ? getsym() : error(); // 局部变量在符号表中应该怎么处置？
+			(symbol == IDENFR && print_sym()) ? add_sym(token, ST_VARIABLE_IDEN) : error();
+			getsym();			// 局部变量在符号表中应该怎么处置？
 		}
 	}
 	else {
@@ -209,7 +218,7 @@ void paraList() {
 	fprintf(fpOut, "<参数表>\n");
 }
 
-// 主函数
+// 主函数		::= void main'('')' '{'＜复合语句＞'}'
 void mainFunction() {
 	(symbol == VOIDTK && print_sym()) ? getsym() : error();
 	(symbol == MAINTK && print_sym()) ? getsym() : error();
@@ -221,7 +230,7 @@ void mainFunction() {
 	fprintf(fpOut, "<主函数>\n");
 }
 
-// 表达式
+// 表达式		::= ［＋｜－］＜项＞{＜加法运算符＞＜项＞}   #[+|-]只作用于第一个<项>#
 void expression() {
 	if (symbol == PLUS || symbol == MINU) {
 		print_sym();
@@ -237,7 +246,7 @@ void expression() {
 	fprintf(fpOut, "<表达式>\n");
 }
 
-// 项
+// 项			::= ＜因子＞{＜乘法运算符＞＜因子＞}
 void term() {
 	factor();
 	while (symbol == MULT || symbol == DIV)
@@ -249,13 +258,13 @@ void term() {
 	fprintf(fpOut, "<项>\n");
 }
 
-// 因子
+// 因子			::= ＜标识符＞ ｜ ＜标识符＞'['＜表达式＞']' | '('＜表达式＞')' ｜ ＜整数＞ | ＜字符＞ ｜ ＜有返回值函数调用语句＞
 void factor() {
-	if (symbol == IDENFR) {				// 标识符 or 标识符'['表达式']' or 有返回值函数调用语句
-		if (get_symType(token) == ST_HAS_RETURN_FUNC/*如果此时token是函数声明标识符*/) {
+	if (symbol == IDENFR) {	
+		if (get_symType(token) == ST_HAS_RETURN_FUNC) { // 有返回值函数调用语句
 			refunc_callStatement();
 		}
-		else {
+		else {							// 标识符 or 标识符'['表达式']' 
 			print_sym();
 			getsym();
 			if (symbol == LBRACK) {
@@ -283,7 +292,9 @@ void factor() {
 	fprintf(fpOut, "<因子>\n");
 }
 
-// 语句
+/* 语句			::= ＜条件语句＞｜＜循环语句＞| '{'＜语句列＞'}' | 
+					＜有返回值函数调用语句＞; | ＜无返回值函数调用语句＞;｜＜赋值语句＞; ｜
+					＜读语句＞; ｜＜写语句＞; ｜＜空＞; | ＜返回语句＞; */
 int statement() {
 	int stateType;
 	if (symbol == IFTK) {				// 条件语句
@@ -354,7 +365,7 @@ int iden_statement() {
 	}
 }
 
-// 赋值语句
+// 赋值语句		::=  ＜标识符＞＝＜表达式＞|＜标识符＞'['＜表达式＞']'=＜表达式＞
 void assignStatement() {
 	(symbol == IDENFR && print_sym()) ? getsym() : error();
 	if (symbol == ASSIGN) {
@@ -376,29 +387,7 @@ void assignStatement() {
 	fprintf(fpOut, "<赋值语句>\n");
 }
 
-// 有返回值函数调用语句
-void refunc_callStatement() {
-	(symbol == IDENFR && print_sym()) ? getsym() : error();
-	(symbol == LPARENT && print_sym()) ? getsym() : error();
-
-	valueparaList();
-	(symbol == RPARENT && print_sym()) ? getsym() : error();
-
-	fprintf(fpOut, "<有返回值函数调用语句>\n");
-}
-
-// 无返回值函数调用语句
-void unrefunc_callStatement() {
-	(symbol == IDENFR && print_sym()) ? getsym() : error();
-	(symbol == LPARENT && print_sym()) ? getsym() : error();
-
-	valueparaList();
-	(symbol == RPARENT && print_sym()) ? getsym() : error();
-
-	fprintf(fpOut, "<无返回值函数调用语句>\n");
-}
-
-// 条件语句
+// 条件语句		::= if '('＜条件＞')'＜语句＞［else＜语句＞］
 void conditionalStatement() {
 	(symbol == IFTK && print_sym()) ? getsym() : error();
 	(symbol == LPARENT && print_sym()) ? getsym() : error();
@@ -413,7 +402,8 @@ void conditionalStatement() {
 	fprintf(fpOut, "<条件语句>\n");
 }
 
-// 条件
+/* 条件			::=  ＜表达式＞＜关系运算符＞＜表达式＞ #整型表达式之间才能进行关系运算# ｜
+					 ＜表达式＞    #表达式为整型，其值为0条件为假，值不为0时条件为真#  */
 void condition() {
 	expression();
 	if (symbol >= LSS && symbol <= NEQ) {
@@ -424,7 +414,9 @@ void condition() {
 	fprintf(fpOut, "<条件>\n");
 }
 
-// 循环语句
+/* 循环语句		::=  while '('＜条件＞')'＜语句＞ | 
+					 do＜语句＞while '('＜条件＞')' |
+					 for'('＜标识符＞＝＜表达式＞;＜条件＞;＜标识符＞＝＜标识符＞(+|-)＜步长＞')'＜语句＞ */
 void loopStatement() {
 	if (symbol == WHILETK) {
 		print_sym();
@@ -468,13 +460,35 @@ void loopStatement() {
 	fprintf(fpOut, "<循环语句>\n");
 }
 
-// 步长
+// 步长			::= ＜无符号整数＞
 void stride() {
 	unsigned_integer();
 	fprintf(fpOut, "<步长>\n");
 }
 
-// 值参数表
+// 有返回值函数调用语句	::= ＜标识符＞'('＜值参数表＞')'
+void refunc_callStatement() {
+	(symbol == IDENFR && print_sym()) ? getsym() : error();
+	(symbol == LPARENT && print_sym()) ? getsym() : error();
+
+	valueparaList();
+	(symbol == RPARENT && print_sym()) ? getsym() : error();
+
+	fprintf(fpOut, "<有返回值函数调用语句>\n");
+}
+
+// 无返回值函数调用语句	::= ＜标识符＞'('＜值参数表＞')'
+void unrefunc_callStatement() {
+	(symbol == IDENFR && print_sym()) ? getsym() : error();
+	(symbol == LPARENT && print_sym()) ? getsym() : error();
+
+	valueparaList();
+	(symbol == RPARENT && print_sym()) ? getsym() : error();
+
+	fprintf(fpOut, "<无返回值函数调用语句>\n");
+}
+
+// 值参数表		::= ＜表达式＞{,＜表达式＞}｜＜空＞
 void valueparaList() {
 	if (symbol != RPARENT /* 值参数表不为空 */) {
 		expression();
@@ -487,13 +501,13 @@ void valueparaList() {
 	fprintf(fpOut, "<值参数表>\n");
 }
 
-// 语句列
+// 语句列		::= ｛＜语句＞｝
 void statecolumn() {
 	for (;statement() >= 0;);
 	fprintf(fpOut, "<语句列>\n");
 }
 
-// 读语句
+// 读语句		::=  scanf '('＜标识符＞{,＜标识符＞}')'
 void readStatement() {
 	(symbol == SCANFTK && print_sym()) ? getsym() : error();
 	(symbol == LPARENT && print_sym()) ? getsym() : error();
@@ -508,7 +522,7 @@ void readStatement() {
 	fprintf(fpOut, "<读语句>\n");
 }
 
-// 写语句
+// 写语句		::= printf '(' ＜字符串＞,＜表达式＞ ')'| printf '('＜字符串＞ ')'| printf '('＜表达式＞')'
 void printStatement() {
 	(symbol == PRINTFTK && print_sym()) ? getsym() : error();
 	(symbol == LPARENT && print_sym()) ? getsym() : error();
@@ -527,7 +541,7 @@ void printStatement() {
 	fprintf(fpOut, "<写语句>\n");
 }
 
-// 返回语句
+// 返回语句		::=  return['('＜表达式＞')']  
 void returnStatement() {
 	(symbol == RETURNTK && print_sym()) ? getsym() : error();
 	while (symbol == LPARENT)

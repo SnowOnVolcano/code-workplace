@@ -3,7 +3,7 @@
 
 typedef int bool;
 
-#define TOKENSIZE 0x40
+#define TOKENSIZE 0x80
 #define _NORMAL_EXIT 1
 #define _ERROR -1
 #define true 1

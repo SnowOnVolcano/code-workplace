@@ -20,7 +20,7 @@ void catToken() { token[count++] = buffer; }
 int reserver() {
 	if (!strcmp(token, "const")) {
 		return CONSTTK;
-	} 
+	}
 	else if (!strcmp(token, "int")) {
 		return INTTK;
 	}
@@ -231,6 +231,7 @@ int getsym_print() {
 	print_sym();
 	return r;
 }
+
 
 bool print_sym() {
 	fprintf(fpOut, "%s %s\n", mnemonices[symbol], token);
