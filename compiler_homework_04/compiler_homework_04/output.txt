@@ -1115,4 +1115,47 @@ MULT *
 IDENFR add
 LPARENT (
 IDENFR pos_5
-<因�
+<因子>
+<项>
+<表达式>
+COMMA ,
+MINU -
+IDENFR nev_5
+<因子>
+<项>
+<表达式>
+<值参数表>
+RPARENT )
+<有返回值函数调用语句>
+<因子>
+DIV /
+IDENFR Int_5
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+PRINTFTK printf
+LPARENT (
+STRCON test 60
+<字符串>
+COMMA ,
+IDENFR test
+<因子>
+<项>
+<表达式>
+RPARENT )
+<写语句>
+SEMICN ;
+<语句>
+<语句列>
+<复合语句>
+RBRACE }
+<无返回值函数定义>
+VOIDTK void
+MAINTK main
+<语句列>
+<复合语句>
+<主函数>
+<程序>

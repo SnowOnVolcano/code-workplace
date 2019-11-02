@@ -236,23 +236,5 @@ int getsym_print() {
 int print_sym() {
 	fprintf(fpOut, "%s %s\n", mnemonices[symbol], token);
 	// printf("%s %s\n", mnemonices[symbol], token);
-	return true;
+	return _NORMAL_EXIT;
 }
-
-//void output() {
-//	while (!getsym()) {
-//		if (symbol == _ERROR) {
-//			error();
-//		}
-//		else {
-//			fprintf(fpOut, "%s %s\n", mnemonices[symbol], token);
-//		}
-//	}
-//	fclose(fpIn);
-//	fclose(fpOut);
-//}
-
-//int main() {
-//	init_getsym();
-//	output();
-//}

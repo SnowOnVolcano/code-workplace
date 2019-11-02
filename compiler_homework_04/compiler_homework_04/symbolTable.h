@@ -32,7 +32,8 @@ typedef struct symbolItem
 typedef struct symbolTable
 {
 	char name[KEYSIZE];
-	char count;
+	int count;
+	int returnType;
 	struct symbolItem* head;
 } SymbolTable_t;
 
@@ -55,8 +56,8 @@ extern int addSymbol(SymbolTable_t* symboltable, char* key, int type);
 // 向符号表的指定表项添加 类型
 extern int addSymbolType(SymbolTable_t* symboltable, char* key, int type);
 
-// 向符号表的指定表项添加 参数表
-extern int addSymbolParaList(SymbolTable_t* symboltable, char* key, List_t* paraList);
+// 向符号表的指定表项添加 参数表项
+extern int addSymbolParaListItem(SymbolTable_t* symboltable, char* key, int data);
 
 // 从符号表删除一个表项
 extern int deleteSymbol(SymbolTable_t* symboltable, char* key);

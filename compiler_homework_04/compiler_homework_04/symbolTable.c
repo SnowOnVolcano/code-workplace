@@ -1,12 +1,11 @@
 #include "symbolTable.h"
 
-//SymbolItem_t* symboltable->head = NULL;
-
 SymbolTable_t* newSymbolTable(char* name) {
 	SymbolTable_t* newone;
 	newone = (SymbolTable_t*)malloc(sizeof(SymbolTable_t));
 	strcpy(newone->name, name);
 	newone->count = 0;
+	newone->returnType = 0;
 	newone->head = NULL;
 	return newone;
 }
@@ -48,6 +47,7 @@ int addSymbol(SymbolTable_t* symboltable, char* key, int type) {
 		s = (SymbolItem_t*)malloc(sizeof(SymbolItem_t));
 		strcpy(s->key, key);
 		s->type = type;
+		s->paraList = NULL;
 		HASH_ADD_STR(symboltable->head, key, s);
 		if (symboltable->count == 0) {
 			symboltable->head = s;
@@ -68,15 +68,19 @@ int addSymbolType(SymbolTable_t* symboltable, char* key, int type) {
 	return 0;
 }
 
-int addSymbolParaList(SymbolTable_t* symboltable, char* key, List_t* paraList) {
+int addSymbolParaListItem(SymbolTable_t* symboltable, char* key, int data){
+	int r;
 	SymbolItem_t* s = getSymbol(symboltable, key);
 	if (s == NULL) {
 		return -1;
 	}
 	else {
-		s->paraList = paraList;
+		if (s->paraList == NULL) {
+			s->paraList = newList();
+		}
+		r = appendListTail(s->paraList, data);
+		return r;
 	}
-	return 0;
 }
 
 int deleteSymbol(SymbolTable_t* symboltable, char* key) {
