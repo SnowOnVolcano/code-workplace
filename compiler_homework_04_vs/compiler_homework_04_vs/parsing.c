@@ -2,11 +2,15 @@
 
 
 // 标识符类型
-int temp_idenType = 0;
-// 当前的函数名
+int temp_idenType;
+// 标识符名
 char temp_idenName[TOKENSIZE];
+// 当前的函数名
+char temp_funcName[TOKENSIZE];
 // 当前函数的值列表
 struct list* temp_funcParaList;
+// 函数调用时的函数名
+char temp_funcCall[TOKENSIZE];
 
 
 // 字符串		::= "｛十进制编码为32,33,35-126的ASCII字符｝"
@@ -74,8 +78,7 @@ void con_definition() {
 		{
 			print_sym();
 			getsym();
-			(symbol == IDENFR && print_sym()) ? add_sym(token, ST_CONST_IDEN_INT) : error(_ERROR); // 加入符号表
-			getsym();
+			(symbol == IDENFR && print_sym()) ? (add_sym(token, CONST_INT) & getsym()) : error(_ERROR); // 加入符号表
 			(symbol == ASSIGN && print_sym()) ? getsym() : error(_ERROR);
 			if (!integer()) {
 				error(ERROR_O);
@@ -87,8 +90,7 @@ void con_definition() {
 		{
 			print_sym();
 			getsym();
-			(symbol == IDENFR && print_sym()) ? add_sym(token, ST_CONST_IDEN_CHAR) : error(_ERROR); // 加入符号表
-			getsym();
+			(symbol == IDENFR && print_sym()) ? (add_sym(token, CONST_CHAR) & getsym()) : error(_ERROR); // 加入符号表
 			(symbol == ASSIGN && print_sym()) ? getsym() : error(_ERROR);
 			(symbol == CHARCON && print_sym()) ? getsym() : error(ERROR_O);
 		} while (symbol == COMMA);
@@ -120,14 +122,13 @@ bool integer() {
 // 声明头部		::=  int＜标识符＞ | char＜标识符＞
 void declarator() {
 	/********************* 记 录 函 数 返 回 值 类 型 ***********************/
-	temp_idenType = (symbol == INTTK) ? ST_HAS_RETURN_FUNC_INT : ST_HAS_RETURN_FUNC_CHAR;
+	temp_idenType = (symbol == INTTK) ? FUNC_HAS_RETURN_INT : FUNC_HAS_RETURN_CHAR;
 	/**********************************************************************/
 	((symbol == INTTK || symbol == CHARTK) && print_sym()) ? getsym() : error(_ERROR);
 	/************************ 记 录 函 数 名 称 ****************************/
-	strcpy(temp_idenName, token);
+	strcpy(temp_funcName, token);
 	/**********************************************************************/
-	(symbol == IDENFR && print_sym()) ? add_sym(temp_idenName, temp_idenType) : error(_ERROR);		// 加入符号表
-	getsym();
+	(symbol == IDENFR && print_sym()) ? (add_sym(temp_funcName, temp_idenType) & getsym()) : error(_ERROR);		// 加入符号表
 	fprintf(fpOut, "<声明头部>\n");
 }
 
@@ -157,14 +158,13 @@ void var_info() {
 void var_definition() {
 	if (symbol == INTTK || symbol == CHARTK) {
 		do {
-			temp_idenType = (symbol == INTTK) ? ST_VARIABLE_IDEN_INT : ST_VARIABLE_IDEN_CHAR;
+			temp_idenType = (symbol == INTTK) ? VARIABLE_INT : VARIABLE_CHAR;
 			print_sym();
 			getsym();
 			strcpy(temp_idenName, token);
-			(symbol == IDENFR && print_sym()) ? add_sym(temp_idenName, temp_idenType) : error(_ERROR); // 加入符号表
-			getsym();
+			(symbol == IDENFR && print_sym()) ? (add_sym(temp_idenName, temp_idenType) & getsym()) : error(_ERROR); // 加入符号表
 			if (symbol == LBRACK) {
-				temp_idenType = (temp_idenType == ST_VARIABLE_IDEN_INT) ? ST_ARRAY_IDEN_INT : ST_ARRAY_IDEN_CHAR;
+				temp_idenType = (temp_idenType == VARIABLE_INT) ? ARRAY_INT : ARRAY_CHAR;
 				change_symType(temp_idenName, temp_idenType);
 				print_sym();
 				getsym();
@@ -198,8 +198,7 @@ void re_func_definition() {
 // 无返回值函数定义	::= void＜标识符＞'('＜参数表＞')''{'＜复合语句＞'}'
 void unre_func_definition() {
 	(symbol == VOIDTK && print_sym()) ? getsym() : error(_ERROR);
-	(symbol == IDENFR && print_sym()) ? add_sym(token, ST_NON_RETURN_FUNC) : error(_ERROR); // 加入符号表
-	getsym();
+	(symbol == IDENFR && print_sym()) ? (add_sym(token, FUNC_NON_RETURN) & getsym()) : error(_ERROR); // 加入符号表
 	(symbol == LPARENT && print_sym()) ? getsym() : error(_ERROR);
 	paraList();
 	(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
@@ -223,31 +222,30 @@ void compoundStatement() {
 
 // 参数表		::=  ＜类型标识符＞＜标识符＞{,＜类型标识符＞＜标识符＞} | ＜空＞
 void paraList() {
-	temp_funcParaList = list_new();
+	temp_funcParaList = initialList(LISTSIZE);
 	if (symbol == INTTK || symbol == CHARTK) {
 		/************************* 加 入 函 数 参 数 表*************************/
-		temp_idenType = (symbol == INTTK) ? ST_VARIABLE_IDEN_INT : ST_VARIABLE_IDEN_CHAR;
-		listnode_add(temp_funcParaList, temp_idenType);
+		temp_idenType = (symbol == INTTK) ? VARIABLE_INT : VARIABLE_CHAR;
+		appendListTail(temp_funcParaList, temp_idenType);
 		/**********************************************************************/
 		print_sym();
 		getsym();
-		(symbol == IDENFR && print_sym()) ? add_sym(token, temp_idenType) : error(_ERROR);
-		getsym();
+		(symbol == IDENFR && print_sym()) ? (add_sym(token, temp_idenType) & getsym()) : error(_ERROR);
 		while (symbol == COMMA) {
 			print_sym();
 			getsym();
 			/*********************** 加 入 函 数 参 数 表 *********************/
-			temp_idenType = (symbol == INTTK) ? ST_VARIABLE_IDEN_INT : ST_VARIABLE_IDEN_CHAR;
-			listnode_add(temp_funcParaList, temp_idenType);
+			temp_idenType = (symbol == INTTK) ? VARIABLE_INT : VARIABLE_CHAR;
+			appendListTail(temp_funcParaList, temp_idenType);
 			/*****************************************************************/
 			((symbol == INTTK || symbol == CHARTK) && print_sym()) ? getsym() : error(_ERROR);
-			(symbol == IDENFR && print_sym()) ? add_sym(token, temp_idenType) : error(_ERROR);
-			getsym();			// 局部变量在符号表中应该怎么处置？
+			(symbol == IDENFR && print_sym()) ?( add_sym(token, temp_idenType) & getsym()) : error(_ERROR);
+			// 局部变量在符号表中应该怎么处置？
 		}
 
 		/**************** 向 符 号 表 添 加 进 函 数 的 参 数 列 表 ****************/
-		struct SymbolTable* s = find_sym(temp_idenName);
-		s->valueList = list_new();
+		struct SymbolTable* s = find_sym(temp_funcName);
+		s->valueList = initialList(LISTSIZE);
 		list_add_list(s->valueList, temp_funcParaList);
 		list_free(temp_funcParaList);
 		/**********************************************************************/
@@ -261,7 +259,7 @@ void paraList() {
 // 主函数		::= void main'('')' '{'＜复合语句＞'}'
 void mainFunction() {
 	(symbol == VOIDTK && print_sym()) ? getsym() : error(_ERROR);
-	(symbol == MAINTK && print_sym()) ? getsym() : error(_ERROR);
+	(symbol == MAINTK && print_sym()) ? (add_sym("main", FUNC_NON_RETURN) & getsym()) : error(_ERROR);
 	(symbol == LPARENT && print_sym()) ? getsym() : error(_ERROR);
 	(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
 	(symbol == LBRACE && print_sym()) ? getsym() : error(_ERROR);
@@ -305,10 +303,10 @@ void factor() {
 			error(ERROR_C);
 		}
 		else {
-			if (get_symType(token) & ST_HAS_RETURN_FUNC) {	// 有返回值函数调用语句
+			if (get_symType(token) == FUNC_HAS_RETURN_INT || get_symType(token) == FUNC_HAS_RETURN_CHAR) {	// 有返回值函数调用语句
 				refunc_callStatement();
 			}
-			else if (get_symType(token) & ST_ARRAY_IDEN){	// 标识符'['表达式']' 
+			else if (get_symType(token) == ARRAY_INT || get_symType(token) == ARRAY_CHAR) {	// 标识符'['表达式']' 
 				print_sym();
 				getsym();
 				(symbol == LBRACK && print_sym()) ? getsym() : error(ERROR_M);
@@ -398,11 +396,11 @@ int iden_statement() {
 		error(ERROR_C);
 	}
 	else {
-		if (get_symType(token) & ST_HAS_RETURN_FUNC/*identifier is re*/) {
+		if (get_symType(token) == FUNC_HAS_RETURN_INT || get_symType(token) == FUNC_HAS_RETURN_CHAR) {
 			refunc_callStatement();
 			return S_REFUNCCALL;
 		}
-		else if (get_symType(token) == ST_NON_RETURN_FUNC/*identifier is unre*/) {
+		else if (get_symType(token) == FUNC_NON_RETURN) {
 			unrefunc_callStatement();
 			return S_UNREFUNCCALL;
 		}
@@ -415,7 +413,7 @@ int iden_statement() {
 
 // 赋值语句		::=  ＜标识符＞＝＜表达式＞|＜标识符＞'['＜表达式＞']'=＜表达式＞
 void assignStatement() {
-	if (get_symType(token) & ST_CONST_IDEN) {
+	if (get_symType(token) == CONST_INT || get_symType(token) == CONST_CHAR) {
 		error(ERROR_J);
 	}
 	else {
@@ -528,8 +526,8 @@ void stride() {
 
 // 有返回值函数调用语句	::= ＜标识符＞'('＜值参数表＞')'
 void refunc_callStatement() {
-	strcpy(temp_idenName, token);
-	(find_sym(temp_idenName) != NULL && print_sym()) ? getsym() : error(ERROR_C);
+	appendListTail(temp_funcCalls, token);
+	(symbol == IDENFR && find_sym(token) != NULL && print_sym()) ? getsym() : error(ERROR_C);
 	(symbol == LPARENT && print_sym()) ? getsym() : error(_ERROR);
 	valueparaList();
 	(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
@@ -538,8 +536,8 @@ void refunc_callStatement() {
 
 // 无返回值函数调用语句	::= ＜标识符＞'('＜值参数表＞')'
 void unrefunc_callStatement() {
-	strcpy(temp_idenName, token);
-	(find_sym(temp_idenName) != NULL && print_sym()) ? getsym() : error(ERROR_C);
+	appendListTail(temp_funcCalls, token);
+	(symbol == IDENFR && find_sym(token) != NULL && print_sym()) ? getsym() : error(ERROR_C);
 	(symbol == LPARENT && print_sym()) ? getsym() : error(_ERROR);
 	valueparaList();
 	(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
@@ -549,10 +547,10 @@ void unrefunc_callStatement() {
 // 值参数表		::= ＜表达式＞{,＜表达式＞}｜＜空＞
 void valueparaList() {
 	int temp_count = 0;
-	struct listnode* node = listhead(get_symValueList(temp_idenName));
+	struct node* node = listhead(get_symValueList());
 	if (symbol != RPARENT /* 值参数表不为空 */) {
 		temp_count++;
-		if (node->data == ST_VARIABLE_IDEN_INT) {
+		if (node->data == VARIABLE_INT) {
 			if (!expression_int()) {
 				error(ERROR_E);
 			}
@@ -563,10 +561,20 @@ void valueparaList() {
 			}
 		}
 		while (symbol == COMMA) {
+			node = listnextnode(node);
 			print_sym();
 			getsym();
 			temp_count++;
-			expression();
+			if (node->data == VARIABLE_INT) {
+				if (!expression_int()) {
+					error(ERROR_E);
+				}
+			}
+			else {
+				if (!expression_char()) {
+					error(ERROR_E);
+				}
+			}
 		}
 	}
 	// 参数个数不匹配
@@ -645,7 +653,7 @@ bool expression_int() {
 		getsym();
 		term();
 	}
-	fprintf(fpOut, "<表达式>\n");
+	fprintf(fpOut, "<Expression_int>\n");
 	return true;
 }
 
@@ -672,16 +680,16 @@ bool factor_int() {
 		}
 		else {
 			// ？？分开考虑？？
-			if (get_symType(token) == ST_HAS_RETURN_FUNC_CHAR ||
-				get_symType(token) == ST_VARIABLE_IDEN_CHAR ||
-				get_symType(token) == ST_CONST_IDEN_CHAR ||
-				get_symType(token) == ST_ARRAY_IDEN_CHAR) {
+			if (get_symType(token) == FUNC_HAS_RETURN_CHAR ||
+				get_symType(token) == VARIABLE_CHAR ||
+				get_symType(token) == CONST_CHAR ||
+				get_symType(token) == ARRAY_CHAR) {
 				return false;
 			}
-			else if (get_symType(token) & ST_HAS_RETURN_FUNC) {	// 有返回值函数调用语句
-					refunc_callStatement();
+			else if (get_symType(token) == FUNC_HAS_RETURN_INT) {	// 有返回值函数调用语句
+				refunc_callStatement();
 			}
-			else if (get_symType(token) & ST_ARRAY_IDEN) {	// 标识符'['表达式']' 
+			else if (get_symType(token) == ARRAY_INT) {	// 标识符'['表达式']' 
 				print_sym();
 				getsym();
 				(symbol == LBRACK && print_sym()) ? getsym() : error(ERROR_M);
@@ -710,5 +718,37 @@ bool factor_int() {
 		integer();
 	}
 	fprintf(fpOut, "<因子>\n");
+	return true;
+}
+
+bool expression_char() {
+	if (symbol == IDENFR) {
+		if (get_symType(token) == FUNC_HAS_RETURN_CHAR ||
+			get_symType(token) == VARIABLE_CHAR ||
+			get_symType(token) == CONST_CHAR) {
+			print_sym();
+			getsym();
+		}
+		else if (get_symType(token) == ARRAY_CHAR) {
+			print_sym();
+			getsym();
+			(symbol == LBRACK && print_sym()) ? getsym() : error(ERROR_M);
+			if (!expression_int()) {
+				error(ERROR_I);
+			}
+			(symbol == RBRACK && print_sym()) ? getsym() : error(ERROR_M);
+		}
+		else {
+			return false;
+		}
+	}
+	else if (symbol == CHARCON) {
+		print_sym();
+		getsym();
+	}
+	else {
+		return false;
+	}
+	fprintf(fpOut, "<Expression_char>\n");
 	return true;
 }

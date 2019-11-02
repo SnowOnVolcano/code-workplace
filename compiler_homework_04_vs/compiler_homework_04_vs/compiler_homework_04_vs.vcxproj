@@ -129,7 +129,7 @@
   <ItemGroup>
     <ClCompile Include="getsym.c" />
     <ClCompile Include="head.c" />
-    <ClCompile Include="linklist.c" />
+    <ClCompile Include="list.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="parsing.c" />
     <ClCompile Include="symTable.c" />
@@ -137,7 +137,7 @@
   <ItemGroup>
     <ClInclude Include="getsym.h" />
     <ClInclude Include="head.h" />
-    <ClInclude Include="linklist.h" />
+    <ClInclude Include="list.h" />
     <ClInclude Include="parsing.h" />
     <ClInclude Include="symTable.h" />
     <ClInclude Include="uthash-master\utarray.h" />

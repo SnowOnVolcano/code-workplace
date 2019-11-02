@@ -3,12 +3,12 @@
 
 typedef int bool;
 
-#include "linklist.h"
+#include "list.h"
 
 #define TOKENSIZE 0x80
+#define LISTSIZE 0x100
 #define _NORMAL_EXIT 1
 #define _ERROR -1
-#define _ERROR_STATEMENT -2
 #define true 1
 #define false 0
 

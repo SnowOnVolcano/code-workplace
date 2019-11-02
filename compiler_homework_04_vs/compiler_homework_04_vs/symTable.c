@@ -26,7 +26,7 @@ struct list* get_symValueList(char* key) {
 	return s->valueList;
 }
 
-void add_sym(char* key, int type) {
+bool add_sym(char* key, int type) {
 	struct SymbolTable* s;
 	HASH_FIND_STR(symtabler, key, s);
 	if (s == NULL) {
@@ -37,17 +37,14 @@ void add_sym(char* key, int type) {
 	}
 	else {
 		error(ERROR_B);
+		return false;
 	}
+	return true;
 }
 
 void change_symType(char* key, int newType) {
 	struct SymbolTable* s = find_sym(key);
 	s->type = newType;
-}
-
-void add_symValueList(char* key, struct list* valueList) {
-	struct SymbolTable* s = find_sym(key);
-	s->valueList = valueList;
 }
 
 void delete_sym(char* key) {

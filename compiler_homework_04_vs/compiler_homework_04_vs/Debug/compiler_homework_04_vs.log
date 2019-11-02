@@ -1,22 +1,22 @@
-﻿getsym.c(67,2): warning : 'strcpy' is deprecated: This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [-Wdeprecated-declarations]
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\string.h(133,1): message : 'strcpy' has been explicitly marked deprecated here
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt.h(748,5): message : expanded from macro '__DEFINE_CPP_OVERLOAD_STANDARD_FUNC_0_1'
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt.h(1831,17): message : expanded from macro '__DEFINE_CPP_OVERLOAD_STANDARD_FUNC_0_1_EX'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(309,55): message : expanded from macro '_CRT_INSECURE_DEPRECATE'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(299,47): message : expanded from macro '_CRT_DEPRECATE_TEXT'
-getsym.c(75,2): warning : 'strcpy' is deprecated: This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [-Wdeprecated-declarations]
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\string.h(133,1): message : 'strcpy' has been explicitly marked deprecated here
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt.h(748,5): message : expanded from macro '__DEFINE_CPP_OVERLOAD_STANDARD_FUNC_0_1'
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt.h(1831,17): message : expanded from macro '__DEFINE_CPP_OVERLOAD_STANDARD_FUNC_0_1_EX'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(309,55): message : expanded from macro '_CRT_INSECURE_DEPRECATE'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(299,47): message : expanded from macro '_CRT_DEPRECATE_TEXT'
-getsym.c(82,14): warning : 'fopen' is deprecated: This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [-Wdeprecated-declarations]
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(207,20): message : 'fopen' has been explicitly marked deprecated here
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(309,55): message : expanded from macro '_CRT_INSECURE_DEPRECATE'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(299,47): message : expanded from macro '_CRT_DEPRECATE_TEXT'
-getsym.c(83,11): warning : 'fopen' is deprecated: This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [-Wdeprecated-declarations]
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(207,20): message : 'fopen' has been explicitly marked deprecated here
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(309,55): message : expanded from macro '_CRT_INSECURE_DEPRECATE'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(299,47): message : expanded from macro '_CRT_DEPRECATE_TEXT'
-lld-link : warning : /debug:fastlink unsupported; using /debug:full
-  compiler_homework_04_vs.vcxproj -> E:\vscode-workplace\compiler_homework_04_vs\Debug\compiler_homework_04_vs.exe
+﻿  In file included from linklist.c:2:
+  In file included from C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\cstddef:9:
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\xtr1common(15,1): error : unknown type name 'namespace'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\yvals_core.h(927,20): message : expanded from macro '_STD_BEGIN'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\yvals_core.h(927,20): message : In file included from linklist.c:2:
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\yvals_core.h(927,20): message : In file included from C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\cstddef:9:
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\xtr1common(15,1): error : expected ';' after top level declarator
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\yvals_core.h(927,34): message : expanded from macro '_STD_BEGIN'
+linklist.c(8,23): warning : implicitly declaring library function 'calloc' with type 'void *(unsigned int, unsigned int)' [-Wimplicit-function-declaration]
+linklist.c(8,23): message : include the header <stdlib.h> or explicitly provide a declaration for 'calloc'
+linklist.c(15,2): warning : implicit declaration of function 'free' is invalid in C99 [-Wimplicit-function-declaration]
+linklist.c(29,2): warning : implicit declaration of function 'free' is invalid in C99 [-Wimplicit-function-declaration]
+linklist.c(38,2): warning : implicit declaration of function 'assert' is invalid in C99 [-Wimplicit-function-declaration]
+linklist.c(66,2): warning : implicit declaration of function 'assert' is invalid in C99 [-Wimplicit-function-declaration]
+linklist.c(107,2): warning : implicit declaration of function 'assert' is invalid in C99 [-Wimplicit-function-declaration]
+linklist.c(146,2): warning : implicit declaration of function 'assert' is invalid in C99 [-Wimplicit-function-declaration]
+linklist.c(174,2): warning : implicit declaration of function 'assert' is invalid in C99 [-Wimplicit-function-declaration]
+linklist.c(189,2): warning : implicit declaration of function 'assert' is invalid in C99 [-Wimplicit-function-declaration]
+linklist.c(205,2): warning : implicit declaration of function 'assert' is invalid in C99 [-Wimplicit-function-declaration]
+linklist.c(216,2): warning : implicit declaration of function 'assert' is invalid in C99 [-Wimplicit-function-declaration]
+linklist.c(245,2): warning : implicit declaration of function 'assert' is invalid in C99 [-Wimplicit-function-declaration]
+linklist.c(267,2): warning : implicit declaration of function 'assert' is invalid in C99 [-Wimplicit-function-declaration]

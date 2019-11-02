@@ -1,0 +1,2 @@
+﻿lld-link : warning : /debug:fastlink unsupported; using /debug:full
+  compiler_homework_04.vcxproj -> E:\vscode-workplace\compiler_homework_04\Debug\compiler_homework_04.exe
