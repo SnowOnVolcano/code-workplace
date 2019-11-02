@@ -29,6 +29,8 @@
 #define isRbrack(x) (x == ']')
 #define isLbrace(x) (x == '{')
 #define isRbrace(x) (x == '}')
+#define isStr(x) (x==32||x==33||(x>=35&&x<=126))
+#define isChar(x) (isLetter(x)||x=='+'||x=='-'||x=='*'||x=='/')
 
 // 词法分析-序号对应表
 enum mnemonic {
@@ -72,6 +74,8 @@ enum mnemonic {
 
 // 词法分析-名称对应表
 extern char mnemonices[][10];
+
+int isAhead;
 
 char buffer;			// current character
 char token[TOKENSIZE];	// current word

@@ -246,21 +246,3 @@ bool print_sym() {
 	// printf("%s %s\n", mnemonices[symbol], token);
 	return true;
 }
-
-//void output() {
-//	while (!getsym()) {
-//		if (symbol == _ERROR) {
-//			error(_ERROR);
-//		}
-//		else {
-//			fprintf(fpOut, "%s %s\n", mnemonices[symbol], token);
-//		}
-//	}
-//	fclose(fpIn);
-//	fclose(fpOut);
-//}
-
-//int main() {
-//	init_getsym();
-//	output();
-//}

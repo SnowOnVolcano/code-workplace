@@ -68,6 +68,7 @@ void saveCurrentSym() {
 	precount = count;
 	presymbol = symbol;
 	prefpInOffset = ftell(fpIn);
+	isAhead = 1;
 }
 
 void restorePreviousSym() {
@@ -76,9 +77,11 @@ void restorePreviousSym() {
 	count = precount;
 	symbol = presymbol;
 	fseek(fpIn, prefpInOffset, SEEK_SET);
+	isAhead = 0;
 }
 
 int init_getsym() {
+	isAhead = 0;
 	if ((fpIn = fopen("testfile.txt", "r")) != NULL) {
 		fpOut = fopen("output.txt", "w");
 		return 0;
@@ -92,6 +95,7 @@ int getsym() {
 	clearToken();
 	do {
 		getNext();
+		if (isAhead == 0 && buffer == '\n') { lineNum++; }
 	} while (isSpace(buffer));
 	if (buffer == EOF) {
 		return _NORMAL_EXIT;
@@ -114,23 +118,32 @@ int getsym() {
 	}
 	else if (isSquote(buffer)) {
 		getNext();
-		while (!isSquote(buffer)) {
-			catToken();
-			getNext();
-		}
-		if (count == 1) {
-			symbol = CHARCON;
-		}
-		else {
-			symbol = _ERROR;
-		}
+		catToken();
+
+		/*错误处理*/ /*非法符号或不符合词法*/
+		if (!isChar(buffer)) { error(ERROR_A); }
+		
+		getNext();
+
+		/*错误处理*/ /*非法符号或不符合词法*/
+		if (!isSquote(buffer)) { error(ERROR_A); retract(); }
+		
+		symbol = CHARCON;
 	}
 	else if (isDquote(buffer)) {
 		getNext();
-		while (!isDquote(buffer)) {
+		while (!isDquote(buffer) && !isSemi(buffer)) {
+
+			/*错误处理*/ /*非法符号或不符合词法*/
+			if (!isStr(buffer)) { error(ERROR_A); }
+
 			catToken();
 			getNext();
 		}
+
+		/*错误处理*/ /*非法符号或不符合词法*/
+		if (isSemi(buffer)) { error(ERROR_A); retract(); }
+
 		symbol = STRCON;
 	}
 	else if (isPlus(buffer)) {

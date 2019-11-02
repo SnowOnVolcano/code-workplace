@@ -8,6 +8,8 @@
 #define _NORMAL_EXIT 1
 #define _ERROR -1
 
+extern int lineNum;
+
 // ´íÎóÀàĞÍ
 enum error_types
 {

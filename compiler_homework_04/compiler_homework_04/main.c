@@ -4,6 +4,7 @@
 int initial() {
 	init_getsym();
 	init_parsing();
+	lineNum = 0;
 	return 0;
 }
 
