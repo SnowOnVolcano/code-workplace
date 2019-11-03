@@ -127,7 +127,10 @@ void con_definition() {
 
 			getsym();
 			(symbol == ASSIGN && print_sym()) ? getsym() : error_and_getsym();
-			(symbol == CHARCON && print_sym()) ? getsym() : error_and_getsym();
+			
+			if (symbol != CHARCON) { error(ERROR_O); }
+
+			getsym();
 
 		} while (symbol == COMMA);
 	}
@@ -183,13 +186,14 @@ void var_info() {
 void var_definition() {
 	int r;
 	if (symbol == INTTK || symbol == CHARTK) {
+		int vtype = (symbol == INTTK) ? VARIABLE_INT : VARIABLE_CHAR;
+		int atype = (symbol == INTTK) ? ARRAY_INT : ARRAY_CHAR;
 		do {
-			int type = (symbol == INTTK) ? VARIABLE_INT : VARIABLE_CHAR;
 			print_sym();
 			getsym();
 
 			(symbol == IDENFR && print_sym()) /*加入符号表*/
-				? (r = addSymbol(symbolTables[stIndex], token, type))
+				? (r = addSymbol(symbolTables[stIndex], token, vtype))
 				: error(_ERROR);
 			
 			/*错误处理*/ /*名字重定义*/
@@ -200,8 +204,7 @@ void var_definition() {
 
 			getsym();
 			if (symbol == LBRACK) {
-				type = (type == VARIABLE_INT) ? ARRAY_INT : ARRAY_CHAR;
-				addSymbolType(symbolTables[stIndex], curname, type); /*加入符号表*/
+				addSymbolType(symbolTables[stIndex], curname, atype); /*加入符号表*/
 				
 				print_sym();
 				getsym();
@@ -399,27 +402,22 @@ int term() {
 // 因子			::= ＜标识符＞ ｜ ＜标识符＞'['＜表达式＞']' | '('＜表达式＞')' ｜ ＜整数＞ | ＜字符＞ ｜ ＜有返回值函数调用语句＞
 int factor() {
 	int type = 0;
+	int r = 0;
 	if (symbol == IDENFR) {
-		if (getSymbolType(symbolTables[0], token) == FUNC_HAS_RETURN_INT
-			|| getSymbolType(symbolTables[0], token) == FUNC_HAS_RETURN_CHAR) {
+		if ((r = getSymbolType(symbolTables[0], token)) == FUNC_HAS_RETURN_INT || r == FUNC_HAS_RETURN_CHAR) {
 			// 有返回值函数调用语句
-			type = (getSymbolType(symbolTables[0], token) == FUNC_HAS_RETURN_INT);
+			type = (r == FUNC_HAS_RETURN_INT);
 			refunc_callStatement();
 		}
-		else if (getSymbolTypeFromTwo() == VARIABLE_INT 
-			|| getSymbolTypeFromTwo() == VARIABLE_CHAR
-			|| getSymbolTypeFromTwo() == CONST_INT 
-			|| getSymbolTypeFromTwo() == CONST_CHAR) {
+		else if ((r = getSymbolTypeFromTwo()) == VARIABLE_INT || r == VARIABLE_CHAR || r == CONST_INT || r == CONST_CHAR) {
 			// 变量或常量
-			type = (getSymbolTypeFromTwo() == VARIABLE_INT 
-				|| getSymbolTypeFromTwo() == CONST_INT);
+			type = (r == VARIABLE_INT || r == CONST_INT);
 			print_sym();
 			getsym();
 		}
-		else if (getSymbolTypeFromTwo() == ARRAY_INT
-			|| getSymbolTypeFromTwo() == ARRAY_CHAR) {
+		else if (r == ARRAY_INT || r == ARRAY_CHAR) {
 			// 数组
-			type = (getSymbolTypeFromTwo() == ARRAY_INT);
+			type = (r == ARRAY_INT);
 			print_sym();
 			getsym();
 			(symbol == LBRACK && print_sym()) ? getsym() : error_and_getsym();
@@ -431,10 +429,10 @@ int factor() {
 			(symbol == RBRACK && print_sym()) ? getsym() : error(ERROR_M);
 		}
 		else {	
-			type = -1;
+			type = 1;
 			
 			/*错误处理*/ /*未定义的名字*/
-			if (getSymbolTypeFromTwo() < 0) { error(ERROR_C); getsym(); }
+			if (r < 0) { error(ERROR_C); getsym(); }
 			
 			else { error_and_getsym(); }
 		}
@@ -485,8 +483,7 @@ int statement() {
 		if (getSymbolTypeFromTwo() < 0) { 
 			error(ERROR_C); 
 			while (symbol != SEMICN) getsym();
-			getsym();
-			stateType = _ERROR_GET;
+			stateType = _NORMAL_EXIT;
 		}
 		
 		else {
@@ -571,6 +568,7 @@ void assignStatement() {
 		
 		/*错误处理*/ /*不能改变常量的值*/
 		error(ERROR_J);
+		while (symbol != SEMICN) { getsym(); }
 	}
 	else {
 		error(_ERROR);
@@ -748,7 +746,7 @@ void valueparaList(List_t* paraList) {
 			node = getListNextNode(node);
 
 			/*错误处理*/ /*函数参数个数不匹配*/
-			if (node == NULL || node == getListTopNode(paraList))
+			if (node == NULL || sum > paraList->n)
 			{
 				error(ERROR_D);
 				while (symbol != RPARENT) { getsym(); }
@@ -767,7 +765,7 @@ void valueparaList(List_t* paraList) {
 		}
 
 		/*错误处理*/ /*函数参数个数不匹配*/
-		if (sum > paraList->n) { error(ERROR_D); }
+		if (sum < paraList->n) { error(ERROR_D); }
 	}
 
 	fprintf(fpOut, "<值参数表>\n");

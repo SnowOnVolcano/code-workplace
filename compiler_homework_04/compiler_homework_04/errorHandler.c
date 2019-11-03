@@ -22,7 +22,7 @@ int error(int etype) {
 		fprintf(fpError, "%d _ERROR_GET\n", lineNum);
 	}
 	
-	switch (etype)
+	/*switch (etype)
 	{
 	case _ERROR_GET:
 		break;
@@ -31,10 +31,8 @@ int error(int etype) {
 	case ERROR_A:// 非法符号或不符合词法
 		break;
 	case ERROR_B:// 名字重定义
-		printf("b\n");
 		break;
 	case ERROR_C:// 未定义的名字
-		printf("c\n");
 		break;
 	case ERROR_D:// 函数参数个数不匹配
 		break;
@@ -62,7 +60,7 @@ int error(int etype) {
 		break;
 	default:
 		break;
-	}
+	}*/
 
 	puts("-----------");
 	return 0;

@@ -87,7 +87,7 @@ void restorePreviousSym() {
 int init_getsym() {
 	isAhead = 0;
 	isNewLine = 0;
-	if ((fpIn = fopen("testfile.txt", "r")) != NULL) {
+	if ((fpIn = fopen("testfile.txt", "rb")) != NULL) {
 		fpOut = fopen("output.txt", "w");
 		return 0;
 	}
@@ -103,10 +103,12 @@ int getsym() {
 		getNext();
 		if (isAhead == 0 && buffer == '\n') { isNewLine = 1; thisLine_init(); }
 	} while (isSpace(buffer));
+	
 	if (buffer == EOF) {
 		thisLine_init();
 		return _NORMAL_EXIT;
 	}
+	
 	if (isLetter(buffer)) {
 		while (isAlnum(buffer)) {
 			catToken();
