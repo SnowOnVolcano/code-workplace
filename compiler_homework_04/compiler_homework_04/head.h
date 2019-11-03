@@ -12,6 +12,8 @@
 #define _ERROR -1
 #define _ERROR_GET -2 
 
-extern int lineNum;
+extern int lineNum;			// 行号
+extern int isMinuLine;		// 输出时lineNum需不需要-1
+
 
 

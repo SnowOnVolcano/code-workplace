@@ -75,8 +75,8 @@ enum mnemonic {
 // 词法分析-名称对应表
 extern char mnemonices[][10];
 
-int isAhead;
-int isNewLine;
+int isAhead;			// 是否预读
+int isNewLine;			// 是不是新的一行
 
 char buffer;			// current character
 char token[TOKENSIZE];	// current word

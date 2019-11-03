@@ -19,6 +19,7 @@ void clearToken() {
 	buffer = '\0';
 	count = 0;
 	symbol = 0;
+	isMinuLine = 0;
 }
 void catToken() { token[count++] = buffer; }
 int reserver() {
@@ -101,14 +102,14 @@ int getsym() {
 	do {
 		if (isAhead == 0 && isNewLine == 1) { lineNum++; isNewLine--; }
 		getNext();
-		if (isAhead == 0 && buffer == '\n') { isNewLine = 1; thisLine_init(); }
+		if (isAhead == 0 && buffer == '\n') { isNewLine = isMinuLine = 1; thisLine_init(); }
 	} while (isSpace(buffer));
-	
+
 	if (buffer == EOF) {
 		thisLine_init();
 		return _NORMAL_EXIT;
 	}
-	
+
 	if (isLetter(buffer)) {
 		while (isAlnum(buffer)) {
 			catToken();
@@ -131,12 +132,12 @@ int getsym() {
 
 		/*错误处理*/ /*非法符号或不符合词法*/
 		if (!isChar(buffer)) { error(ERROR_A); }
-		
+
 		getNext();
 
 		/*错误处理*/ /*非法符号或不符合词法*/
 		if (!isSquote(buffer)) { error(ERROR_A); retract(); }
-		
+
 		symbol = CHARCON;
 	}
 	else if (isDquote(buffer)) {
@@ -151,10 +152,10 @@ int getsym() {
 		}
 
 		/*错误处理*/ /*非法符号或不符合词法*/
-		if (buffer == '\n') { 
+		if (buffer == '\n') {
 			error(ERROR_A);
 			retract();
-			for (int i = count - 1; i >= 0 && token[i] != ')'; i--){
+			for (int i = count - 1; i >= 0 && token[i] != ')'; i--) {
 				ungetc(token[i], fpIn);
 				thisLine_minu();
 			}
@@ -248,7 +249,14 @@ int getsym() {
 		symbol = RBRACE;
 	}
 	else {
-		symbol = _ERROR;
+		error(ERROR_A);
+		getNext();
+		while (isAlnum(buffer) || buffer < 32 || buffer > 126) {
+			catToken();
+			getNext();
+		}
+		retract();
+		symbol = IDENFR;
 	}
 	if (count == 0) {
 		catToken();
