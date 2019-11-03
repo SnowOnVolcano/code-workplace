@@ -8,8 +8,12 @@ char mnemonices[][10] = {
 	"GEQ",     "EQL",     "NEQ",     "ASSIGN",   "SEMICN",   "COMMA",
 	"LPARENT", "RPARENT", "LBRACK",  "RBRACK",   "LBRACE",   "RBRACE" };
 
-void getNext() { buffer = fgetc(fpIn); }
-void retract() { ungetc(buffer, fpIn); }
+void thisLine_init() { thisLineCount = 0; printf("%d %s", lineNum, thisLine); memset(thisLine, 0, LINESIZE); }
+void thisLine_plus() { if (isAhead == 0) { thisLine[thisLineCount++] = buffer; } }
+void thisLine_minu() { if (isAhead == 0) { thisLine[--thisLineCount] = '\0'; } }
+
+void getNext() { buffer = fgetc(fpIn);	thisLine_plus(); }
+void retract() { ungetc(buffer, fpIn);  thisLine_minu(); }
 void clearToken() {
 	memset(token, 0, TOKENSIZE);
 	buffer = '\0';
@@ -82,6 +86,7 @@ void restorePreviousSym() {
 
 int init_getsym() {
 	isAhead = 0;
+	isNewLine = 0;
 	if ((fpIn = fopen("testfile.txt", "r")) != NULL) {
 		fpOut = fopen("output.txt", "w");
 		return 0;
@@ -92,10 +97,11 @@ int init_getsym() {
 }
 
 int getsym() {
+	if (isAhead == 0 && isNewLine == 1) { lineNum++; isNewLine--; thisLine_init(); }
 	clearToken();
 	do {
 		getNext();
-		if (isAhead == 0 && buffer == '\n') { lineNum++; }
+		if (isAhead == 0 && buffer == '\n') { isNewLine = 1; }
 	} while (isSpace(buffer));
 	if (buffer == EOF) {
 		return _NORMAL_EXIT;
@@ -132,7 +138,7 @@ int getsym() {
 	}
 	else if (isDquote(buffer)) {
 		getNext();
-		while (!isDquote(buffer) && !isSemi(buffer)) {
+		while (!isDquote(buffer) && buffer != '\n') {
 
 			/*错误处理*/ /*非法符号或不符合词法*/
 			if (!isStr(buffer)) { error(ERROR_A); }
@@ -142,7 +148,13 @@ int getsym() {
 		}
 
 		/*错误处理*/ /*非法符号或不符合词法*/
-		if (isSemi(buffer)) { error(ERROR_A); retract(); }
+		if (buffer == '\n') { 
+			error(ERROR_A); 
+			for (int i = count - 1; i >= 0 && token[i] != ')'; i--){
+				ungetc(token[i], fpIn);
+			}
+			ungetc(')', fpIn);
+		}
 
 		symbol = STRCON;
 	}
@@ -238,13 +250,6 @@ int getsym() {
 	}
 	return 0;
 }
-
-int getsym_print() {
-	int r = getsym();
-	print_sym();
-	return r;
-}
-
 
 int print_sym() {
 	fprintf(fpOut, "%s %s\n", mnemonices[symbol], token);

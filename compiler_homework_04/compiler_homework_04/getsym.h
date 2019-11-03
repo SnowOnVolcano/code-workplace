@@ -76,6 +76,7 @@ enum mnemonic {
 extern char mnemonices[][10];
 
 int isAhead;
+int isNewLine;
 
 char buffer;			// current character
 char token[TOKENSIZE];	// current word
@@ -89,6 +90,9 @@ long int prefpInOffset;	// previous offset of fpIn(FILE*)
 FILE* fpIn;				// pointer to current location of the file "testfile.txt"
 FILE* fpOut;			// pointer to current location of the file "output.txt"
 
+char thisLine[LINESIZE];
+int thisLineCount;
+
 extern void getNext();
 extern void retract();
 extern void clearToken();
@@ -97,7 +101,6 @@ extern int reserver();
 extern void saveCurrentSym();
 extern void restorePreviousSym();
 extern int init_getsym();
-extern int getsym_print();
 extern int getsym();
 extern int print_sym();
 

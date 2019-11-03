@@ -3,115 +3,126 @@ INTTK int
 IDENFR const1
 ASSIGN =
 INTCON 1
-<ÎÞ·ûºÅÕûÊý>
-<ÕûÊý>
+<æ— ç¬¦å·æ•´æ•°>
+<æ•´æ•°>
 COMMA ,
 IDENFR const2
 ASSIGN =
 MINU -
 INTCON 100
-<ÎÞ·ûºÅÕûÊý>
-<ÕûÊý>
-<³£Á¿¶¨Òå>
+<æ— ç¬¦å·æ•´æ•°>
+<æ•´æ•°>
+<å¸¸é‡å®šä¹‰>
 SEMICN ;
 CONSTTK const
 CHARTK char
 IDENFR const3
 ASSIGN =
-CHARCON _
-<³£Á¿¶¨Òå>
+CHARCON a
+<å¸¸é‡å®šä¹‰>
 SEMICN ;
-<³£Á¿ËµÃ÷>
+<å¸¸é‡è¯´æ˜Ž>
 INTTK int
 IDENFR change1
-<±äÁ¿¶¨Òå>
+<å˜é‡å®šä¹‰>
 SEMICN ;
 CHARTK char
 IDENFR change3
-<±äÁ¿¶¨Òå>
+<å˜é‡å®šä¹‰>
 SEMICN ;
-<±äÁ¿ËµÃ÷>
+<å˜é‡è¯´æ˜Ž>
 INTTK int
 IDENFR gets1
-<ÉùÃ÷Í·²¿>
+<å£°æ˜Žå¤´éƒ¨>
 LPARENT (
 INTTK int
 IDENFR var1
 COMMA ,
 INTTK int
 IDENFR var2
-<²ÎÊý±í>
+<å‚æ•°è¡¨>
 RPARENT )
 LBRACE {
 IDENFR change1
 ASSIGN =
 IDENFR var1
-<Òò×Ó>
-<Ïî>
+<å› å­>
+<é¡¹>
 PLUS +
 IDENFR var2
-<Òò×Ó>
-<Ïî>
-<±í´ïÊ½>
-<¸³ÖµÓï¾ä>
+<å› å­>
+<é¡¹>
+<è¡¨è¾¾å¼>
+<èµ‹å€¼è¯­å¥>
 SEMICN ;
-<Óï¾ä>
+<è¯­å¥>
 RETURNTK return
 LPARENT (
 IDENFR change1
-<Òò×Ó>
-<Ïî>
-<±í´ïÊ½>
+<å› å­>
+<é¡¹>
+<è¡¨è¾¾å¼>
 RPARENT )
-<·µ»ØÓï¾ä>
+<è¿”å›žè¯­å¥>
 SEMICN ;
-<Óï¾ä>
-<Óï¾äÁÐ>
-<¸´ºÏÓï¾ä>
+<è¯­å¥>
+<è¯­å¥åˆ—>
+<å¤åˆè¯­å¥>
 RBRACE }
-<ÓÐ·µ»ØÖµº¯Êý¶¨Òå>
+<æœ‰è¿”å›žå€¼å‡½æ•°å®šä¹‰>
 VOIDTK void
 MAINTK main
 LPARENT (
 RPARENT )
 LBRACE {
+IDENFR change1
+ASSIGN =
+INTCON 10
+<æ— ç¬¦å·æ•´æ•°>
+<æ•´æ•°>
+<å› å­>
+<é¡¹>
+<è¡¨è¾¾å¼>
+<èµ‹å€¼è¯­å¥>
+SEMICN ;
+<è¯­å¥>
 PRINTFTK printf
 LPARENT (
 STRCON Hello World
-<×Ö·û´®>
+<å­—ç¬¦ä¸²>
 RPARENT )
-<Ð´Óï¾ä>
+<å†™è¯­å¥>
 SEMICN ;
-<Óï¾ä>
+<è¯­å¥>
 PRINTFTK printf
 LPARENT (
 IDENFR gets1
 LPARENT (
 INTCON 10
-<ÎÞ·ûºÅÕûÊý>
-<ÕûÊý>
-<Òò×Ó>
-<Ïî>
-<±í´ïÊ½>
+<æ— ç¬¦å·æ•´æ•°>
+<æ•´æ•°>
+<å› å­>
+<é¡¹>
+<è¡¨è¾¾å¼>
 COMMA ,
 INTCON 20
-<ÎÞ·ûºÅÕûÊý>
-<ÕûÊý>
-<Òò×Ó>
-<Ïî>
-<±í´ïÊ½>
-<Öµ²ÎÊý±í>
+<æ— ç¬¦å·æ•´æ•°>
+<æ•´æ•°>
+<å› å­>
+<é¡¹>
+<è¡¨è¾¾å¼>
+<å€¼å‚æ•°è¡¨>
 RPARENT )
-<ÓÐ·µ»ØÖµº¯Êýµ÷ÓÃÓï¾ä>
-<Òò×Ó>
-<Ïî>
-<±í´ïÊ½>
+<æœ‰è¿”å›žå€¼å‡½æ•°è°ƒç”¨è¯­å¥>
+<å› å­>
+<é¡¹>
+<è¡¨è¾¾å¼>
 RPARENT )
-<Ð´Óï¾ä>
+<å†™è¯­å¥>
 SEMICN ;
-<Óï¾ä>
-<Óï¾äÁÐ>
-<¸´ºÏÓï¾ä>
+<è¯­å¥>
+<è¯­å¥åˆ—>
+<å¤åˆè¯­å¥>
 RBRACE }
-<Ö÷º¯Êý>
-<³ÌÐò>
+<ä¸»å‡½æ•°>
+<ç¨‹åº>

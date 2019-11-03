@@ -38,8 +38,8 @@ void string();							// 字符串
 void program();							// 程序
 void con_info();						// 常量说明
 void con_definition();					// 常量定义
-void unsigned_integer();				// 无符号整数
-void integer();							// 整数
+int unsigned_integer();					// 无符号整数
+int integer();							// 整数
 void var_info();						// 变量说明
 void var_definition();					// 变量定义
 void declarator();						// 声明头部

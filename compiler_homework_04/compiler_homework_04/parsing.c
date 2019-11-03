@@ -19,13 +19,15 @@ int getSymbolTypeFromTwo() {
 		return r;
 	}
 }
-
-
+int error_and_getsym() {
+	error(_ERROR_GET);
+	getsym();
+}
 
 /*分析程序*/
 // 字符串		::= "｛十进制编码为32,33,35-126的ASCII字符｝"
 void string() {
-	(symbol == STRCON && print_sym()) ? getsym() : error(_ERROR);
+	(symbol == STRCON && print_sym()) ? getsym() : error_and_getsym();
 	fprintf(fpOut, "<字符串>\n");
 }
 
@@ -70,7 +72,7 @@ void program() {
 
 // 常量说明		::=  const＜常量定义＞;{ const＜常量定义＞;}
 void con_info() {
-	(symbol == CONSTTK && print_sym()) ? getsym() : error(_ERROR);
+	(symbol == CONSTTK && print_sym()) ? getsym() : error_and_getsym();
 	con_definition();
 	(symbol == SEMICN && print_sym()) ? getsym() : error(ERROR_K);
 	while (symbol == CONSTTK)
@@ -101,7 +103,7 @@ void con_definition() {
 			if (r < 0) { error(ERROR_B); }
 			
 			getsym();
-			(symbol == ASSIGN && print_sym()) ? getsym() : error(_ERROR);
+			(symbol == ASSIGN && print_sym()) ? getsym() : error_and_getsym();
 			r = integer();
 
 			/*错误处理*/ /*常量定义中=后面只能是整型或字符型常量*/
@@ -123,8 +125,8 @@ void con_definition() {
 			if (r < 0) error(ERROR_B);
 
 			getsym();
-			(symbol == ASSIGN && print_sym()) ? getsym() : error(_ERROR);
-			(symbol == CHARCON && print_sym()) ? getsym() : error(_ERROR);
+			(symbol == ASSIGN && print_sym()) ? getsym() : error_and_getsym();
+			(symbol == CHARCON && print_sym()) ? getsym() : error_and_getsym();
 
 		} while (symbol == COMMA);
 	}
@@ -215,9 +217,9 @@ void var_definition() {
 
 // 声明头部		::=  int＜标识符＞ | char＜标识符＞
 void declarator() {
-	int r;
+	int r = 0;
 	int type = (symbol == INTTK) ? FUNC_HAS_RETURN_INT : FUNC_HAS_RETURN_CHAR;
-	((symbol == INTTK || symbol == CHARTK) && print_sym()) ? getsym() : error(_ERROR);
+	((symbol == INTTK || symbol == CHARTK) && print_sym()) ? getsym() : error_and_getsym();
 	
 	/*———————— 新建一个符号表 - token ———————————*/
 	symbolTables[++stIndex] = newSymbolTable(token);
@@ -237,19 +239,23 @@ void declarator() {
 // 有返回值函数定义	::=  ＜声明头部＞'('＜参数表＞')' '{'＜复合语句＞'}'
 void re_func_definition() {
 	declarator();
-	(symbol == LPARENT && print_sym()) ? getsym() : error(_ERROR);
+	(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 	paraList();
 	(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
-	(symbol == LBRACE && print_sym()) ? getsym() : error(_ERROR);
+	(symbol == LBRACE && print_sym()) ? getsym() : error_and_getsym();
 	compoundStatement();
-	(symbol == RBRACE && print_sym()) ? getsym() : error(_ERROR);
+
+	/*错误处理*/ /*有返回值的函数缺少return语句或存在不匹配的return语句*/
+	if (symbolTables[stIndex]->returnType == 0) { error(ERROR_H); }
+
+	(symbol == RBRACE && print_sym()) ? getsym() : error_and_getsym();
 	fprintf(fpOut, "<有返回值函数定义>\n");
 }
 
 // 无返回值函数定义	::= void＜标识符＞'('＜参数表＞')''{'＜复合语句＞'}'
 void unre_func_definition() {
-	int r;
-	(symbol == VOIDTK && print_sym()) ? getsym() : error(_ERROR);
+	int r = 0;
+	(symbol == VOIDTK && print_sym()) ? getsym() : error_and_getsym();
 	
 	/*———————— 新建一个符号表 - token ———————————*/
 	symbolTables[++stIndex] = newSymbolTable(token);
@@ -263,12 +269,12 @@ void unre_func_definition() {
 	if (r < 0) error(ERROR_B);
 	
 	getsym();
-	(symbol == LPARENT && print_sym()) ? getsym() : error(_ERROR);
+	(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 	paraList();
 	(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
-	(symbol == LBRACE && print_sym()) ? getsym() : error(_ERROR);
+	(symbol == LBRACE && print_sym()) ? getsym() : error_and_getsym();
 	compoundStatement();
-	(symbol == RBRACE && print_sym()) ? getsym() : error(_ERROR);
+	(symbol == RBRACE && print_sym()) ? getsym() : error_and_getsym();
 	fprintf(fpOut, "<无返回值函数定义>\n");
 }
 
@@ -286,7 +292,7 @@ void compoundStatement() {
 
 // 参数表		::=  ＜类型标识符＞＜标识符＞{,＜类型标识符＞＜标识符＞} | ＜空＞
 void paraList() {
-	int r;
+	int r = 0;
 	if (symbol == INTTK || symbol == CHARTK) {
 		int type = (symbol == INTTK) ? VARIABLE_INT : VARIABLE_CHAR;
 		print_sym();
@@ -305,11 +311,11 @@ void paraList() {
 			print_sym();
 			getsym();
 			type = (symbol == INTTK) ? VARIABLE_INT : VARIABLE_CHAR;
-			((symbol == INTTK || symbol == CHARTK) && print_sym()) ? getsym() : error(_ERROR);
+			((symbol == INTTK || symbol == CHARTK) && print_sym()) ? getsym() : error_and_getsym();
 		
 			(symbol == IDENFR && print_sym()) /*加入符号表*/
 				? (r = addSymbol(symbolTables[stIndex], token, type))
-				: error(_ERROR);
+				: error_and_getsym();
 			
 			/*错误处理*/ /*名字重定义*/  /*如未出错则更新函数参数表*/
 			if (r < 0) error(ERROR_B);
@@ -326,13 +332,13 @@ void paraList() {
 
 // 主函数		::= void main'('')' '{'＜复合语句＞'}'
 void mainFunction() {
-	int r;
+	int r = 0;
 
 	/*———————— 新建一个符号表 - token ———————————*/
 	symbolTables[++stIndex] = newSymbolTable("main");
 	/*------------------------------------------------------------*/
 	
-	(symbol == VOIDTK && print_sym()) ? getsym() : error(_ERROR);
+	(symbol == VOIDTK && print_sym()) ? getsym() : error_and_getsym();
 	
 	(symbol == MAINTK && print_sym()) /*加入符号表*/ /*加入总符号表*/
 		? (r = addSymbol(symbolTables[0], token, FUNC_NON_RETURN))
@@ -341,11 +347,13 @@ void mainFunction() {
 	/*错误处理*/ /*名字重定义*/
 	if (r < 0) error(ERROR_B);
 
-	(symbol == LPARENT && print_sym()) ? getsym() : error(_ERROR);
+	getsym();
+	(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 	(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
-	(symbol == LBRACE && print_sym()) ? getsym() : error(_ERROR);
+	(symbol == LBRACE && print_sym()) ? getsym() : error_and_getsym();
 	compoundStatement();
-	(symbol == RBRACE && print_sym()) ? getsym() : error(_ERROR);
+
+	(symbol == RBRACE && print_sym()) ? getsym() : error_and_getsym();
 	fprintf(fpOut, "<主函数>\n");
 }
 
@@ -410,7 +418,7 @@ int factor() {
 			type = (getSymbolTypeFromTwo() == ARRAY_INT);
 			print_sym();
 			getsym();
-			(symbol == LBRACK && print_sym()) ? getsym() : error(_ERROR);
+			(symbol == LBRACK && print_sym()) ? getsym() : error_and_getsym();
 			type = expression();
 
 			/*错误处理*/ /*数组元素的下标只能是整型表达式*/
@@ -424,7 +432,7 @@ int factor() {
 			/*错误处理*/ /*未定义的名字*/
 			if (getSymbolTypeFromTwo() < 0) { error(ERROR_C); getsym(); }
 			
-			else { error(_ERROR); }
+			else { error_and_getsym(); }
 		}
 	}
 	else if (symbol == LPARENT) {		// '('表达式')'
@@ -465,7 +473,7 @@ int statement() {
 		print_sym();
 		getsym();
 		statecolumn();
-		(symbol == RBRACE && print_sym()) ? getsym() : error(_ERROR);
+		(symbol == RBRACE && print_sym()) ? getsym() : error_and_getsym();
 		stateType = S_STATECOLUMN;
 	}
 	else if (symbol == IDENFR) {		// 有、无返回值函数调用语句 | 赋值语句
@@ -474,7 +482,7 @@ int statement() {
 			error(ERROR_C); 
 			while (symbol != SEMICN) getsym();
 			getsym();
-			stateType = _ERROR;
+			stateType = _ERROR_GET;
 		}
 		
 		else {
@@ -504,7 +512,6 @@ int statement() {
 		stateType = S_RETURN;
 	}
 	else {
-		error(ERROR_K);
 		return _ERROR;
 	}
 	fprintf(fpOut, "<语句>\n");
@@ -538,21 +545,21 @@ void assignStatement() {
 		|| getSymbolTypeFromTwo() == VARIABLE_CHAR) {
 		print_sym();
 		getsym();
-		(symbol == ASSIGN && print_sym()) ? getsym() : error(_ERROR);
+		(symbol == ASSIGN && print_sym()) ? getsym() : error_and_getsym();
 		expression();
 	}
 	else if (getSymbolTypeFromTwo() == ARRAY_INT 
 		||getSymbolTypeFromTwo() == ARRAY_CHAR) {
 		print_sym();
 		getsym();
-		(symbol == LBRACK && print_sym()) ? getsym() : error(_ERROR);
+		(symbol == LBRACK && print_sym()) ? getsym() : error_and_getsym();
 		type = expression();
 
 		/*错误处理*/ /*数组元素的下标只能是整型表达式*/
 		if (type == 0) { error(ERROR_I); }
 
 		(symbol == RBRACK && print_sym()) ? getsym() : error(ERROR_M);
-		(symbol == ASSIGN && print_sym()) ? getsym() : error(_ERROR);
+		(symbol == ASSIGN && print_sym()) ? getsym() : error_and_getsym();
 		expression();
 	}
 	else if (getSymbolTypeFromTwo() == CONST_INT
@@ -569,8 +576,8 @@ void assignStatement() {
 
 // 条件语句		::= if '('＜条件＞')'＜语句＞［else＜语句＞］
 void conditionalStatement() {
-	(symbol == IFTK && print_sym()) ? getsym() : error(_ERROR);
-	(symbol == LPARENT && print_sym()) ? getsym() : error(_ERROR);
+	(symbol == IFTK && print_sym()) ? getsym() : error_and_getsym();
+	(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 	condition();
 	(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
 	statement();
@@ -607,11 +614,10 @@ void condition() {
 					 do＜语句＞while '('＜条件＞')' | 
 					 for'('＜标识符＞＝＜表达式＞;＜条件＞;＜标识符＞＝＜标识符＞(+|-)＜步长＞')'＜语句＞*/
 void loopStatement() {
-	int r;
 	if (symbol == WHILETK) {
 		print_sym();
 		getsym();
-		(symbol == LPARENT && print_sym()) ? getsym() : error(_ERROR);
+		(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 		condition();
 		(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
 		statement();
@@ -624,7 +630,7 @@ void loopStatement() {
 		/*错误处理*/ /*do-while应为语句中缺少while*/
 		(symbol == WHILETK && print_sym()) ? getsym() : error(ERROR_N);
 		
-		(symbol == LPARENT && print_sym()) ? getsym() : error(_ERROR);
+		(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 		condition();
 		(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
 	}
@@ -632,14 +638,14 @@ void loopStatement() {
 	{
 		print_sym();
 		getsym();
-		(symbol == LPARENT && print_sym()) ? getsym() : error(_ERROR);
+		(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 		
 		/*错误处理*/ /*未定义的名字*/
 		if (getSymbolTypeFromTwo() < 0) { error(ERROR_C); getsym(); }
 		
-		else (getSymbolTypeFromTwo() == VARIABLE_INT && print_sym()) ? getsym() : error(_ERROR);
+		else (getSymbolTypeFromTwo() == VARIABLE_INT && print_sym()) ? getsym() : error_and_getsym();
 		
-		(symbol == ASSIGN && print_sym()) ? getsym() : error(_ERROR);
+		(symbol == ASSIGN && print_sym()) ? getsym() : error_and_getsym();
 		expression();
 		(symbol == SEMICN && print_sym()) ? getsym() : error(ERROR_K);
 		condition();
@@ -648,16 +654,16 @@ void loopStatement() {
 		/*错误处理*/ /*未定义的名字*/
 		if (getSymbolTypeFromTwo() < 0) { error(ERROR_C); getsym(); }
 		
-		else (getSymbolTypeFromTwo() == VARIABLE_INT && print_sym()) ? getsym() : error(_ERROR);
+		else (getSymbolTypeFromTwo() == VARIABLE_INT && print_sym()) ? getsym() : error_and_getsym();
 		
-		(symbol == ASSIGN && print_sym()) ? getsym() : error(_ERROR);
+		(symbol == ASSIGN && print_sym()) ? getsym() : error_and_getsym();
 		
 		/*错误处理*/ /*未定义的名字*/
 		if (getSymbolTypeFromTwo() < 0) { error(ERROR_C); getsym(); }
 		
-		else (getSymbolTypeFromTwo() == VARIABLE_INT && print_sym()) ? getsym() : error(_ERROR);
+		else (getSymbolTypeFromTwo() == VARIABLE_INT && print_sym()) ? getsym() : error_and_getsym();
 		
-		((symbol == PLUS || symbol == MINU) && print_sym()) ? getsym() : error(_ERROR);
+		((symbol == PLUS || symbol == MINU) && print_sym()) ? getsym() : error_and_getsym();
 		stride();
 		(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
 		statement();
@@ -678,8 +684,8 @@ void stride() {
 void refunc_callStatement() {
 	List_t* paraList = getSymbolParaList(symbolTables[0], token);
 
-	(symbol == IDENFR && print_sym()) ? getsym() : error(_ERROR);
-	(symbol == LPARENT && print_sym()) ? getsym() : error(_ERROR);
+	(symbol == IDENFR && print_sym()) ? getsym() : error_and_getsym();
+	(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 
 	valueparaList(paraList);
 
@@ -692,8 +698,8 @@ void refunc_callStatement() {
 void unrefunc_callStatement() {
 	List_t* paraList = getSymbolParaList(symbolTables[0], token);
 	
-	(symbol == IDENFR && print_sym()) ? getsym() : error(_ERROR);
-	(symbol == LPARENT && print_sym()) ? getsym() : error(_ERROR);
+	(symbol == IDENFR && print_sym()) ? getsym() : error_and_getsym();
+	(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 
 	valueparaList(paraList);
 	
@@ -746,15 +752,15 @@ void statecolumn() {
 
 // 读语句		::=  scanf '('＜标识符＞{,＜标识符＞}')'
 void readStatement() {
-	(symbol == SCANFTK && print_sym()) ? getsym() : error(_ERROR);
-	(symbol == LPARENT && print_sym()) ? getsym() : error(_ERROR);
+	(symbol == SCANFTK && print_sym()) ? getsym() : error_and_getsym();
+	(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 	
 	/*错误处理*/ /*未定义的名字*/
 	if (getSymbolTypeFromTwo() < 0) { error(ERROR_C); getsym(); }
 
 	else (getSymbolTypeFromTwo() == VARIABLE_INT
 		|| getSymbolTypeFromTwo() == VARIABLE_CHAR)
-		? getsym() : error(_ERROR);
+		? getsym() : error_and_getsym();
 
 	while (symbol == COMMA)
 	{
@@ -766,7 +772,7 @@ void readStatement() {
 
 		else (getSymbolTypeFromTwo() == VARIABLE_INT
 			|| getSymbolTypeFromTwo() == VARIABLE_CHAR)
-			? getsym() : error(_ERROR);
+			? getsym() : error_and_getsym();
 	}
 
 	(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
@@ -775,8 +781,8 @@ void readStatement() {
 
 // 写语句		::= printf '(' ＜字符串＞,＜表达式＞ ')'| printf '('＜字符串＞ ')'| printf '('＜表达式＞')'
 void printStatement() {
-	(symbol == PRINTFTK && print_sym()) ? getsym() : error(_ERROR);
-	(symbol == LPARENT && print_sym()) ? getsym() : error(_ERROR);
+	(symbol == PRINTFTK && print_sym()) ? getsym() : error_and_getsym();
+	(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 	if (symbol == STRCON) {
 		string();
 		if (symbol == COMMA) {
@@ -794,9 +800,9 @@ void printStatement() {
 
 // 返回语句		::=  return['('＜表达式＞')']  
 void returnStatement() {
-	int type = getSymbolType(symbolTables[0], symbolTables[0]->name);
+	int type = getSymbolType(symbolTables[0], symbolTables[stIndex]->name);
 
-	(symbol == RETURNTK && print_sym()) ? getsym() : error(_ERROR);
+	(symbol == RETURNTK && print_sym()) ? getsym() : error_and_getsym();
 	if (symbol == LPARENT)
 	{
 		print_sym();
@@ -810,6 +816,9 @@ void returnStatement() {
 		else if (type == FUNC_HAS_RETURN_INT && returnType != 1) { error(ERROR_H); }
 		else if (type == FUNC_HAS_RETURN_CHAR && returnType != 0) { error(ERROR_H); }
 
+		symbolTables[stIndex]->returnType = 
+			(returnType == 1) ? FUNC_HAS_RETURN_INT : FUNC_HAS_RETURN_CHAR;
+		
 		(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
 	}
 	fprintf(fpOut, "<返回语句>\n");

@@ -1,14 +1,21 @@
 #pragma once
 
+#include <stdio.h>
+#include <stdlib.h>
 #include "linkList.h"
 #include "uthash-master/uthash.h"
 #include "symbolTable.h"
 
 #define TOKENSIZE 0x80
+#define LINESIZE (TOKENSIZE*TOKENSIZE)
 #define _NORMAL_EXIT 1
 #define _ERROR -1
 
+// 错误处理时需要getsym()
+#define _ERROR_GET -2 
+
 extern int lineNum;
+extern FILE* fpError;
 
 // 错误类型
 enum error_types
@@ -44,6 +51,8 @@ enum error_types
 	// 常量定义中‘=’后面只能是整型或字符型常量
 	ERROR_O
 };
+
+extern int init_head();
 
 // 错误处理函数
 extern int error(int etype);
