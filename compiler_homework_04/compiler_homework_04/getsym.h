@@ -1,6 +1,7 @@
 #pragma once
 
 #include "head.h"
+#include "errorHandler.h"
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>

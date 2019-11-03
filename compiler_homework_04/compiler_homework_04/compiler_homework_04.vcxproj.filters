@@ -51,6 +51,9 @@
     <ClInclude Include="uthash-master\utstring.h">
       <Filter>头文件\uthash-master</Filter>
     </ClInclude>
+    <ClInclude Include="errorHandler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="symbolTable.c">
@@ -69,6 +72,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="parsing.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="errorHandler.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

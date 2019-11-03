@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="errorHandler.h" />
     <ClInclude Include="getsym.h" />
     <ClInclude Include="head.h" />
     <ClInclude Include="linkList.h" />
@@ -140,6 +141,7 @@
     <ClInclude Include="uthash-master\utstring.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="errorHandler.c" />
     <ClCompile Include="getsym.c" />
     <ClCompile Include="head.c" />
     <ClCompile Include="linkList.c" />

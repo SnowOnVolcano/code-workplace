@@ -716,7 +716,7 @@ void unrefunc_callStatement() {
 void valueparaList(List_t* paraList) {
 	int sum = 0;
 	int type = 0;
-	Node_t* node = getListTailNode(paraList);
+	Node_t* node = getListTopNode(paraList);
 
 	/*错误处理*/ /*函数参数个数不匹配*/
 	if ((node == NULL && symbol != RPARENT)
@@ -727,14 +727,16 @@ void valueparaList(List_t* paraList) {
 	}
 
 	else if (node != NULL && symbol != RPARENT) {
-		int nodeType = node->data;
 		sum++;
 		type = expression();
-
+		
+		int nodeType = node->data;
+		
 		/*错误分析*/ /*函数参数类型不匹配*/
-		if ((node->data == VARIABLE_INT && type != 1)
-			|| (node->data == VARIABLE_CHAR && type != 0)) {
+		if ((nodeType == VARIABLE_INT && type != 1)
+			|| (nodeType == VARIABLE_CHAR && type != 0)) {
 			error(ERROR_E);
+			while (symbol != RPARENT) { getsym(); }
 		}
 
 		while (symbol == COMMA) {
@@ -743,15 +745,29 @@ void valueparaList(List_t* paraList) {
 			sum++;
 			type = expression();
 
+			node = getListNextNode(node);
+
+			/*错误处理*/ /*函数参数个数不匹配*/
+			if (node == NULL || node == getListTopNode(paraList))
+			{
+				error(ERROR_D);
+				while (symbol != RPARENT) { getsym(); }
+				break;
+			}
+
+			nodeType = node->data;
+
 			/*错误分析*/ /*函数参数类型不匹配*/
-			if ((node->data == VARIABLE_INT && type != 1)
-				|| (node->data == VARIABLE_CHAR && type != 0)) {
+			if ((nodeType == VARIABLE_INT && type != 1)
+				|| (nodeType == VARIABLE_CHAR && type != 0)) {
 				error(ERROR_E);
+				while (symbol != RPARENT) { getsym(); }
+				break;
 			}
 		}
 
 		/*错误处理*/ /*函数参数个数不匹配*/
-		if (sum != paraList->n) { error(ERROR_D); }
+		if (sum > paraList->n) { error(ERROR_D); }
 	}
 
 	fprintf(fpOut, "<值参数表>\n");
