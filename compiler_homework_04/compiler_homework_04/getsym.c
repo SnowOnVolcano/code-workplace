@@ -8,8 +8,8 @@ char mnemonices[][10] = {
 	"GEQ",     "EQL",     "NEQ",     "ASSIGN",   "SEMICN",   "COMMA",
 	"LPARENT", "RPARENT", "LBRACK",  "RBRACK",   "LBRACE",   "RBRACE" };
 
-void thisLine_init() { thisLineCount = 0; printf("%d %s", lineNum, thisLine); memset(thisLine, 0, LINESIZE); }
-void thisLine_plus() { if (isAhead == 0) { thisLine[thisLineCount++] = buffer; } }
+void thisLine_init() { thisLineCount = 0; printf("%4d |  %s\n", lineNum, thisLine); memset(thisLine, 0, LINESIZE); }
+void thisLine_plus() { if (isAhead == 0 && buffer != '\n') { thisLine[thisLineCount++] = buffer; } }
 void thisLine_minu() { if (isAhead == 0) { thisLine[--thisLineCount] = '\0'; } }
 
 void getNext() { buffer = fgetc(fpIn);	thisLine_plus(); }
@@ -97,13 +97,14 @@ int init_getsym() {
 }
 
 int getsym() {
-	if (isAhead == 0 && isNewLine == 1) { lineNum++; isNewLine--; thisLine_init(); }
 	clearToken();
 	do {
+		if (isAhead == 0 && isNewLine == 1) { lineNum++; isNewLine--; }
 		getNext();
-		if (isAhead == 0 && buffer == '\n') { isNewLine = 1; }
+		if (isAhead == 0 && buffer == '\n') { isNewLine = 1; thisLine_init(); }
 	} while (isSpace(buffer));
 	if (buffer == EOF) {
+		thisLine_init();
 		return _NORMAL_EXIT;
 	}
 	if (isLetter(buffer)) {
@@ -149,9 +150,11 @@ int getsym() {
 
 		/*错误处理*/ /*非法符号或不符合词法*/
 		if (buffer == '\n') { 
-			error(ERROR_A); 
+			error(ERROR_A);
+			retract();
 			for (int i = count - 1; i >= 0 && token[i] != ')'; i--){
 				ungetc(token[i], fpIn);
+				thisLine_minu();
 			}
 			ungetc(')', fpIn);
 		}

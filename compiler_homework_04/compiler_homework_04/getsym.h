@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define isStr(x) (x==32||x==33||(x>=35&&x<=126))
 #define isSpace(x) isspace(x)
 #define isDigit(x) isdigit(x)
 #define isLetter(x) (x == '_' || isalpha(x))
@@ -30,7 +29,7 @@
 #define isLbrace(x) (x == '{')
 #define isRbrace(x) (x == '}')
 #define isStr(x) (x==32||x==33||(x>=35&&x<=126))
-#define isChar(x) (isLetter(x)||x=='+'||x=='-'||x=='*'||x=='/')
+#define isChar(x) (isAlnum(x)||x=='+'||x=='-'||x=='*'||x=='/')
 
 // 词法分析-序号对应表
 enum mnemonic {

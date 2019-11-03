@@ -9,6 +9,7 @@ int init_head() {
 }
 
 int error(int etype) {
+	puts("-----------");
 	if (etype >= 0) {
 		printf("%d %c\n", lineNum, etype + 'a');
 		fprintf(fpError, "%d %c\n", lineNum, etype + 'a');
@@ -20,8 +21,9 @@ int error(int etype) {
 	else if (etype == -2) {
 		printf("%d _ERROR_GET\n", lineNum);
 		fprintf(fpError, "%d _ERROR_GET\n", lineNum);
-
 	}
+	puts("-----------");
+	return 0;
 	//switch (etype)
 	//{
 	//case _ERROR:

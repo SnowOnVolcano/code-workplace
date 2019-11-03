@@ -149,7 +149,8 @@ int deleteListTail(List_t* list) {
  * @返回值: Node_t*
  */
 Node_t* getListTopNode(List_t* list) {
-	return list->head.next;
+	if (list == NULL) { return NULL; }
+	else { return list->head.next; }
 }
 
 /**
@@ -159,7 +160,8 @@ Node_t* getListTopNode(List_t* list) {
  * @返回值: Node_t*
  */
 Node_t* getListTailNode(List_t* list) {
-	return list->head.prev;
+	if (list == NULL) { return NULL; }
+	else { return list->head.prev; }
 }
 
 /**
@@ -169,7 +171,8 @@ Node_t* getListTailNode(List_t* list) {
  * @返回值: Node_t*
  */
 Node_t* getListNextNode(Node_t* node) {
-	return node->next;
+	if (node == NULL) { return NULL; }
+	else { return node->next; }
 }
 
 /**
@@ -179,7 +182,8 @@ Node_t* getListNextNode(Node_t* node) {
  * @返回值: Node_t*
  */
 Node_t* getListPrevNode(Node_t* node) {
-	return node->prev;
+	if (node == NULL) { return NULL; }
+	else { return node->prev; }
 }
 
 /**

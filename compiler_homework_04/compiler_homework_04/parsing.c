@@ -22,6 +22,7 @@ int getSymbolTypeFromTwo() {
 int error_and_getsym() {
 	error(_ERROR_GET);
 	getsym();
+	return 0;
 }
 
 /*分析程序*/
@@ -194,10 +195,13 @@ void var_definition() {
 			/*错误处理*/ /*名字重定义*/
 			if (r < 0) error(ERROR_B);
 
+			char curname[TOKENSIZE];
+			strcpy(curname, token);
+
 			getsym();
 			if (symbol == LBRACK) {
 				type = (type == VARIABLE_INT) ? ARRAY_INT : ARRAY_CHAR;
-				addSymbolType(symbolTables[stIndex], token, type); /*加入符号表*/
+				addSymbolType(symbolTables[stIndex], curname, type); /*加入符号表*/
 				
 				print_sym();
 				getsym();
@@ -712,18 +716,27 @@ void unrefunc_callStatement() {
 void valueparaList(List_t* paraList) {
 	int sum = 0;
 	int type = 0;
-	Node_t* node = getListTopNode(paraList);
+	Node_t* node = getListTailNode(paraList);
 
-	if (symbol != RPARENT /* 值参数表不为空 */) {
+	/*错误处理*/ /*函数参数个数不匹配*/
+	if ((node == NULL && symbol != RPARENT)
+		|| (node != NULL && symbol == RPARENT))
+	{
+		error(ERROR_D);
+		while (symbol != RPARENT) { getsym(); }
+	}
+
+	else if (node != NULL && symbol != RPARENT) {
+		int nodeType = node->data;
 		sum++;
 		type = expression();
-		
+
 		/*错误分析*/ /*函数参数类型不匹配*/
 		if ((node->data == VARIABLE_INT && type != 1)
 			|| (node->data == VARIABLE_CHAR && type != 0)) {
 			error(ERROR_E);
 		}
-		
+
 		while (symbol == COMMA) {
 			print_sym();
 			getsym();
@@ -736,10 +749,10 @@ void valueparaList(List_t* paraList) {
 				error(ERROR_E);
 			}
 		}
-	}
 
-	/*错误处理*/ /*函数参数个数不匹配*/
-	if (sum != paraList->n) { error(ERROR_D); }
+		/*错误处理*/ /*函数参数个数不匹配*/
+		if (sum != paraList->n) { error(ERROR_D); }
+	}
 
 	fprintf(fpOut, "<值参数表>\n");
 }
