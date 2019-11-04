@@ -11,7 +11,7 @@ int error(int etype) {
 	puts("-----------");
 	if (etype == ERROR_K) {
 		printf("%d %c\n", lineNum - isMinuLine, etype + 'a');
-		fprintf(fpError, "%d %c\n", lineNum, etype + 'a');
+		fprintf(fpError, "%d %c\n", lineNum - isMinuLine, etype + 'a');
 	}
 	else if (etype >= 0) {
 		printf("%d %c\n", lineNum, etype + 'a');

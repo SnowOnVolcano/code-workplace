@@ -642,29 +642,36 @@ void loopStatement() {
 		getsym();
 		(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 		
+		int r = getSymbolTypeFromTwo();
+		
 		/*错误处理*/ /*未定义的名字*/
-		if (getSymbolTypeFromTwo() < 0) { error(ERROR_C); getsym(); }
+		if (r < 0) { error(ERROR_C); }
 		
-		else (getSymbolTypeFromTwo() == VARIABLE_INT && print_sym()) ? getsym() : error_and_getsym();
+		/*错误处理*/ /*不能改变常量的值*/
+		else if (r == CONST_CHAR || r == CONST_INT) { error(ERROR_J); }
 		
+		getsym();
 		(symbol == ASSIGN && print_sym()) ? getsym() : error_and_getsym();
 		expression();
 		(symbol == SEMICN && print_sym()) ? getsym() : error(ERROR_K);
 		condition();
 		(symbol == SEMICN && print_sym()) ? getsym() : error(ERROR_K);
 
+		r = getSymbolTypeFromTwo();
+
 		/*错误处理*/ /*未定义的名字*/
-		if (getSymbolTypeFromTwo() < 0) { error(ERROR_C); getsym(); }
+		if (getSymbolTypeFromTwo() < 0) { error(ERROR_C); }
+
+		/*错误处理*/ /*不能改变常量的值*/
+		else if (r == CONST_CHAR || r == CONST_INT) { error(ERROR_J); }
 		
-		else (getSymbolTypeFromTwo() == VARIABLE_INT && print_sym()) ? getsym() : error_and_getsym();
-		
+		getsym();
 		(symbol == ASSIGN && print_sym()) ? getsym() : error_and_getsym();
 		
 		/*错误处理*/ /*未定义的名字*/
-		if (getSymbolTypeFromTwo() < 0) { error(ERROR_C); getsym(); }
+		if (getSymbolTypeFromTwo() < 0) { error(ERROR_C); }
 		
-		else (getSymbolTypeFromTwo() == VARIABLE_INT && print_sym()) ? getsym() : error_and_getsym();
-		
+		getsym();
 		((symbol == PLUS || symbol == MINU) && print_sym()) ? getsym() : error_and_getsym();
 		stride();
 		(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);

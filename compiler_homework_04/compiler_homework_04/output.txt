@@ -785,9 +785,7 @@ INTCON 10
 <表达式>
 <条件>
 SEMICN ;
-IDENFR a8
 ASSIGN =
-IDENFR a8
 MINU -
 INTCON 1
 <无符号整数>
@@ -810,7 +808,6 @@ RBRACE }
 <语句>
 FORTK for
 LPARENT (
-IDENFR a8
 ASSIGN =
 INTCON 0
 <无符号整数>
@@ -830,9 +827,7 @@ IDENFR times
 <表达式>
 <条件>
 SEMICN ;
-IDENFR a8
 ASSIGN =
-IDENFR a8
 PLUS +
 INTCON 1
 <无符号整数>
