@@ -1,0 +1,126 @@
+const int a_9=1,const_int_1=+0;
+const char const_a='a',const_minus = '-';
+const char const_plus = '+',const_multi = '*';
+const int const_int_2 = 0;
+
+int zero;
+int nega_value, posi_value_1, posi_value_2[99];
+char var_char_1, var_char_2, var_array[100];
+char var_char_3, var_char_4;
+
+int use_add_opt(int a, int b) {
+    int c;
+    c = a + b;
+    c = a - b;
+    return (c);
+}
+
+int use_multi_opt(int a, int b) {
+    int c;
+    c = a * b;
+    c = a / b;
+    return (c);
+}
+
+void use_rela_opt(int a, int b) {
+    int c;
+    if (a == b) { c = 1; }
+    if (a >= b) { c = 2; }
+    else {        c = 3; }
+    if (a > b) { c = 4; }
+    else if (a < b) { c = 5; }
+    else if (a <= b) { c = 6; }
+    else if (a != b) { c = 7; }
+    else { c = 8; } 
+}
+
+int funct_with_no_params(){
+    return (1 + -2 * (zero - 5));
+}
+
+char funct_with_one_param(char c){
+    return ('c');
+}
+
+int funct_with_many_params(int a, int b, int c, char d, int e){
+    return (a - b * c * (e + a / b));
+}
+
+void use_letter_digit_integer_string() {
+    int abcdefghigklmnopqrstuvwxyz_ABCDEFGHIGKLMNOPQRSTUVWXYZ_0123456789;
+    int a;
+    char ch;
+    ch = '+';
+    ch = '*';
+    ch = '0';
+    ch = 'a';
+    ch = 'Z';
+    ch = '_';
+    a = 0;
+    a = 1;
+    a = 20;
+    a = +334;
+    a = -1230;
+    a = +0;
+    a = -0;
+    printf(" !@#!@$%#$%^$&%(()*_VSDDCV%$C@423523452$#CV42klsnjknjkdnlkjnclkz");
+}
+
+int function_without_params() {
+    const int inner_param = 2;
+    return (+inner_param-inner_param*inner_param+(6/inner_param));
+}
+
+char function_with_params(char ch, int in) {
+    return(funct_with_one_param(ch));
+}
+
+void function_unreturnable(char ch, int in) {
+    int i;
+    if (ch == 'c') {
+        return;
+    } else if (in == 1) {
+        scanf(i);
+        printf(i);
+    } else {
+        printf("%d", in);
+    }
+}
+
+void function_empty() {
+
+}
+
+int function_define(int a) {
+    return (a);
+}
+
+void main() {
+    const char c='f';
+    const char c_2='g', c_b='b';
+    const int i_2=3, i_b=5;
+    int i, d, f, e[10];
+    char ch;
+    {
+        i=9;
+        e[8]=8;
+        ;
+    }
+    function_empty();
+    function_unreturnable('e', 3);
+    function_with_params('a', e[0]);
+    for (i = 0; i < 10; i = i + 1) {
+        scanf(d,f);
+    }
+    for (i = 10; i > 0; i = i - 1) {
+        scanf(ch);
+    }
+    while (i) {
+        printf("Hello world\n");
+        i = i - 1;
+    }
+    do {
+        printf(i);
+        i = i / 2;
+    } while(i != 0)
+}
