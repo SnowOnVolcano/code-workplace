@@ -1,44 +1,34 @@
-﻿errorHandler.c(6,12): warning : 'fopen' is deprecated: This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [-Wdeprecated-declarations]
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(207,20): message : 'fopen' has been explicitly marked deprecated here
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(309,55): message : expanded from macro '_CRT_INSECURE_DEPRECATE'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(299,47): message : expanded from macro '_CRT_DEPRECATE_TEXT'
-getsym.c(72,2): warning : 'strcpy' is deprecated: This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [-Wdeprecated-declarations]
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\string.h(133,1): message : 'strcpy' has been explicitly marked deprecated here
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt.h(748,5): message : expanded from macro '__DEFINE_CPP_OVERLOAD_STANDARD_FUNC_0_1'
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt.h(1831,17): message : expanded from macro '__DEFINE_CPP_OVERLOAD_STANDARD_FUNC_0_1_EX'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(309,55): message : expanded from macro '_CRT_INSECURE_DEPRECATE'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(299,47): message : expanded from macro '_CRT_DEPRECATE_TEXT'
-getsym.c(81,2): warning : 'strcpy' is deprecated: This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [-Wdeprecated-declarations]
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\string.h(133,1): message : 'strcpy' has been explicitly marked deprecated here
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt.h(748,5): message : expanded from macro '__DEFINE_CPP_OVERLOAD_STANDARD_FUNC_0_1'
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt.h(1831,17): message : expanded from macro '__DEFINE_CPP_OVERLOAD_STANDARD_FUNC_0_1_EX'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(309,55): message : expanded from macro '_CRT_INSECURE_DEPRECATE'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(299,47): message : expanded from macro '_CRT_DEPRECATE_TEXT'
-getsym.c(91,14): warning : 'fopen' is deprecated: This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [-Wdeprecated-declarations]
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(207,20): message : 'fopen' has been explicitly marked deprecated here
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(309,55): message : expanded from macro '_CRT_INSECURE_DEPRECATE'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(299,47): message : expanded from macro '_CRT_DEPRECATE_TEXT'
-getsym.c(92,11): warning : 'fopen' is deprecated: This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [-Wdeprecated-declarations]
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(207,20): message : 'fopen' has been explicitly marked deprecated here
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(309,55): message : expanded from macro '_CRT_INSECURE_DEPRECATE'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(299,47): message : expanded from macro '_CRT_DEPRECATE_TEXT'
-parsing.c(203,4): warning : 'strcpy' is deprecated: This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [-Wdeprecated-declarations]
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\string.h(133,1): message : 'strcpy' has been explicitly marked deprecated here
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt.h(748,5): message : expanded from macro '__DEFINE_CPP_OVERLOAD_STANDARD_FUNC_0_1'
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt.h(1831,17): message : expanded from macro '__DEFINE_CPP_OVERLOAD_STANDARD_FUNC_0_1_EX'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(309,55): message : expanded from macro '_CRT_INSECURE_DEPRECATE'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(299,47): message : expanded from macro '_CRT_DEPRECATE_TEXT'
-symbolTable.c(6,2): warning : 'strcpy' is deprecated: This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [-Wdeprecated-declarations]
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\string.h(133,1): message : 'strcpy' has been explicitly marked deprecated here
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt.h(748,5): message : expanded from macro '__DEFINE_CPP_OVERLOAD_STANDARD_FUNC_0_1'
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt.h(1831,17): message : expanded from macro '__DEFINE_CPP_OVERLOAD_STANDARD_FUNC_0_1_EX'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(309,55): message : expanded from macro '_CRT_INSECURE_DEPRECATE'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(299,47): message : expanded from macro '_CRT_DEPRECATE_TEXT'
-symbolTable.c(48,3): warning : 'strcpy' is deprecated: This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details. [-Wdeprecated-declarations]
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\string.h(133,1): message : 'strcpy' has been explicitly marked deprecated here
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt.h(748,5): message : expanded from macro '__DEFINE_CPP_OVERLOAD_STANDARD_FUNC_0_1'
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt.h(1831,17): message : expanded from macro '__DEFINE_CPP_OVERLOAD_STANDARD_FUNC_0_1_EX'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(309,55): message : expanded from macro '_CRT_INSECURE_DEPRECATE'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(299,47): message : expanded from macro '_CRT_DEPRECATE_TEXT'
+﻿parsing.c(425,27): warning : incompatible integer to pointer conversion passing 'int' to parameter of type 'char *' [-Wint-conversion]
+./medi.h(58,37): message : passing argument to parameter 'n2' here
+parsing.c(409,41): warning : variable 'itm_name' is uninitialized when used here [-Wuninitialized]
+parsing.c(399,17): message : initialize the variable 'itm_name' to silence this warning
+parsing.c(476,27): warning : incompatible integer to pointer conversion passing 'int' to parameter of type 'char *' [-Wint-conversion]
+./medi.h(58,37): message : passing argument to parameter 'n2' here
+parsing.c(460,43): warning : variable 'fac_name' is uninitialized when used here [-Wuninitialized]
+parsing.c(455,17): message : initialize the variable 'fac_name' to silence this warning
+parsing.c(551,52): warning : variable 'index_name' is uninitialized when used here [-Wuninitialized]
+parsing.c(549,21): message : initialize the variable 'index_name' to silence this warning
+parsing.c(723,51): warning : variable 'index_name' is uninitialized when used here [-Wuninitialized]
+parsing.c(705,19): message : initialize the variable 'index_name' to silence this warning
+parsing.c(712,46): warning : variable 'name' is uninitialized when used here [-Wuninitialized]
+parsing.c(700,13): message : initialize the variable 'name' to silence this warning
+parsing.c(766,40): warning : variable 'cond_name' is uninitialized when used here [-Wuninitialized]
+parsing.c(760,18): message : initialize the variable 'cond_name' to silence this warning
+parsing.c(798,36): warning : variable 'left_name' is uninitialized when used here [-Wuninitialized]
+parsing.c(796,18): message : initialize the variable 'left_name' to silence this warning
+parsing.c(813,37): warning : variable 'right_name' is uninitialized when used here [-Wuninitialized]
+parsing.c(811,20): message : initialize the variable 'right_name' to silence this warning
+parsing.c(863,33): warning : incompatible pointer types passing 'char [128]' to parameter of type 'SymbolTable_t *' (aka 'struct symbolTable *') [-Wincompatible-pointer-types]
+./medi.h(28,32): message : passing argument to parameter 'func_item' here
+parsing.c(864,32): warning : incompatible pointer types passing 'char [128]' to parameter of type 'SymbolTable_t *' (aka 'struct symbolTable *') [-Wincompatible-pointer-types]
+./medi.h(28,32): message : passing argument to parameter 'func_item' here
+parsing.c(868,41): warning : variable 'cond_name' is uninitialized when used here [-Wuninitialized]
+parsing.c(855,18): message : initialize the variable 'cond_name' to silence this warning
+parsing.c(988,50): warning : variable 'name' is uninitialized when used here [-Wuninitialized]
+parsing.c(986,15): message : initialize the variable 'name' to silence this warning
+parsing.c(1099,61): warning : variable 'print_name' is uninitialized when used here [-Wuninitialized]
+parsing.c(1096,20): message : initialize the variable 'print_name' to silence this warning
+parsing.c(1127,59): warning : variable 'return_name' is uninitialized when used here [-Wuninitialized]
+parsing.c(1123,21): message : initialize the variable 'return_name' to silence this warning
 lld-link : warning : /debug:fastlink unsupported; using /debug:full
   compiler_homework_05.vcxproj -> E:\vscode-workplace\compiler_homework_05\Debug\compiler_homework_05.exe

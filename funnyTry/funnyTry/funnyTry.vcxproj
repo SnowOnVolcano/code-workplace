@@ -18,6 +18,9 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="string.c" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{E3C961ED-6812-4F99-8868-F05C426DD665}</ProjectGuid>
@@ -126,15 +129,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="linkList.h" />
-    <ClInclude Include="symbolTable.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="linkList.c" />
-    <ClCompile Include="main.c" />
-    <ClCompile Include="symbolTable.c" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

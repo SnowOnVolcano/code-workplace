@@ -12,6 +12,10 @@
 #define _ERROR -1
 #define _ERROR_GET -2 
 
+#define true 1
+#define false 0
+typedef int bool;
+
 extern int lineNum;			// 行号
 extern int isMinuLine;		// 调整lineNum的标志
 

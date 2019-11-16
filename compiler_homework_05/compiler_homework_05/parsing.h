@@ -3,6 +3,7 @@
 #include "head.h"
 #include "symbolTable.h"
 #include "getsym.h"
+#include "medi.h"
 
 // 语法分析-语句类型
 enum statement_types

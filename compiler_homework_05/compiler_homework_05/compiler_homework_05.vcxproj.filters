@@ -54,6 +54,9 @@
     <ClInclude Include="uthash\utstring.h">
       <Filter>头文件\uthash</Filter>
     </ClInclude>
+    <ClInclude Include="medi.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="errorHandler.c">
@@ -75,6 +78,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="symbolTable.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="medi.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

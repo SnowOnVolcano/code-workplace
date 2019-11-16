@@ -1,10 +1,35 @@
-#define MIPS_OUTPUT(x) fputs(fMediOut, x)
+#define MIPS_OUTPUT(x) fputs(x, fMediOut)
+
 #include "medi.h"
 
 int branch = 0;
 int level;
 int temp_count = 0;
+int temps[64];
 bool in_switch = false;
+
+
+/*辅助函数*/
+char* int2string(int n) {
+	static char via[STRSIZE];
+	_itoa(n, via, 10);
+	return via;
+}
+char* type2string(int type) {
+	switch (type)
+	{
+	case INTCON:
+		return "int";
+	case CHARCON:
+		return "char";
+	case VOIDTK:
+		return "void";
+	case STRCON:
+		return "string";
+	default:
+		return "null";
+	}
+}
 
 // 初始化中间代码生成程序
 int init_medi() {
@@ -12,14 +37,23 @@ int init_medi() {
 	return 0;
 }
 
-void init_temp();
-char* new_temp();
+void init_temp() { puts("init_temp"); }
+
+char* new_temp() {
+	int tempno = temps[temp_count - 1];   // get last temp
+	static char str_t[STRSIZE];
+	strcpy(str_t, "#");
+	strcat(str_t, int2string(tempno));
+	temps[temp_count - 1] ++;
+	return str_t;
+}
+
 
 // 新建一个Label
-char* new_label(SymbolItem_t* func_item, char* info) {
+char* new_label(SymbolTable_t* func_item, char* info) {
 	// return func_item->get_name() + "_L_" + int2string(branch++) + "_" + info;
-	char str_t[STRSIZE];
-	strcpy(str_t, func_item->key);
+	static char str_t[STRSIZE];
+	strcpy(str_t, func_item->name);
 	strcat(str_t, "_L_");
 	strcat(str_t, int2string(branch++));
 	strcat(str_t, "_");
@@ -65,7 +99,7 @@ void declare_var_medi(SymbolItem_t* var_item)
 		MIPS_OUTPUT("@var " << type2string(var_item->get_type()) << " " << var_item->get_name());
 	}*/
 	char str_t[STRSIZE];
-	if (var_item->type == ARRAY_INT || var_item == ARRAY_CHAR) {
+	if (var_item->type == ARRAY_INT || var_item->type == ARRAY_CHAR) {
 		strcpy(str_t, "@array ");
 		(var_item->type == ARRAY_INT) ? strcat(str_t, "int[] ") : strcat(str_t, "char[] ");
 		strcat(str_t, var_item->key);
@@ -90,7 +124,7 @@ void invoke_func_medi(char* name)
 }
 
 // 返回语句
-void return_medi(char* v)
+void return_medi_c(char* v)
 {
 	// MIPS_OUTPUT("@ret " << v);
 	char str_t[STRSIZE];
@@ -98,7 +132,7 @@ void return_medi(char* v)
 	strcat(str_t, v);
 	MIPS_OUTPUT(str_t);
 }
-void return_medi(int v)
+void return_medi_i(int v)
 {
 	// MIPS_OUTPUT("@ret " << v);
 	char str_t[STRSIZE];
@@ -106,7 +140,7 @@ void return_medi(int v)
 	strcat(str_t, int2string(v));
 	MIPS_OUTPUT(str_t);
 }
-void return_medi(SymbolItem_t* func_item)
+void return_medi_f(SymbolItem_t* func_item)
 {
 	/* if (func_item->get_type() == VOID)
 	{
@@ -135,9 +169,8 @@ void label_medi(char* label)
 	MIPS_OUTPUT(str_t);
 }
 
-// 表达式
-// cond must not be zero
-void cal_medi(int op, char* result, char* a1, char* a2)
+// 计算
+void cal_medi_iccc(int op, char* result, char* a1, char* a2)
 {
 	// MIPS_OUTPUT(result << " = " << a1 << " " << symbol2string(op) << " " << a2);
 	char str_t[STRSIZE];
@@ -150,13 +183,13 @@ void cal_medi(int op, char* result, char* a1, char* a2)
 	strcat(str_t, a2);
 	MIPS_OUTPUT(str_t);
 }
-void cal_medi(int op, char* result, char* a1, int a2)
+void cal_medi_icci(int op, char* result, char* a1, int a2)
 {
 	/*stringstream ss;
 	  ss << a2;
 	cal_medi(op, result, a1, ss.str());*/
 }
-void cal_medi(int op, char* result, int a1, char* a2)
+void cal_medi_icic(int op, char* result, int a1, char* a2)
 {
 	/*stringstream ss;
 	ss << a1;
@@ -164,7 +197,7 @@ void cal_medi(int op, char* result, int a1, char* a2)
 }
 
 // 赋值语句
-void assign_medi(char* n1, char* n2)
+void assign_medi_cc(char* n1, char* n2)
 {
 	// MIPS_OUTPUT(n1 << " = " << n2);
 	char str_t[STRSIZE];
@@ -173,7 +206,7 @@ void assign_medi(char* n1, char* n2)
 	strcat(str_t, n2);
 	MIPS_OUTPUT(str_t);
 }
-void assign_medi(char* name, int value)
+void assign_medi_ci(char* name, int value)
 {
 	// MIPS_OUTPUT(name << " = " << value);
 	char str_t[STRSIZE];
@@ -184,7 +217,7 @@ void assign_medi(char* name, int value)
 }
 
 // 传入参数
-void push_medi(char* name)
+void push_medi_c(char* name)
 {
 	// MIPS_OUTPUT("@push " << name);
 	char str_t[STRSIZE];
@@ -192,7 +225,7 @@ void push_medi(char* name)
 	strcat(str_t, name);
 	MIPS_OUTPUT(str_t);
 }
-void push_medi(int name)
+void push_medi_i(int name)
 {
 	// MIPS_OUTPUT("@push " << name);
 	char str_t[STRSIZE];
@@ -258,7 +291,7 @@ void jump_link_medi(char* label)
 }
 
 // 数组取值
-void array_get_medi(char* array_name, char* offset, char* result)
+void array_get_medi_ccc(char* array_name, char* offset, char* result)
 {
 	// MIPS_OUTPUT(result << " = " << array_name << " ARGET " << offset);
 	char str_t[STRSIZE];
@@ -269,7 +302,7 @@ void array_get_medi(char* array_name, char* offset, char* result)
 	strcat(str_t, offset);
 	MIPS_OUTPUT(str_t);
 }
-void array_get_medi(char* array_name, int offset, char* result)
+void array_get_medi_cic(char* array_name, int offset, char* result)
 {
 	// MIPS_OUTPUT(result << " = " << array_name << " ARGET " << offset);
 	char str_t[STRSIZE];
@@ -282,7 +315,7 @@ void array_get_medi(char* array_name, int offset, char* result)
 }
 
 // 数组赋值
-void array_set_medi(char* array_name, char* offset, char* value)
+void array_set_medi_ccc(char* array_name, char* offset, char* value)
 {
 	// MIPS_OUTPUT(array_name << " = " << offset << " ARSET " << value);
 	char str_t[STRSIZE];
@@ -293,7 +326,7 @@ void array_set_medi(char* array_name, char* offset, char* value)
 	strcat(str_t, value);
 	MIPS_OUTPUT(str_t);
 }
-void array_set_medi(char* array_name, int offset, char* value)
+void array_set_medi_cic(char* array_name, int offset, char* value)
 {
 	// MIPS_OUTPUT(array_name << " = " << offset << " ARSET " << value);
 	char str_t[STRSIZE];
@@ -304,7 +337,7 @@ void array_set_medi(char* array_name, int offset, char* value)
 	strcat(str_t, value);
 	MIPS_OUTPUT(str_t);
 }
-void array_set_medi(char* array_name, char* offset, int value)
+void array_set_medi_cci(char* array_name, char* offset, int value)
 {
 	// MIPS_OUTPUT(array_name << " = " << offset << " ARSET " << value);
 	char str_t[STRSIZE];
@@ -315,7 +348,7 @@ void array_set_medi(char* array_name, char* offset, int value)
 	strcat(str_t, int2string(value));
 	MIPS_OUTPUT(str_t);
 }
-void array_set_medi(char* array_name, int offset, int value)
+void array_set_medi_cii(char* array_name, int offset, int value)
 {
 	// MIPS_OUTPUT(array_name << " = " << offset << " ARSET " << value);
 	char str_t[STRSIZE];
@@ -330,7 +363,7 @@ void array_set_medi(char* array_name, int offset, int value)
 
 // vector<char*> str_set;
 // 输出语句
-void printf_medi(int type, char* v)
+void printf_medi_ic(int type, char* v)
 {
 	/*if (type == STRING)
 	{
@@ -360,7 +393,7 @@ void printf_medi(int type, char* v)
 		MIPS_OUTPUT("@printf " << type2string(type) << " " << v);
 	}*/
 }
-void printf_medi(int type, int v)
+void printf_medi_ii(int type, int v)
 {
 	// MIPS_OUTPUT("@printf " << type2string(type) << " " << v);
 	char str_t[STRSIZE];
@@ -389,24 +422,3 @@ void medi(char* line)
 }
 
 
-/*辅助函数*/
-char* int2string(int n) {
-	char via[STRSIZE];
-	itoa(n, via, 10);
-	return via;
-}
-
-char* type2string(int type) {
-	/* switch (type)
-	{
-	case INT:
-		return "int";
-	case CHAR:
-		return "char";
-	case VOID:
-		return "void";
-	case STRING:
-		return "string";
-	}*/
-	return NULL;
-}

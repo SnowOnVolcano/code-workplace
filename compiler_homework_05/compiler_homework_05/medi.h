@@ -11,63 +11,89 @@
 typedef int bool;
 
 FILE* fMediOut;		// 中间代码输出文件指针
+extern int branch;
+extern int level;
+extern int temp_count;
+extern int temps[64];
+extern bool in_switch;
 
-int init_medi();	// 初始化中间代码生成程序
+// 初始化中间代码生成程序
+int init_medi();
 
 void init_temp();
+
 char* new_temp();
-char* new_label(SymbolItem_t* func_item, char* info);
 
+// 新建一个Label
+char* new_label(SymbolTable_t* func_item, char* info);
+
+// 结束退出
 void exit_medi();
-
+// 函数声明
 void declare_func_medi(SymbolItem_t* func_item);
 
-void invoke_func_medi(char* name);
-
-void return_medi(char* v);
-void return_medi(int v);
-void return_medi(SymbolItem_t* func_item);
-
-// void declare_global_var_medi(vector<VarItem*> vars);
-
+// 函数参数声明
 void declare_para_medi(int type, char* name);
 
-// void declare_var_medi(VarItem* var_item);
+// 变量声明
+void declare_var_medi(SymbolItem_t* var_item);
 
+// 函数调用
+void invoke_func_medi(char* name);
+
+// 返回语句
+void return_medi_c(char* v);
+void return_medi_i(int v);
+void return_medi_f(SymbolItem_t* func_item);
+
+// 跳转标志符
 void label_medi(char* label);
 
-void cal_medi(int op, char* result, char* a1, char* a2);
-void cal_medi(int op, char* result, char* a1, int a2);
-void cal_medi(int op, char* result, int a1, char* a2);
+// cond must not be zero
+void cal_medi_iccc(int op, char* result, char* a1, char* a2);
+void cal_medi_icci(int op, char* result, char* a1, int a2);
+void cal_medi_icic(int op, char* result, int a1, char* a2);
 
-void assign_medi(char* n1, char* n2);
-void assign_medi(char* name, int value);
+// 赋值语句
+void assign_medi_cc(char* n1, char* n2);
+void assign_medi_ci(char* name, int value);
 
-void push_medi(char* name);
-void push_medi(int name);
+// 传入参数
+void push_medi_c(char* name);
+void push_medi_i(int name);
 
+// 接受返回值
 void return_get_medi(char* name);
 
+// 等于 0 时跳转
 void branch_zero_medi(char* name, char* label);
 
+// 相等时跳转 
 void branch_equal_medi(char* name, int value, char* label);
 
+// 无条件跳转
 void jump_medi(char* label);
 
+// 无条件跳转并链接
 void jump_link_medi(char* label);
 
-void array_get_medi(char* array_name, char* offset, char* result);
-void array_get_medi(char* array_name, int offset, char* result);
+// 数组取值
+void array_get_medi_ccc(char* array_name, char* offset, char* result);
+void array_get_medi_cic(char* array_name, int offset, char* result);
 
-void array_set_medi(char* array_name, char* offset, char* value);
-void array_set_medi(char* array_name, int offset, char* value);
-void array_set_medi(char* array_name, char* offset, int value);
-void array_set_medi(char* array_name, int offset, int value);
+// 数组赋值
+void array_set_medi_ccc(char* array_name, char* offset, char* value);
+void array_set_medi_cic(char* array_name, int offset, char* value);
+void array_set_medi_cci(char* array_name, char* offset, int value);
+void array_set_medi_cii(char* array_name, int offset, int value);
 
-void printf_medi(int type, char* v);
-void printf_medi(int type, int v);
-void printf_medi(int type, char* str);
 
+// vector<char*> str_set;
+// 输出语句
+void printf_medi_ic(int type, char* v);
+void printf_medi_ii(int type, int v);
+
+// 输入语句
 void scanf_medi(int type, char* v);
 
 void medi(char* line);
