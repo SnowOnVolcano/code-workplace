@@ -3,6 +3,7 @@
 
 int initial() {
 	init_getsym();
+	init_medi();
 	init_parsing();
 	init_errorHandler();
 	lineNum = 1;

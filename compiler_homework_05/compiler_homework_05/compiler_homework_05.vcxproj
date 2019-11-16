@@ -154,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="error.txt" />
+    <Text Include="mips_mediate_code.txt" />
     <Text Include="output.txt" />
     <Text Include="stdout.txt" />
     <Text Include="testfile.txt" />

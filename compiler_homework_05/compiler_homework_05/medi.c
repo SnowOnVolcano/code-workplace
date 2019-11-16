@@ -1,4 +1,4 @@
-#define MIPS_OUTPUT(x) fputs(x, fMediOut)
+#define MIPS_OUTPUT(x) fprintf(fMediOut, "%s\n", x)
 
 #include "medi.h"
 

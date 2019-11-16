@@ -97,5 +97,8 @@
     <Text Include="testfile.txt">
       <Filter>资源文件</Filter>
     </Text>
+    <Text Include="mips_mediate_code.txt">
+      <Filter>资源文件</Filter>
+    </Text>
   </ItemGroup>
 </Project>
