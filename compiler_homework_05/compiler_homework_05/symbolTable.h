@@ -25,6 +25,7 @@ typedef struct symbolItem
 {
 	char key[KEYSIZE];
 	int type;
+	int index;
 	List_t* paraList;
 	UT_hash_handle hh;
 } SymbolItem_t;
@@ -47,6 +48,9 @@ extern SymbolItem_t* getSymbol(SymbolTable_t* symboltable, char* key);
 // 获得相应的符号表的表项的类型
 extern int getSymbolType(SymbolTable_t* symboltable, char* key);
 
+// 获得相应的符号表的表项(数组)的大小
+extern int getSymbolIndex(SymbolTable_t* symboltable, char* key);
+
 // 获得相应的符号表表项的参数表
 extern List_t* getSymbolParaList(SymbolTable_t* symboltable, char* key);
 
@@ -55,6 +59,9 @@ extern int addSymbol(SymbolTable_t* symboltable, char* key, int type);
 
 // 向符号表的指定表项添加 类型
 extern int addSymbolType(SymbolTable_t* symboltable, char* key, int type);
+
+// 向符号表的指定表项添加 数组的大小
+extern int addSymbolIndex(SymbolTable_t* symboltable, char* key, int Index);
 
 // 向符号表的指定表项添加 参数表项
 extern int addSymbolParaListItem(SymbolTable_t* symboltable, char* key, int data);

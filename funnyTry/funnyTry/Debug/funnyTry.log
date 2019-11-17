@@ -4,5 +4,7 @@ C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt.h(748,5
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\corecrt.h(1831,17): message : expanded from macro '__DEFINE_CPP_OVERLOAD_STANDARD_FUNC_0_1_EX'
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(309,55): message : expanded from macro '_CRT_INSECURE_DEPRECATE'
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vcruntime.h(299,47): message : expanded from macro '_CRT_DEPRECATE_TEXT'
+string.c(35,6): warning : unsequenced modification and access to 'a1' [-Wunsequenced]
+string.c(36,4): warning : unsequenced modification and access to 'a1' [-Wunsequenced]
 lld-link : warning : /debug:fastlink unsupported; using /debug:full
   funnyTry.vcxproj -> E:\vscode-workplace\funnyTry\Debug\funnyTry.exe

@@ -43,6 +43,7 @@ void string() {
 
 // 程序			::= ［＜常量说明＞］［＜变量说明＞］{＜有返回值函数定义＞|＜无返回值函数定义＞}＜主函数＞
 void program() {
+	int isFuncStart = 0;
 	/*———————— 新建一个符号表 - program ——————————*/
 	symbolTables[++stIndex] = newSymbolTable("");
 	/*------------------------------------------------------------*/
@@ -56,6 +57,12 @@ void program() {
 			getsym();
 			if (symbol == LPARENT) {
 				restorePreviousSym();
+				temps[++temp_count] = 0;
+				if (isFuncStart == 0) { 
+					isFuncStart = 1; 
+					invoke_func_medi("main");
+					exit_medi();
+				}
 				re_func_definition();
 			}
 			else {
@@ -68,10 +75,22 @@ void program() {
 			getsym();
 			if (symbol == MAINTK) {
 				restorePreviousSym();
+				temps[++temp_count] = 0;
+				if (isFuncStart == 0) {
+					isFuncStart = 1;
+					invoke_func_medi("main");
+					exit_medi();
+				}
 				mainFunction();
 			}
 			else {
 				restorePreviousSym();
+				temps[++temp_count] = 0;
+				if (isFuncStart == 0) {
+					isFuncStart = 1;
+					invoke_func_medi("main");
+					exit_medi();
+				}
 				unre_func_definition();
 			}
 		}
@@ -221,18 +240,23 @@ void var_definition() {
 			/*错误处理*/ /*名字重定义*/
 			if (r < 0) error(ERROR_B);
 
-			char curname[TOKENSIZE];
-			strcpy(curname, token);
+			char var_name[TOKENSIZE];
+			strcpy(var_name, token);
 
 			getsym();
 			if (symbol == LBRACK) {
-				addSymbolType(symbolTables[stIndex], curname, atype); /*加入符号表*/
+				addSymbolType(symbolTables[stIndex], var_name, atype); /*加入符号表*/
 
 				print_sym();
 				getsym();
+
+				addSymbolIndex(symbolTables[stIndex], var_name, atoi(token));
+
 				unsigned_integer();
 				(symbol == RBRACK && print_sym()) ? getsym() : error(ERROR_M);
 			}
+
+			declare_var_medi(getSymbol(symbolTables[stIndex], var_name));
 		} while (symbol == COMMA);
 	}
 	else {
@@ -260,6 +284,8 @@ void declarator() {
 
 	/*错误处理*/ /*名字重定义*/
 	if (r < 0) error(ERROR_B);
+
+	declare_func_medi(getSymbol(symbolTables[0], token));
 
 	getsym();
 	fprintf(fpOut, "<声明头部>\n");
@@ -297,6 +323,8 @@ void unre_func_definition() {
 	/*错误处理*/ /*名字重定义*/
 	if (r < 0) error(ERROR_B);
 
+	declare_func_medi(getSymbol(symbolTables[0], token));
+
 	getsym();
 	(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 	paraList();
@@ -304,6 +332,9 @@ void unre_func_definition() {
 	(symbol == LBRACE && print_sym()) ? getsym() : error_and_getsym();
 	compoundStatement();
 	(symbol == RBRACE && print_sym()) ? getsym() : error_and_getsym();
+
+	return_medi_v();
+
 	fprintf(fpOut, "<无返回值函数定义>\n");
 }
 
@@ -321,7 +352,7 @@ void compoundStatement() {
 
 // 参数表		::=  ＜类型标识符＞＜标识符＞{,＜类型标识符＞＜标识符＞} | ＜空＞
 void paraList() {
-	int r = 0;
+	int r = 0;	
 	if (symbol == INTTK || symbol == CHARTK) {
 		int type = (symbol == INTTK) ? VARIABLE_INT : VARIABLE_CHAR;
 		print_sym();
@@ -334,6 +365,8 @@ void paraList() {
 		/*错误处理*/ /*名字重定义*/ /*如未出错则更新函数参数表*/
 		if (r < 0) error(ERROR_B);
 		else addSymbolParaListItem(symbolTables[0], symbolTables[stIndex]->name, type);
+
+		declare_para_medi(type, token);
 
 		getsym();
 		while (symbol == COMMA) {
@@ -376,6 +409,8 @@ void mainFunction() {
 	/*错误处理*/ /*名字重定义*/
 	if (r < 0) error(ERROR_B);
 
+	declare_func_medi(getSymbol(symbolTables[0], token));
+
 	getsym();
 	(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 	(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
@@ -383,6 +418,9 @@ void mainFunction() {
 	compoundStatement();
 
 	(symbol == RBRACE && print_sym()) ? getsym() : error_and_getsym();
+	
+	return_medi_v();
+
 	fprintf(fpOut, "<主函数>\n");
 }
 
@@ -612,6 +650,8 @@ int factor(int* value, bool* certain, char* name) {
 					＜有返回值函数调用语句＞; | ＜无返回值函数调用语句＞;｜＜赋值语句＞; ｜
 					＜读语句＞; ｜＜写语句＞; ｜＜空＞; | ＜返回语句＞; */
 int statement() {
+	temp_count++;
+	temps[temp_count] = temps[temp_count - 1];
 	int stateType;
 	if (symbol == IFTK) {				// 条件语句
 		conditionalStatement();
@@ -666,6 +706,8 @@ int statement() {
 		return _ERROR;
 	}
 	fprintf(fpOut, "<语句>\n");
+	temps[temp_count] = 0;
+	temp_count--;
 	return stateType;
 }
 
@@ -674,12 +716,18 @@ int iden_statement() {
 	if (getSymbolType(symbolTables[0], token) == FUNC_HAS_RETURN_INT
 		|| getSymbolType(symbolTables[0], token) == FUNC_HAS_RETURN_CHAR) {
 		// 有返回值函数调用语句
+		char func_name[STRSIZE];
+		strcpy(func_name, token);
 		refunc_callStatement();
+		invoke_func_medi(func_name);
 		return S_REFUNCCALL;
 	}
 	else if (getSymbolType(symbolTables[0], token) == FUNC_NON_RETURN) {
 		// 无返回值函数调用语句
+		char func_name[STRSIZE];
+		strcpy(func_name, token);
 		unrefunc_callStatement();
+		invoke_func_medi(func_name);
 		return S_UNREFUNCCALL;
 	}
 	else {
@@ -860,25 +908,29 @@ void loopStatement() {
 		print_sym();
 		getsym();
 		
-		strcpy(begin_label, new_label(symbolTables[stIndex]->name, "while_begin"));
-		strcpy(over_label, new_label(symbolTables[stIndex]->name, "while_over"));
+		strcpy(begin_label, new_label(symbolTables[stIndex], "while_begin"));
+		strcpy(over_label, new_label(symbolTables[stIndex], "while_over"));
 		label_medi(begin_label);   // set label
 
 		(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 		condition(&cond_value, &cond_certain, cond_name);
+		(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
 
 		if (cond_certain && cond_value == 0) { jump_medi(over_label); }
 		else if (!cond_certain) { branch_zero_medi(cond_name, over_label); }
 
-		(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
 		statement();
 
 		jump_medi(begin_label);
 		label_medi(over_label);
 	}
-	else if (symbol == DOTK) {	// 待完善
+	else if (symbol == DOTK) {	
 		print_sym();
 		getsym();
+
+		strcpy(begin_label, new_label(symbolTables[stIndex], "do_begin"));
+		label_medi(begin_label);
+
 		statement();
 
 		/*错误处理*/ /*do-while应为语句中缺少while*/
@@ -887,31 +939,49 @@ void loopStatement() {
 		(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 		condition(&cond_value, &cond_certain, cond_name);
 		(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
+
+		if (cond_certain && cond_value == 1) { jump_medi(begin_label); }
+		else if (!cond_certain) { branch_notzero_medi(cond_name, begin_label); }
 	}
-	else if (symbol == FORTK)	// 待完善
+	else if (symbol == FORTK)	
 	{
 		print_sym();
 		getsym();
+
+		strcpy(begin_label, new_label(symbolTables[stIndex], "for_begin"));
+		strcpy(over_label, new_label(symbolTables[stIndex], "for_over"));
+
 		(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
-
+		
 		int r = getSymbolTypeFromTwo();
-
+		
 		/*错误处理*/ /*未定义的名字*/
 		if (r < 0) { error(ERROR_C); }
-
 		/*错误处理*/ /*不能改变常量的值*/
 		else if (r == CONST_CHAR || r == CONST_INT) { error(ERROR_J); }
+		
+		char var_name[STRSIZE];
+		strcpy(var_name, token);
 
 		getsym();
 		(symbol == ASSIGN && print_sym()) ? getsym() : error_and_getsym();
 		
 		int expr_value, expr_certain;
 		char* expr_name = (char*)malloc(STRSIZE * sizeof(char));
-		
 		expression(&expr_value, &expr_certain, expr_name);
+		
+		if (expr_certain) { assign_medi_ci(var_name, expr_value); }
+		else { assign_medi_cc(var_name, expr_name); }
+		free(expr_name);
+
 		(symbol == SEMICN && print_sym()) ? getsym() : error(ERROR_K);
+
+		label_medi(begin_label);
+
 		condition(&cond_value, &cond_certain, cond_name);
 		(symbol == SEMICN && print_sym()) ? getsym() : error(ERROR_K);
+
+		branch_zero_medi(cond_name, over_label);
 
 		r = getSymbolTypeFromTwo();
 
@@ -921,17 +991,46 @@ void loopStatement() {
 		/*错误处理*/ /*不能改变常量的值*/
 		else if (r == CONST_CHAR || r == CONST_INT) { error(ERROR_J); }
 
+		char var1_name[STRSIZE];
+		strcpy(var1_name, token);
+
 		getsym();
 		(symbol == ASSIGN && print_sym()) ? getsym() : error_and_getsym();
 
 		/*错误处理*/ /*未定义的名字*/
 		if (getSymbolTypeFromTwo() < 0) { error(ERROR_C); }
 
+		char var2_name[STRSIZE];
+		strcpy(var2_name, token);
+		int cur_type;
+		int cur_value = 0;
+		int const_value = 0;
+		if ((cur_type = getSymbolTypeFromTwo()) == CONST_INT || cur_type == CONST_CHAR) {
+			const_value = getSymbolValueFromTwo();
+		}
+
 		getsym();
+		
+		int cur_op = symbol;
 		((symbol == PLUS || symbol == MINU) && print_sym()) ? getsym() : error_and_getsym();
+		
+
+		cur_value = atoi(token);
 		stride();
 		(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
+
 		statement();
+
+		if (cur_type == CONST_INT || cur_type == CONST_CHAR) { 
+			if (cur_op == PLUS) { assign_medi_ci(var1_name, const_value + cur_value); }
+			else { assign_medi_ci(var1_name, const_value - cur_value); }
+		}
+		else {
+			cal_medi_icci(cur_op, var1_name, var2_name, cur_value);
+		}
+
+		jump_medi(begin_label);
+		label_medi(over_label);
 	}
 	else {
 		error(_ERROR);
@@ -1098,7 +1197,7 @@ void printStatement() {
 	}
 	else { is_expr = true; }
 
-	if (is_str && !is_expr) { printf_medi_ic(STRCON, str_t); }
+	if (is_str && !is_expr) { printf_medi_ic(STRCON, str_t, strlen(str_t)); }
 	if (is_expr) {
 		char* print_name = (char*)malloc(STRSIZE * sizeof(char));
 		int print_value;
@@ -1107,9 +1206,9 @@ void printStatement() {
 
 		print_type = (print_type == 1) ? INTCON : CHARCON;
 
-		if (is_str) { printf_medi_ic(STRCON, str_t); }
+		if (is_str) { printf_medi_ic(STRCON, str_t, strlen(str_t)); }
 		if (print_certain) { printf_medi_ii(print_type, print_value);}
-		else { printf_medi_ic(print_type, print_name); }
+		else { printf_medi_ic(print_type, print_name, 0); }
 		free(print_name);
 	}
 

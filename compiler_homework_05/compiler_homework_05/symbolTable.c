@@ -27,6 +27,16 @@ int getSymbolType(SymbolTable_t* symboltable, char* key) {
 	}
 }
 
+int getSymbolIndex(SymbolTable_t* symboltable, char* key) {
+	SymbolItem_t* s = getSymbol(symboltable, key);
+	if (s == NULL) {
+		return -1;
+	}
+	else {
+		return s->index;
+	}
+}
+
 List_t* getSymbolParaList(SymbolTable_t* symboltable, char* key) {
 	SymbolItem_t* s = getSymbol(symboltable, key);
 	if (s == NULL) {
@@ -64,6 +74,17 @@ int addSymbolType(SymbolTable_t* symboltable, char* key, int type) {
 	}
 	else {
 		s->type = type;
+	}
+	return 0;
+}
+
+int addSymbolIndex(SymbolTable_t* symboltable, char* key, int index) {
+	SymbolItem_t* s = getSymbol(symboltable, key);
+	if (s == NULL) {
+		return -1;
+	}
+	else {
+		s->index = index;
 	}
 	return 0;
 }

@@ -4,7 +4,7 @@
 
 int branch = 0;
 int level;
-int temp_count = 0;
+int temp_count = 1;
 int temps[64];
 bool in_switch = false;
 
@@ -14,21 +14,6 @@ char* int2string(int n) {
 	static char via[STRSIZE];
 	_itoa(n, via, 10);
 	return via;
-}
-char* type2string(int type) {
-	switch (type)
-	{
-	case INTCON:
-		return "int";
-	case CHARCON:
-		return "char";
-	case VOIDTK:
-		return "void";
-	case STRCON:
-		return "string";
-	default:
-		return "null";
-	}
 }
 
 // 初始化中间代码生成程序
@@ -81,7 +66,8 @@ void declare_para_medi(int type, char* name)
 	// MIPS_OUTPUT("@para " << type2string(type) << " " << name);
 	char str_t[STRSIZE];
 	strcpy(str_t, "@para ");
-	strcat(str_t, type2string(type));
+	if (type == VARIABLE_INT) { strcat(str_t, "INT"); }
+	else { strcat(str_t, "CHAR"); }
 	strcat(str_t, " ");
 	strcat(str_t, name);
 	MIPS_OUTPUT(str_t);
@@ -103,6 +89,8 @@ void declare_var_medi(SymbolItem_t* var_item)
 		strcpy(str_t, "@array ");
 		(var_item->type == ARRAY_INT) ? strcat(str_t, "int[] ") : strcat(str_t, "char[] ");
 		strcat(str_t, var_item->key);
+		strcat(str_t, " ");
+		strcat(str_t, int2string(var_item->index));
 		// strcat(str_s, var_item->array_index)
 	}
 	else {
@@ -151,12 +139,12 @@ void return_medi_f(SymbolItem_t* func_item)
 		MIPS_OUTPUT("@ret 0");
 	}*/
 
-	if (func_item->type == FUNC_NON_RETURN) {
-		MIPS_OUTPUT("@ret");
-	}
-	else {
+	if (func_item->type != FUNC_NON_RETURN) {
 		MIPS_OUTPUT("@ret 0");
 	}
+}
+void return_medi_v() {
+	MIPS_OUTPUT("@ret");
 }
 
 // 跳转标志符
@@ -188,12 +176,30 @@ void cal_medi_icci(int op, char* result, char* a1, int a2)
 	/*stringstream ss;
 	  ss << a2;
 	cal_medi(op, result, a1, ss.str());*/
+	char str_t[STRSIZE];
+	strcpy(str_t, result);
+	strcat(str_t, " = ");
+	strcat(str_t, a1);
+	strcat(str_t, " ");
+	strcat(str_t, mnemonices[op]);
+	strcat(str_t, " ");
+	strcat(str_t, int2string(a2));
+	MIPS_OUTPUT(str_t);
 }
 void cal_medi_icic(int op, char* result, int a1, char* a2)
 {
 	/*stringstream ss;
 	ss << a1;
 	cal_medi(op, result, ss.str(), a2);*/
+	char str_t[STRSIZE];
+	strcpy(str_t, result);
+	strcat(str_t, " = ");
+	strcat(str_t, int2string(a1));
+	strcat(str_t, " ");
+	strcat(str_t, mnemonices[op]);
+	strcat(str_t, " ");
+	strcat(str_t, a2);
+	MIPS_OUTPUT(str_t);
 }
 
 // 赋值语句
@@ -249,7 +255,19 @@ void branch_zero_medi(char* name, char* label)
 {
 	// MIPS_OUTPUT("@bz " << name << " " << label);
 	char str_t[STRSIZE];
-	strcpy(str_t, "@bz ");
+	strcpy(str_t, "@beqz ");
+	strcat(str_t, name);
+	strcat(str_t, " ");
+	strcat(str_t, label);
+	MIPS_OUTPUT(str_t);
+}
+
+// 不等于 0 时跳转
+void branch_notzero_medi(char* name, char* label)
+{
+	// MIPS_OUTPUT("@bz " << name << " " << label);
+	char str_t[STRSIZE];
+	strcpy(str_t, "@bnez ");
 	strcat(str_t, name);
 	strcat(str_t, " ");
 	strcat(str_t, label);
@@ -261,7 +279,7 @@ void branch_equal_medi(char* name, int value, char* label)
 {
 	// MIPS_OUTPUT("@be " << name << " " << value << " " << label);
 	char str_t[STRSIZE];
-	strcpy(str_t, "@be ");
+	strcpy(str_t, "@beq ");
 	strcat(str_t, name);
 	strcat(str_t, " ");
 	strcat(str_t, int2string(value));
@@ -363,7 +381,7 @@ void array_set_medi_cii(char* array_name, int offset, int value)
 
 // vector<char*> str_set;
 // 输出语句
-void printf_medi_ic(int type, char* v)
+void printf_medi_ic(int type, char* v, int len)
 {
 	/*if (type == STRING)
 	{
@@ -394,9 +412,13 @@ void printf_medi_ic(int type, char* v)
 	}*/
 	char str_t[STRSIZE];
 	strcpy(str_t, "@printf ");
-	if (type == STRCON) { strcat(str_t, "STR_"); }
-	else if (type == INTCON) { strcat(str_t, "INT_"); }
-	else if (type == CHARCON) { strcat(str_t, "CHAR_"); }
+	if (type == STRCON) { 
+		strcat(str_t, "STRING "); 
+		strcat(str_t, int2string(len)); 
+		strcat(str_t, " S_"); 
+	}
+	else if (type == INTCON) { strcat(str_t, "INT "); }
+	else if (type == CHARCON) { strcat(str_t, "CHAR "); }
 	strcat(str_t, v);
 	MIPS_OUTPUT(str_t);
 }
@@ -405,8 +427,8 @@ void printf_medi_ii(int type, int v)
 	// MIPS_OUTPUT("@printf " << type2string(type) << " " << v);
 	char str_t[STRSIZE];
 	strcpy(str_t, "@printf ");
-	strcat(str_t, type2string(type));
-	strcat(str_t, " ");
+	if (type == INTCON) { strcat(str_t, "INT "); }
+	else if (type == CHARCON) { strcat(str_t, "CHAR "); }
 	strcat(str_t, int2string(v));
 	MIPS_OUTPUT(str_t);
 }
@@ -417,9 +439,10 @@ void scanf_medi(int type, char* v)
 	// MIPS_OUTPUT("@scanf " << type2string(type) << " " << v);
 	char str_t[STRSIZE];
 	strcpy(str_t, "@scanf ");
-	strcat(str_t, type2string(type));
-	strcat(str_t, " ");
+	if (type == INTCON) { strcat(str_t, "INT "); }
+	else { strcat(str_t, "CHAR "); }
 	strcat(str_t, v);
+	MIPS_OUTPUT(str_t);
 }
 
 void medi(char* line)

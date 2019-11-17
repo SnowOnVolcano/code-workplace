@@ -19,10 +19,26 @@ void init() {
 }
 
 
-int main() {
-	int a;
-	change(&a);
-	printf("a = %d", a);
+int a1 = 1;
+int a2 = 10;
+int b[10];
+int c[10];
 
-	init();
+int main() {
+	//int a;
+	// change(&a);
+	// printf("a = %d", a);
+
+	b[0] = c[0] = 111;
+	b[1] = c[1] = 999;
+
+	b[a1--] = b[a1];
+	c[--a1] = c[a1];
+
+	for (int i = 0; i < 2; i++) {
+		printf("b[%d] = %d, ", i, b[i]);
+	}
+	for (int i = 0; i < 2; i++) {
+		printf("c[%d] = %d, ", i, c[i]);
+	}
 }

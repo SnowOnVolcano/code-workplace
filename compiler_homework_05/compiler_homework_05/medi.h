@@ -45,6 +45,7 @@ void invoke_func_medi(char* name);
 void return_medi_c(char* v);
 void return_medi_i(int v);
 void return_medi_f(SymbolItem_t* func_item);
+void return_medi_v();
 
 // 跳转标志符
 void label_medi(char* label);
@@ -68,6 +69,9 @@ void return_get_medi(char* name);
 // 等于 0 时跳转
 void branch_zero_medi(char* name, char* label);
 
+// 不等于 0 时跳转
+void branch_notzero_medi(char* name, char* label);
+
 // 相等时跳转 
 void branch_equal_medi(char* name, int value, char* label);
 
@@ -90,7 +94,7 @@ void array_set_medi_cii(char* array_name, int offset, int value);
 
 // vector<char*> str_set;
 // 输出语句
-void printf_medi_ic(int type, char* v);
+void printf_medi_ic(int type, char* v, int len);
 void printf_medi_ii(int type, int v);
 
 // 输入语句
