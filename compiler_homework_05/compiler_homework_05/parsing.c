@@ -421,7 +421,7 @@ int expression(int* value, bool* certain, char* name) {
 				else { cal_medi_icic(cur_op, name, 0, itm_name); }
 			}
 			else {
-				assign_medi_cc(name, value);
+				assign_medi_ci(name, *value);
 				cal_medi_iccc(cur_op, name, name, itm_name);
 			}
 		}
@@ -472,7 +472,7 @@ int term(int* value, bool* certain, char* name) {
 				assign_medi_cc(name, fac_name); 
 			}
 			else {
-				assign_medi_cc(name, value);
+				assign_medi_ci(name, *value);
 				cal_medi_iccc(cur_op, name, name, fac_name);
 			}
 		}

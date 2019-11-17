@@ -1,2 +1,6 @@
-﻿lld-link : warning : /debug:fastlink unsupported; using /debug:full
+﻿parsing.c(863,33): warning : incompatible pointer types passing 'char [128]' to parameter of type 'SymbolTable_t *' (aka 'struct symbolTable *') [-Wincompatible-pointer-types]
+./medi.h(28,32): message : passing argument to parameter 'func_item' here
+parsing.c(864,32): warning : incompatible pointer types passing 'char [128]' to parameter of type 'SymbolTable_t *' (aka 'struct symbolTable *') [-Wincompatible-pointer-types]
+./medi.h(28,32): message : passing argument to parameter 'func_item' here
+lld-link : warning : /debug:fastlink unsupported; using /debug:full
   compiler_homework_05.vcxproj -> E:\vscode-workplace\compiler_homework_05\Debug\compiler_homework_05.exe

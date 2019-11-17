@@ -8,72 +8,83 @@ c = #1
 #5 = b
 #4 = #4 MINU #5
 c = #4
-#6 = c
+#6 = a
 #7 = #6
-@ret #7
-#8 = a
-#8 = #8 MULT b
+#8 = b
 #9 = #8
-c = #9
-#10 = a
-#10 = #10 MULT b
-#11 = #10
-c = #11
+#10 = c
+#9 = #9 MINU #10
+#11 = #9
+#11 = #11 MULT a
+#7 = #7 PLUS #11
+c = #7
+@printf STR_test\n\s\t\0
 #12 = c
 #13 = #12
 @ret #13
 #14 = a
+#14 = #14 MULT b
 #15 = #14
-#16 = b
+c = #15
+#16 = a
+#16 = #16 MULT b
 #17 = #16
-#15 = #15 EQL #17
-@bz #15 use_rela_opt_L_0_else_begin
+c = #17
+#18 = c
+#19 = #18
+@ret #19
+#20 = a
+#21 = #20
+#22 = b
+#23 = #22
+#21 = #21 EQL #23
+@bz #21 use_rela_opt_L_0_else_begin
 c = 1
 @j use_rela_opt_L_1_else_over
-#18 = a
-#19 = #18
-#20 = b
-#21 = #20
-#19 = #19 GEQ #21
-@bz #19 use_rela_opt_L_2_else_begin
+#24 = a
+#25 = #24
+#26 = b
+#27 = #26
+#25 = #25 GEQ #27
+@bz #25 use_rela_opt_L_2_else_begin
 c = 2
 @j use_rela_opt_L_3_else_over
 use_rela_opt_L_2_else_begin :
 c = 3
 use_rela_opt_L_3_else_over :
-#22 = a
-#23 = #22
-#24 = b
-#25 = #24
-#23 = #23 GRE #25
-@bz #23 use_rela_opt_L_4_else_begin
+#28 = a
+#29 = #28
+#30 = b
+#31 = #30
+#29 = #29 GRE #31
+@bz #29 use_rela_opt_L_4_else_begin
 c = 4
 @j use_rela_opt_L_5_else_over
 use_rela_opt_L_4_else_begin :
-#26 = a
-#27 = #26
-#28 = b
-#29 = #28
-#27 = #27 LSS #29
-@bz #27 use_rela_opt_L_6_else_begin
+#32 = a
+#33 = #32
+#34 = b
+#35 = #34
+#33 = #33 LSS #35
+@bz #33 use_rela_opt_L_6_else_begin
 c = 5
 @j use_rela_opt_L_7_else_over
 use_rela_opt_L_6_else_begin :
-#30 = a
-#31 = #30
-#32 = b
-#33 = #32
-#31 = #31 LEQ #33
-@bz #31 use_rela_opt_L_8_else_begin
+#36 = a
+#37 = #36
+#38 = b
+#39 = #38
+#37 = #37 LEQ #39
+@bz #37 use_rela_opt_L_8_else_begin
 c = 6
 @j use_rela_opt_L_9_else_over
 use_rela_opt_L_8_else_begin :
-#34 = a
-#35 = #34
-#36 = b
-#37 = #36
-#35 = #35 NEQ #37
-@bz #35 use_rela_opt_L_10_else_begin
+#40 = a
+#41 = #40
+#42 = b
+#43 = #42
+#41 = #41 NEQ #43
+@bz #41 use_rela_opt_L_10_else_begin
 c = 7
 @j use_rela_opt_L_11_else_over
 use_rela_opt_L_10_else_begin :
@@ -82,26 +93,26 @@ use_rela_opt_L_11_else_over :
 use_rela_opt_L_9_else_over :
 use_rela_opt_L_7_else_over :
 use_rela_opt_L_5_else_over :
-#38 = zero
-#39 = #38
-#40 = þÿÿÿËŒúŽ0¨Y
-#40 = #40 MULT #39
-#41 = 
-#41 = #41 PLUS #40
-@ret #41
+#44 = zero
+#45 = #44
+#46 = -2
+#46 = #46 MULT #45
+#47 = 1
+#47 = #47 PLUS #46
+@ret #47
 @ret 99
-#42 = a
-#43 = #42
-#44 = b
-#44 = #44 MULT c
-#45 = e
-#46 = #45
-#47 = a
-#47 = #47 MULT b
-#46 = #46 PLUS #47
-#44 = #44 MULT #46
-#43 = #43 MINU #44
-@ret #43
+#48 = a
+#49 = #48
+#50 = b
+#50 = #50 MULT c
+#51 = e
+#52 = #51
+#53 = a
+#53 = #53 MULT b
+#52 = #52 PLUS #53
+#50 = #50 MULT #52
+#49 = #49 MINU #50
+@ret #49
 ch = 43
 ch = 42
 ch = 48
@@ -115,63 +126,69 @@ a = 334
 a = -1230
 a = 0
 a = 0
+@printf STR_ !@#!@$%#$%^$&%(()*_VSDDCV%$C@423523452$#CV42klsnjknjkdnlkjnclkz
 @ret 10
-#48 = ch
-#49 = #48
-@push #49
+#54 = ch
+#55 = #54
+@push #55
 @call funct_with_one_param
-@get #50
-#51 = #50
-#52 = #51
-@ret #52
-#53 = ch
-#54 = #53
-@bz #54 function_unreturnable_L_12_else_begin
+@get #56
+#57 = #56
+#58 = #57
+@ret #58
+#59 = ch
+#60 = #59
+@bz #60 function_unreturnable_L_12_else_begin
 @ret
 @j function_unreturnable_L_13_else_over
 function_unreturnable_L_12_else_begin :
-#55 = in
-#56 = #55
-@bz #56 function_unreturnable_L_14_else_begin
-#57 = i
-#58 = #57
+#61 = in
+#62 = #61
+@bz #62 function_unreturnable_L_14_else_begin
+#63 = i
+#64 = #63
+@printf INT_#64
 @j function_unreturnable_L_15_else_over
 function_unreturnable_L_14_else_begin :
-#59 = in
-#60 = #59
+#65 = in
+#66 = #65
+@printf STR_%d
+@printf INT_#66
 function_unreturnable_L_15_else_over :
 function_unreturnable_L_13_else_over :
-#61 = a
-#62 = #61
-@ret #62
+#67 = a
+#68 = #67
+@ret #68
 i = 9
-#63 = 8
-e = #63 ARSET 8
+#69 = 8
+e = #69 ARSET 8
 @push 101
 @push 3
 @push 97
-#64 = 0
-#65 = e ARGET #64
-#66 = #65
-#67 = #66
-@push #67
-#68 = i
-#69 = #68
-#70 = i
-#71 = #70
-main_L_16_while_begin :
-#72 = i
+#70 = 0
+#71 = e ARGET #70
+#72 = #71
 #73 = #72
-@bz #73 main_L_17_while_over
+@push #73
 #74 = i
 #75 = #74
-i = #75
-@j main_L_16_while_begin
-main_L_17_while_over :
 #76 = i
 #77 = #76
+main_L_16_while_begin :
 #78 = i
 #79 = #78
-i = #79
+@bz #79 main_L_17_while_over
+@printf STR_Hello world\n
 #80 = i
 #81 = #80
+i = #81
+@j main_L_16_while_begin
+main_L_17_while_over :
+#82 = i
+#83 = #82
+@printf INT_#83
+#84 = i
+#85 = #84
+i = #85
+#86 = i
+#87 = #86

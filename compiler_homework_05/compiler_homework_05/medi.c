@@ -392,6 +392,13 @@ void printf_medi_ic(int type, char* v)
 	{
 		MIPS_OUTPUT("@printf " << type2string(type) << " " << v);
 	}*/
+	char str_t[STRSIZE];
+	strcpy(str_t, "@printf ");
+	if (type == STRCON) { strcat(str_t, "STR_"); }
+	else if (type == INTCON) { strcat(str_t, "INT_"); }
+	else if (type == CHARCON) { strcat(str_t, "CHAR_"); }
+	strcat(str_t, v);
+	MIPS_OUTPUT(str_t);
 }
 void printf_medi_ii(int type, int v)
 {

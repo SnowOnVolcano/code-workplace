@@ -120,6 +120,39 @@ IDENFR b
 <赋值语句>
 SEMICN ;
 <语句>
+IDENFR c
+ASSIGN =
+IDENFR a
+<因子>
+<项>
+PLUS +
+LPARENT (
+IDENFR b
+<因子>
+<项>
+MINU -
+IDENFR c
+<因子>
+<项>
+<表达式>
+RPARENT )
+<因子>
+MULT *
+IDENFR a
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+PRINTFTK printf
+LPARENT (
+STRCON test\n\s\t\0
+<字符串>
+RPARENT )
+<写语句>
+SEMICN ;
+<语句>
 RETURNTK return
 LPARENT (
 IDENFR c

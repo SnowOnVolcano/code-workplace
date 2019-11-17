@@ -12,6 +12,8 @@ int use_add_opt(int a, int b) {
     int c;
     c = a + b;
     c = a - b;
+	c = a + (b - c) * a;
+	printf("test\n\s\t\0");
     return (c);
 }
 
