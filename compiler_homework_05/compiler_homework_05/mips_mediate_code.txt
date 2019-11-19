@@ -1,284 +1,104 @@
-@var int zero
-@var int nega_value
-@var int posi_value_1
-@array int[] posi_value_2 99
-@var char var_char_1
-@var char var_char_2
-@array char[] var_array 100
-@var char var_char_3
-@var char var_char_4
+@var int var_i_1
+@var int var_i_2
+@var int var_i_3
+@var char var_c_1
+@var char var_c_2
+@var char var_c_3
 @call main
 @exit
-@func use_add_opt
-@para INT a
-@var int c
-@var int i
-#0 = a
-#1 = #0
-#2 = b
-#1 = #1 PLUS #2
-c = #1
-#3 = a
-#4 = #3
-#5 = b
-#4 = #4 MINU #5
-c = #4
-#6 = a
-#7 = #6
-#8 = b
-#9 = #8
-#10 = c
-#9 = #9 MINU #10
-#11 = #9
-#11 = #11 MULT a
-#7 = #7 PLUS #11
-c = #7
-@printf STRING 12 S_test\n\s\t\0
-use_add_opt_L_0_do_begin :
-#12 = i
-#13 = #12
-@printf INT #13
-#14 = i
-#14 = #14 MULT 2
-#15 = #14
-i = #15
-#12 = i
-#13 = #12
-#13 = #13 NEQ 0
-@bnez #13 use_add_opt_L_0_do_begin
-#14 = c
-#15 = #14
-@ret #15
-@func use_multi_opt
-@para INT a
-@var int c
-#0 = a
-#0 = #0 MULT b
-#1 = #0
-c = #1
-#2 = a
-#2 = #2 MULT b
-#3 = #2
-c = #3
-#4 = c
-#5 = #4
-@ret #5
-@func use_rela_opt
-@para INT a
-@var int c
-#0 = a
-#1 = #0
-#2 = b
-#3 = #2
-#1 = #1 EQL #3
-@beqz #1 use_rela_opt_L_1_else_begin
-c = 1
-@j use_rela_opt_L_2_else_over
-#0 = a
-#1 = #0
-#2 = b
-#3 = #2
-#1 = #1 GEQ #3
-@beqz #1 use_rela_opt_L_3_else_begin
-c = 2
-@j use_rela_opt_L_4_else_over
-use_rela_opt_L_3_else_begin :
-c = 3
-use_rela_opt_L_4_else_over :
-#0 = a
-#1 = #0
-#2 = b
-#3 = #2
-#1 = #1 GRE #3
-@beqz #1 use_rela_opt_L_5_else_begin
-c = 4
-@j use_rela_opt_L_6_else_over
-use_rela_opt_L_5_else_begin :
-#0 = a
-#1 = #0
-#2 = b
-#3 = #2
-#1 = #1 LSS #3
-@beqz #1 use_rela_opt_L_7_else_begin
-c = 5
-@j use_rela_opt_L_8_else_over
-use_rela_opt_L_7_else_begin :
-#0 = a
-#1 = #0
-#2 = b
-#3 = #2
-#1 = #1 LEQ #3
-@beqz #1 use_rela_opt_L_9_else_begin
-c = 6
-@j use_rela_opt_L_10_else_over
-use_rela_opt_L_9_else_begin :
-#0 = a
-#1 = #0
-#2 = b
-#3 = #2
-#1 = #1 NEQ #3
-@beqz #1 use_rela_opt_L_11_else_begin
-c = 7
-@j use_rela_opt_L_12_else_over
-use_rela_opt_L_11_else_begin :
-c = 8
-use_rela_opt_L_12_else_over :
-use_rela_opt_L_10_else_over :
-use_rela_opt_L_8_else_over :
-use_rela_opt_L_6_else_over :
-@ret
-@func funct_with_no_params
-#0 = zero
-#1 = #0
-#1 = #1 MINU 5
-#2 = -2
-#2 = #2 MULT #1
-#3 = 1
-#3 = #3 PLUS #2
-@ret #3
-@func funct_with_one_param
-@para CHAR c
-@ret 99
-@func funct_with_many_params
-@para INT a
-#0 = a
-#1 = #0
-#2 = b
-#2 = #2 MULT c
-#3 = e
-#4 = #3
-#5 = a
-#5 = #5 MULT b
-#4 = #4 PLUS #5
-#2 = #2 MULT #4
-#1 = #1 MINU #2
-@ret #1
-@func use_letter_digit_integer_string
-@var int abcdefghigklmnopqrstuvwxyz_ABCDEFGHIGKLMNOPQRSTUVWXYZ_0123456789
-@var int a
-@var char ch
-ch = 43
-ch = 42
-ch = 48
-ch = 97
-ch = 90
-ch = 95
-a = 0
-a = 1
-a = 20
-a = 334
-a = -1230
-a = 0
-a = 0
-@printf STRING 64 S_ !@#!@$%#$%^$&%(()*_VSDDCV%$C@423523452$#CV42klsnjknjkdnlkjnclkz
-@ret
-@func function_without_params
-@ret 10
-@func function_with_params
-@para CHAR ch
-#0 = ch
-#1 = #0
-@push #1
-@call funct_with_one_param
-@get #2
-#3 = #2
-#4 = #3
-@ret #4
-@func function_unreturnable
-@para CHAR ch
-@var int i
-#0 = ch
-#1 = #0
-#1 = #1 EQL 99
-@beqz #1 function_unreturnable_L_13_else_begin
-@j function_unreturnable_L_14_else_over
-function_unreturnable_L_13_else_begin :
-#0 = in
-#1 = #0
-#1 = #1 EQL 1
-@beqz #1 function_unreturnable_L_15_else_begin
-@scanf INT i
-#0 = i
-#1 = #0
-@printf INT #1
-@j function_unreturnable_L_16_else_over
-function_unreturnable_L_15_else_begin :
-#2 = in
-#3 = #2
-@printf STRING 2 S_%d
-@printf INT #3
-function_unreturnable_L_16_else_over :
-function_unreturnable_L_14_else_over :
-@ret
-@func function_empty
-@ret
-@func function_define
-@para INT a
-#0 = a
-#1 = #0
-@ret #1
 @func main
-@var int i
-@var int d
-@var int f
-@array int[] e 10
-@var char ch
-i = 9
-#0 = 8
-e = #0 ARSET 8
-@call function_empty
-@push 101
-@push 3
-@call function_unreturnable
-@push 97
-#1 = 0
-#2 = e ARGET #1
+@var int local_i_1
+@var int local_i_2
+@var char local_c_1
+@var char local_c_2
+@var int expr1
+@var int expr2
+@scanf int local_i_1
+@scanf int local_i_2
+@scanf int var_i_1
+@scanf int var_i_2
+@printf string 26 String_0
+@newline
+#0 = local_i_1
+#1 = #0
+@printf string 15 String_1
+@printf int #1
+@newline
+#2 = local_i_2
 #3 = #2
-#4 = #3
-@push #4
-@call function_with_params
-i = 0
-main_L_17_for_begin :
-#5 = i
-#6 = #5
-#6 = #6 LSS 10
-@beqz #6 main_L_18_for_over
-@scanf INT d
-@scanf INT f
-i = i PLUS 1
-@j main_L_17_for_begin
-main_L_18_for_over :
-i = 10
-main_L_19_for_begin :
-#5 = i
-#6 = #5
-#6 = #6 GRE 0
-@beqz #6 main_L_20_for_over
-@scanf CHAR ch
-i = ch MINU 1
-@j main_L_19_for_begin
-main_L_20_for_over :
-main_L_21_while_begin :
-#5 = i
-#6 = #5
-@beqz #6 main_L_22_while_over
-@printf STRING 13 S_Hello world\n
-#5 = i
-#6 = #5
-#6 = #6 MINU 1
-i = #6
-@j main_L_21_while_begin
-main_L_22_while_over :
-main_L_23_do_begin :
-#5 = i
-#6 = #5
-@printf INT #6
-#7 = i
-#7 = #7 MULT 2
-#8 = #7
-i = #8
-#5 = i
-#6 = #5
-#6 = #6 NEQ 0
-@bnez #6 main_L_23_do_begin
+@printf string 15 String_2
+@printf int #3
+@newline
+#4 = var_i_1
+#5 = #4
+@printf string 13 String_3
+@printf int #5
+@newline
+#6 = var_i_2
+#7 = #6
+@printf string 13 String_4
+@printf int #7
+@newline
+#8 = local_i_1
+#9 = #8
+#10 = local_i_2
+#9 = #9 PLUS #10
+#9 = #9 PLUS 100
+#9 = #9 MINU -61
+expr1 = #9
+#11 = var_i_1
+#12 = var_i_2
+#13 = #12
+#14 = local_i_1
+#13 = #13 MINU #14
+#15 = #13
+#15 = #15 DIV local_i_2
+#16 = #15
+#11 = #11 MULT #16
+#17 = -19109
+#17 = #17 MINU #11
+expr2 = #17
+#18 = expr1
+#19 = #18
+@printf string 11 String_5
+@printf int #19
+@newline
+#20 = expr2
+#21 = #20
+@printf string 11 String_6
+@printf int #21
+@newline
+var_i_1 = 2333
+#22 = local_i_1
+#23 = #22
+var_i_2 = #23
+#24 = local_i_2
+#25 = #24
+var_i_3 = #25
+#26 = var_i_1
+#27 = #26
+@printf string 13 String_7
+@printf int #27
+@newline
+#28 = var_i_2
+#29 = #28
+@printf string 13 String_8
+@printf int #29
+@newline
+#30 = var_i_3
+#31 = #30
+@printf string 13 String_9
+@printf int #31
+@newline
+#32 = local_i_1
+#33 = #32
+#34 = local_i_2
+#33 = #33 PLUS #34
+#33 = #33 PLUS 100
+#33 = #33 MINU -61
+#35 = #33
+#36 = 0 MINU #35
+@printf string 10 String_10
+@printf int #36
+@newline
 @ret

@@ -1,5 +1,6 @@
 #include "head.h"
 #include "parsing.h"
+#include "analyseMedi.h"
 
 int initial() {
 	init_getsym();
@@ -14,5 +15,11 @@ int main() {
 	initial();
 	getsym();
 	program();
+	fclose(fMediOut);
+	init_analyseMedi();
+	beforeAnalyse();
+	analyseMedi();
+	fclose(fmedi);
+	fclose(fmips);
 	return 0;
 }

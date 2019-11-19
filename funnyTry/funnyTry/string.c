@@ -1,44 +1,34 @@
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 
-int change(int* a) {
-	*a = 6;
-	return 1;
-}
+const int const_i_1 = 1;
+const int const_i_2 = 2, const_i_3 = 3;
+const char const_c_1 = 'a', const_c_2 = 'b';
+const char const_c_3 = 'c';
 
+int var_i_1, var_i_2, var_i_3;
+char var_c_1, var_c_2, var_c_3;
 
-void change_array(char* a) {
-	strcpy(a, "222");
-}
+void main() {
+	const int local_const_i_1 = 100;
+	const char local_const_c_1 = 'z';
+	int local_i_1;
+	int local_i_2;
+	char local_c_1;
+	char local_c_2;
+	int expr1, expr2;
 
-void init() {
-	char* ddd = (char*)malloc(sizeof(char) * 0x40);
-	change_array(ddd);
-	puts(ddd);
-}
+	scanf("%d%d", &local_i_1, &local_i_2);
+	scanf("%d%d", &var_i_1, &var_i_2);
 
+	printf("---Hello World--- input:  ");
 
-int a1 = 1;
-int a2 = 10;
-int b[10];
-int c[10];
+	printf("   local_i_1 = %d", local_i_1);
+	printf("   local_i_2 = %d", local_i_2);
+	printf("   var_i_1 = %d", var_i_1);
+	printf("   var_i_2 = %d", var_i_2);
 
-int main() {
-	//int a;
-	// change(&a);
-	// printf("a = %d", a);
-
-	b[0] = c[0] = 111;
-	b[1] = c[1] = 999;
-
-	b[a1--] = b[a1];
-	c[--a1] = c[a1];
-
-	for (int i = 0; i < 2; i++) {
-		printf("b[%d] = %d, ", i, b[i]);
-	}
-	for (int i = 0; i < 2; i++) {
-		printf("c[%d] = %d, ", i, c[i]);
-	}
+	expr1 = local_i_1 + local_i_2 + local_const_i_1 - (local_const_c_1) / const_i_2;
+	expr2 = -const_c_1 * (const_c_2 + const_c_3) - var_i_1 * ((var_i_2 - local_i_1) / local_i_2);
+	printf("   expr1 = %d", expr1);
+	printf("   expr2 = %d", expr2);
 }

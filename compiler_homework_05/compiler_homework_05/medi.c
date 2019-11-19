@@ -8,11 +8,12 @@ int temp_count = 1;
 int temps[64];
 bool in_switch = false;
 
+int	fooooool = 0;		// ¼ÇµÃÉ¾µô
 
 /*¸¨Öúº¯Êý*/
 char* int2string(int n) {
 	static char via[STRSIZE];
-	_itoa(n, via, 10);
+	sprintf(via, "%d", n);
 	return via;
 }
 
@@ -25,11 +26,15 @@ int init_medi() {
 void init_temp() { puts("init_temp"); }
 
 char* new_temp() {
-	int tempno = temps[temp_count - 1];   // get last temp
+	/*int tempno = temps[temp_count - 1];   // get last temp
 	static char str_t[STRSIZE];
 	strcpy(str_t, "#");
 	strcat(str_t, int2string(tempno));
 	temps[temp_count - 1] ++;
+	return str_t;*/
+	static char str_t[STRSIZE];
+	strcpy(str_t, "#");
+	strcat(str_t, int2string(fooooool++));
 	return str_t;
 }
 
@@ -66,8 +71,8 @@ void declare_para_medi(int type, char* name)
 	// MIPS_OUTPUT("@para " << type2string(type) << " " << name);
 	char str_t[STRSIZE];
 	strcpy(str_t, "@para ");
-	if (type == VARIABLE_INT) { strcat(str_t, "INT"); }
-	else { strcat(str_t, "CHAR"); }
+	if (type == VARIABLE_INT) { strcat(str_t, "int"); }
+	else { strcat(str_t, "char"); }
 	strcat(str_t, " ");
 	strcat(str_t, name);
 	MIPS_OUTPUT(str_t);
@@ -413,12 +418,12 @@ void printf_medi_ic(int type, char* v, int len)
 	char str_t[STRSIZE];
 	strcpy(str_t, "@printf ");
 	if (type == STRCON) { 
-		strcat(str_t, "STRING "); 
+		strcat(str_t, "string "); 
 		strcat(str_t, int2string(len)); 
-		strcat(str_t, " S_"); 
+		strcat(str_t, " "); 
 	}
-	else if (type == INTCON) { strcat(str_t, "INT "); }
-	else if (type == CHARCON) { strcat(str_t, "CHAR "); }
+	else if (type == INTCON) { strcat(str_t, "int "); }
+	else if (type == CHARCON) { strcat(str_t, "char "); }
 	strcat(str_t, v);
 	MIPS_OUTPUT(str_t);
 }
@@ -427,8 +432,8 @@ void printf_medi_ii(int type, int v)
 	// MIPS_OUTPUT("@printf " << type2string(type) << " " << v);
 	char str_t[STRSIZE];
 	strcpy(str_t, "@printf ");
-	if (type == INTCON) { strcat(str_t, "INT "); }
-	else if (type == CHARCON) { strcat(str_t, "CHAR "); }
+	if (type == INTCON) { strcat(str_t, "int "); }
+	else if (type == CHARCON) { strcat(str_t, "char "); }
 	strcat(str_t, int2string(v));
 	MIPS_OUTPUT(str_t);
 }
@@ -439,8 +444,8 @@ void scanf_medi(int type, char* v)
 	// MIPS_OUTPUT("@scanf " << type2string(type) << " " << v);
 	char str_t[STRSIZE];
 	strcpy(str_t, "@scanf ");
-	if (type == INTCON) { strcat(str_t, "INT "); }
-	else { strcat(str_t, "CHAR "); }
+	if (type == INTCON) { strcat(str_t, "int "); }
+	else { strcat(str_t, "char "); }
 	strcat(str_t, v);
 	MIPS_OUTPUT(str_t);
 }

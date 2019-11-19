@@ -3,6 +3,7 @@
 /*辅助函数*/
 int init_parsing() {
 	stIndex = -1;
+	stringPool = newSymbolTable("");
 	return 0;
 }
 int getSymbolTypeFromTwo() {
@@ -33,12 +34,17 @@ int error_and_getsym() {
 	return 0;
 }
 
-
 /*分析程序*/
 // 字符串		::= "｛十进制编码为32,33,35-126的ASCII字符｝"
-void string() {
+char* string() {
+	static char string_name[TOKENSIZE];
+	sprintf(string_name, "String_%d", stringPool->count);
+	addSymbol(stringPool, string_name, STRING);
+	addSymbolString(stringPool, string_name, token);
+
 	(symbol == STRCON && print_sym()) ? getsym() : error_and_getsym();
 	fprintf(fpOut, "<字符串>\n");
+	return string_name;
 }
 
 // 程序			::= ［＜常量说明＞］［＜变量说明＞］{＜有返回值函数定义＞|＜无返回值函数定义＞}＜主函数＞
@@ -519,6 +525,7 @@ int term(int* value, bool* certain, char* name) {
 
 		if (symbol == MULT || symbol == DIV) {
 			type = 1;
+			cur_op = symbol;
 			print_sym();
 			getsym();
 		}
@@ -1182,13 +1189,15 @@ void printStatement() {
 	bool is_expr = false;
 	bool is_str = false; 
 	char str_t[STRSIZE];  
+	char str_name[STRSIZE];
 
 	(symbol == PRINTFTK && print_sym()) ? getsym() : error_and_getsym();
 	(symbol == LPARENT && print_sym()) ? getsym() : error_and_getsym();
 	if (symbol == STRCON) {
 		is_str = true; 
-		strcpy(str_t, token); 
-		string();
+		strcpy(str_t, token);
+		strcpy(str_name, string());
+
 		if (symbol == COMMA) {
 			is_expr = true;
 			print_sym();
@@ -1197,7 +1206,7 @@ void printStatement() {
 	}
 	else { is_expr = true; }
 
-	if (is_str && !is_expr) { printf_medi_ic(STRCON, str_t, strlen(str_t)); }
+	if (is_str && !is_expr) { printf_medi_ic(STRCON, str_name, strlen(str_t)); }
 	if (is_expr) {
 		char* print_name = (char*)malloc(STRSIZE * sizeof(char));
 		int print_value;
@@ -1206,13 +1215,16 @@ void printStatement() {
 
 		print_type = (print_type == 1) ? INTCON : CHARCON;
 
-		if (is_str) { printf_medi_ic(STRCON, str_t, strlen(str_t)); }
+		if (is_str) { printf_medi_ic(STRCON, str_name, strlen(str_t)); }
 		if (print_certain) { printf_medi_ii(print_type, print_value);}
 		else { printf_medi_ic(print_type, print_name, 0); }
 		free(print_name);
 	}
 
 	(symbol == RPARENT && print_sym()) ? getsym() : error(ERROR_L);
+
+	medi("@newline");
+
 	fprintf(fpOut, "<写语句>\n");
 }
 

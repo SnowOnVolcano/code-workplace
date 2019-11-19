@@ -1,2 +1,3 @@
-﻿lld-link : warning : /debug:fastlink unsupported; using /debug:full
+﻿analyseMedi.c(53,6): warning : unused variable 'sum' [-Wunused-variable]
+lld-link : warning : /debug:fastlink unsupported; using /debug:full
   compiler_homework_05.vcxproj -> E:\vscode-workplace\compiler_homework_05\Debug\compiler_homework_05.exe

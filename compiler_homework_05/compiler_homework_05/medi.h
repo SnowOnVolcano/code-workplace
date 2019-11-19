@@ -17,6 +17,8 @@ extern int temp_count;
 extern int temps[64];
 extern bool in_switch;
 
+int	fooooool; //记得删掉
+
 // 初始化中间代码生成程序
 int init_medi();
 

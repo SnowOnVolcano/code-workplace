@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="analyseMedi.h" />
     <ClInclude Include="errorHandler.h" />
     <ClInclude Include="getsym.h" />
     <ClInclude Include="head.h" />
@@ -143,6 +144,7 @@
     <ClInclude Include="uthash\utstring.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="analyseMedi.c" />
     <ClCompile Include="errorHandler.c" />
     <ClCompile Include="getsym.c" />
     <ClCompile Include="head.c" />
@@ -154,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="error.txt" />
+    <Text Include="mips.txt" />
     <Text Include="output.txt" />
     <Text Include="stdout.txt" />
     <Text Include="testfile.txt" />

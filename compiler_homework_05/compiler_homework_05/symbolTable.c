@@ -37,6 +37,36 @@ int getSymbolIndex(SymbolTable_t* symboltable, char* key) {
 	}
 }
 
+int getSymbolOffset(SymbolTable_t* symboltable, char* key) {
+	SymbolItem_t* s = getSymbol(symboltable, key);
+	if (s == NULL) {
+		return -1;
+	}
+	else {
+		return s->offset;
+	}
+}
+
+char* getSymbolString(SymbolTable_t* symboltable, char* key) {
+	SymbolItem_t* s = getSymbol(symboltable, key);
+	if (s == NULL) {
+		return NULL;
+	}
+	else {
+		return s->string;
+	}
+}
+
+int getSymbolValue(SymbolTable_t* symboltable, char* key) {
+	SymbolItem_t* s = getSymbol(symboltable, key);
+	if (s == NULL) {
+		return -1;
+	}
+	else {
+		return s->value;
+	}
+}
+
 List_t* getSymbolParaList(SymbolTable_t* symboltable, char* key) {
 	SymbolItem_t* s = getSymbol(symboltable, key);
 	if (s == NULL) {
@@ -85,6 +115,39 @@ int addSymbolIndex(SymbolTable_t* symboltable, char* key, int index) {
 	}
 	else {
 		s->index = index;
+	}
+	return 0;
+}
+
+int addSymbolOffset(SymbolTable_t* symboltable, char* key, int offset) {
+	SymbolItem_t* s = getSymbol(symboltable, key);
+	if (s == NULL) {
+		return -1;
+	}
+	else {
+		s->offset = offset;
+	}
+	return 0;
+}
+
+int addSymbolString(SymbolTable_t* symboltable, char* key, char* string) {
+	SymbolItem_t* s = getSymbol(symboltable, key);
+	if (s == NULL) {
+		return -1;
+	}
+	else {
+		strcpy(s->string, string);
+	}
+	return 0;
+}
+
+int addSymbolValue(SymbolTable_t* symboltable, char* key, int value) {
+	SymbolItem_t* s = getSymbol(symboltable, key);
+	if (s == NULL) {
+		return -1;
+	}
+	else {
+		s->value = value;
 	}
 	return 0;
 }

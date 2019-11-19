@@ -57,6 +57,9 @@
     <ClInclude Include="medi.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="analyseMedi.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="errorHandler.c">
@@ -83,6 +86,9 @@
     <ClCompile Include="medi.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="analyseMedi.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="error.txt">
@@ -95,6 +101,9 @@
       <Filter>资源文件</Filter>
     </Text>
     <Text Include="testfile.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="mips.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>

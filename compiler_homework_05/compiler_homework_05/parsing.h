@@ -31,11 +31,12 @@ enum statement_types
 };
 
 SymbolTable_t* symbolTables[0x100];
+SymbolTable_t* stringPool;
 int stIndex;
 
 int init_parsing();						// 初始化
 
-void string();							// 字符串
+char* string();							// 字符串
 void program();							// 程序
 void con_info();						// 常量说明
 void con_definition();					// 常量定义
@@ -49,14 +50,14 @@ void unre_func_definition();			// 无返回函数定义
 void compoundStatement();				// 复合语句
 void paraList();						// 参数表
 void mainFunction();					// 主函数
-int expression();						// 表达式
-int term();								// 项
-int factor();							// 因子
+int expression(int* value, bool* certain, char* name);	// 表达式
+int term(int* value, bool* certain, char* name);		// 项
+int factor(int* value, bool* certain, char* name);		// 因子
 int statement();						// 语句
 int iden_statement();					// 标识符开头的语句
 void assignStatement();					// 赋值语句
 void conditionalStatement();			// 条件语句
-void condition();						// 条件
+void condition(int* value, bool* certain, char* name);	// 条件
 void loopStatement();					// 循环语句
 void stride();							// 步长
 void refunc_callStatement();			// 有返回值函数调用语句

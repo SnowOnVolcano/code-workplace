@@ -1,0 +1,302 @@
+.global main
+
+.data
+String_0: .asciiz "---Hello World--- input:  "
+String_1: .asciiz "   local_i_1 = "
+String_2: .asciiz "   local_i_2 = "
+String_3: .asciiz "   var_i_1 = "
+String_4: .asciiz "   var_i_2 = "
+String_5: .asciiz "   expr1 = "
+String_6: .asciiz "   expr2 = "
+String_7: .asciiz "   var_i_1 = "
+String_8: .asciiz "   var_i_2 = "
+String_9: .asciiz "   var_i_3 = "
+String_10: .asciiz "   expr = "
+.align 2
+_global: .space 52
+.align 2
+_stack: .space 800
+
+.text
+main:
+la $gp, _global
+la $sp, _stack
+li $v0, 5
+syscall
+sw $v0, 0($sp)
+li $v0, 5
+syscall
+sw $v0, 4($sp)
+li $v0, 5
+syscall
+sw $v0, 0($gp)
+li $v0, 5
+syscall
+sw $v0, 4($gp)
+li $v0, 4
+la $a0, String_0
+syscall
+li $v0, 11
+li $a0, 10
+syscall
+lw $t1, 0($sp)
+move $t0, $t1
+sw $t0, 28($sp)
+lw $t1, 28($sp)
+move $t0, $t1
+sw $t0, 32($sp)
+li $v0, 4
+la $a0, String_1
+syscall
+li $v0, 1
+lw $a0, 32($sp)
+syscall
+li $v0, 11
+li $a0, 10
+syscall
+lw $t1, 4($sp)
+move $t0, $t1
+sw $t0, 36($sp)
+lw $t1, 36($sp)
+move $t0, $t1
+sw $t0, 40($sp)
+li $v0, 4
+la $a0, String_2
+syscall
+li $v0, 1
+lw $a0, 40($sp)
+syscall
+li $v0, 11
+li $a0, 10
+syscall
+lw $t1, 0($gp)
+move $t0, $t1
+sw $t0, 44($sp)
+lw $t1, 44($sp)
+move $t0, $t1
+sw $t0, 48($sp)
+li $v0, 4
+la $a0, String_3
+syscall
+li $v0, 1
+lw $a0, 48($sp)
+syscall
+li $v0, 11
+li $a0, 10
+syscall
+lw $t1, 4($gp)
+move $t0, $t1
+sw $t0, 52($sp)
+lw $t1, 52($sp)
+move $t0, $t1
+sw $t0, 56($sp)
+li $v0, 4
+la $a0, String_4
+syscall
+li $v0, 1
+lw $a0, 56($sp)
+syscall
+li $v0, 11
+li $a0, 10
+syscall
+lw $t1, 0($sp)
+move $t0, $t1
+sw $t0, 60($sp)
+lw $t1, 60($sp)
+move $t0, $t1
+sw $t0, 64($sp)
+lw $t1, 4($sp)
+move $t0, $t1
+sw $t0, 68($sp)
+lw $t1, 64($sp)
+lw $t2, 68($sp)
+add $t0, $t1, $t2
+sw $t0, 64($sp)
+lw $t1, 64($sp)
+li $t2, 100
+add $t0, $t1, $t2
+sw $t0, 64($sp)
+lw $t1, 64($sp)
+li $t2, -61
+sub $t0, $t1, $t2
+sw $t0, 64($sp)
+lw $t1, 64($sp)
+move $t0, $t1
+sw $t0, 16($sp)
+lw $t1, 0($gp)
+move $t0, $t1
+sw $t0, 72($sp)
+lw $t1, 4($gp)
+move $t0, $t1
+sw $t0, 76($sp)
+lw $t1, 76($sp)
+move $t0, $t1
+sw $t0, 80($sp)
+lw $t1, 0($sp)
+move $t0, $t1
+sw $t0, 84($sp)
+lw $t1, 80($sp)
+lw $t2, 84($sp)
+sub $t0, $t1, $t2
+sw $t0, 80($sp)
+lw $t1, 80($sp)
+move $t0, $t1
+sw $t0, 88($sp)
+lw $t1, 88($sp)
+lw $t2, 4($sp)
+div $t1, $t2
+mflo $t0
+sw $t0, 88($sp)
+lw $t1, 88($sp)
+move $t0, $t1
+sw $t0, 92($sp)
+lw $t1, 72($sp)
+lw $t2, 92($sp)
+mult $t1, $t2
+mflo $t0
+sw $t0, 72($sp)
+li $t1, -19109
+move $t0, $t1
+sw $t0, 96($sp)
+lw $t1, 96($sp)
+lw $t2, 72($sp)
+sub $t0, $t1, $t2
+sw $t0, 96($sp)
+lw $t1, 96($sp)
+move $t0, $t1
+sw $t0, 20($sp)
+lw $t1, 16($sp)
+move $t0, $t1
+sw $t0, 100($sp)
+lw $t1, 100($sp)
+move $t0, $t1
+sw $t0, 104($sp)
+li $v0, 4
+la $a0, String_5
+syscall
+li $v0, 1
+lw $a0, 104($sp)
+syscall
+li $v0, 11
+li $a0, 10
+syscall
+lw $t1, 20($sp)
+move $t0, $t1
+sw $t0, 108($sp)
+lw $t1, 108($sp)
+move $t0, $t1
+sw $t0, 112($sp)
+li $v0, 4
+la $a0, String_6
+syscall
+li $v0, 1
+lw $a0, 112($sp)
+syscall
+li $v0, 11
+li $a0, 10
+syscall
+li $t1, 2333
+move $t0, $t1
+sw $t0, 0($gp)
+lw $t1, 0($sp)
+move $t0, $t1
+sw $t0, 116($sp)
+lw $t1, 116($sp)
+move $t0, $t1
+sw $t0, 120($sp)
+lw $t1, 120($sp)
+move $t0, $t1
+sw $t0, 4($gp)
+lw $t1, 4($sp)
+move $t0, $t1
+sw $t0, 124($sp)
+lw $t1, 124($sp)
+move $t0, $t1
+sw $t0, 128($sp)
+lw $t1, 128($sp)
+move $t0, $t1
+sw $t0, 8($gp)
+lw $t1, 0($gp)
+move $t0, $t1
+sw $t0, 132($sp)
+lw $t1, 132($sp)
+move $t0, $t1
+sw $t0, 136($sp)
+li $v0, 4
+la $a0, String_7
+syscall
+li $v0, 1
+lw $a0, 136($sp)
+syscall
+li $v0, 11
+li $a0, 10
+syscall
+lw $t1, 4($gp)
+move $t0, $t1
+sw $t0, 140($sp)
+lw $t1, 140($sp)
+move $t0, $t1
+sw $t0, 144($sp)
+li $v0, 4
+la $a0, String_8
+syscall
+li $v0, 1
+lw $a0, 144($sp)
+syscall
+li $v0, 11
+li $a0, 10
+syscall
+lw $t1, 8($gp)
+move $t0, $t1
+sw $t0, 148($sp)
+lw $t1, 148($sp)
+move $t0, $t1
+sw $t0, 152($sp)
+li $v0, 4
+la $a0, String_9
+syscall
+li $v0, 1
+lw $a0, 152($sp)
+syscall
+li $v0, 11
+li $a0, 10
+syscall
+lw $t1, 0($sp)
+move $t0, $t1
+sw $t0, 156($sp)
+lw $t1, 156($sp)
+move $t0, $t1
+sw $t0, 160($sp)
+lw $t1, 4($sp)
+move $t0, $t1
+sw $t0, 164($sp)
+lw $t1, 160($sp)
+lw $t2, 164($sp)
+add $t0, $t1, $t2
+sw $t0, 160($sp)
+lw $t1, 160($sp)
+li $t2, 100
+add $t0, $t1, $t2
+sw $t0, 160($sp)
+lw $t1, 160($sp)
+li $t2, -61
+sub $t0, $t1, $t2
+sw $t0, 160($sp)
+lw $t1, 160($sp)
+move $t0, $t1
+sw $t0, 168($sp)
+li $t1, 0
+lw $t2, 168($sp)
+sub $t0, $t1, $t2
+sw $t0, 172($sp)
+li $v0, 4
+la $a0, String_10
+syscall
+li $v0, 1
+lw $a0, 172($sp)
+syscall
+li $v0, 11
+li $a0, 10
+syscall
+li $v0, 10
+syscall
