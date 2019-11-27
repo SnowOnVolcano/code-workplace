@@ -9,7 +9,7 @@ int var_i_1, var_i_2, var_i_3;
 char var_c_1, var_c_2, var_c_3;
 
 void main() {
-	const int local_const_i_1 = 100;
+	/*const int local_const_i_1 = 100;
 	const char local_const_c_1 = 'z';
 	int local_i_1;
 	int local_i_2;
@@ -30,5 +30,13 @@ void main() {
 	expr1 = local_i_1 + local_i_2 + local_const_i_1 - (local_const_c_1) / const_i_2;
 	expr2 = -const_c_1 * (const_c_2 + const_c_3) - var_i_1 * ((var_i_2 - local_i_1) / local_i_2);
 	printf("   expr1 = %d", expr1);
-	printf("   expr2 = %d", expr2);
+	printf("   expr2 = %d", expr2);*/
+	int expr1;
+	int expr2;
+	int var1;
+	char c = 'k';
+	scanf("%d%d%d",&expr1, &expr2, &var1);
+	expr1 = -(var1 - c) + 'd' - ('c') + 20 + 2 * expr1 - expr2 / 4 + 3;
+
+	printf("%d\n", expr1);
 }

@@ -38,9 +38,23 @@ int error_and_getsym() {
 // 字符串		::= "｛十进制编码为32,33,35-126的ASCII字符｝"
 char* string() {
 	static char string_name[TOKENSIZE];
+	static char string_content[STRSIZE * 4];
+	int index = 0;
+	for (int i = 0; i < strlen(token); i++) {
+		if (token[i] == '\\') {
+			string_content[index] = token[i];
+			string_content[index + 1] = token[i];
+			index++;
+		}
+		else {
+			string_content[index] = token[i];
+		}
+		index++;
+	}
+	string_content[index] = '\0';
 	sprintf(string_name, "String_%d", stringPool->count);
 	addSymbol(stringPool, string_name, STRING);
-	addSymbolString(stringPool, string_name, token);
+	addSymbolString(stringPool, string_name, string_content);
 
 	(symbol == STRCON && print_sym()) ? getsym() : error_and_getsym();
 	fprintf(fpOut, "<字符串>\n");

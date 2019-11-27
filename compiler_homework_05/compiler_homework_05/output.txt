@@ -1,7 +1,25 @@
 CONSTTK const
 INTTK int
-IDENFR const_i_1
+IDENFR MAX
 ASSIGN =
+MINU -
+INTCON 100
+<无符号整数>
+<整数>
+COMMA ,
+IDENFR MAXN
+ASSIGN =
+PLUS +
+INTCON 111
+<无符号整数>
+<整数>
+<常量定义>
+SEMICN ;
+CONSTTK const
+INTTK int
+IDENFR ma
+ASSIGN =
+PLUS +
 INTCON 1
 <无符号整数>
 <整数>
@@ -9,240 +27,77 @@ INTCON 1
 SEMICN ;
 CONSTTK const
 INTTK int
-IDENFR const_i_2
+IDENFR k
 ASSIGN =
-MINU -
-INTCON 2
+INTCON 0
 <无符号整数>
 <整数>
-COMMA ,
-IDENFR const_i_3
+<常量定义>
+SEMICN ;
+CONSTTK const
+INTTK int
+IDENFR MA
 ASSIGN =
-INTCON 3
+INTCON 510
 <无符号整数>
 <整数>
 <常量定义>
 SEMICN ;
 CONSTTK const
 CHARTK char
-IDENFR const_c_1
+IDENFR xx
 ASSIGN =
 COMMA ,
-IDENFR const_c_2
+IDENFR s
 ASSIGN =
 <常量定义>
 SEMICN ;
 CONSTTK const
 CHARTK char
-IDENFR const_c_3
+IDENFR xxx
+ASSIGN =
+<常量定义>
+SEMICN ;
+CONSTTK const
+CHARTK char
+IDENFR xxxx
+ASSIGN =
+<常量定义>
+SEMICN ;
+CONSTTK const
+CHARTK char
+IDENFR xxxxxx
+ASSIGN =
+<常量定义>
+SEMICN ;
+CONSTTK const
+CHARTK char
+IDENFR sss
 ASSIGN =
 <常量定义>
 SEMICN ;
 <常量说明>
-INTTK int
-IDENFR var_i_1
-COMMA ,
-IDENFR var_i_2
-COMMA ,
-IDENFR var_i_3
-<变量定义>
-SEMICN ;
-CHARTK char
-IDENFR var_c_1
-COMMA ,
-IDENFR var_c_2
-COMMA ,
-IDENFR var_c_3
-<变量定义>
-SEMICN ;
-<变量说明>
 VOIDTK void
 MAINTK main
 LPARENT (
 RPARENT )
 LBRACE {
-CONSTTK const
 INTTK int
-IDENFR local_const_i_1
-ASSIGN =
-INTCON 100
-<无符号整数>
-<整数>
-<常量定义>
-SEMICN ;
-CONSTTK const
-CHARTK char
-IDENFR local_const_c_1
-ASSIGN =
-<常量定义>
-SEMICN ;
-<常量说明>
-INTTK int
-IDENFR local_i_1
-<变量定义>
-SEMICN ;
-INTTK int
-IDENFR local_i_2
+IDENFR n
 <变量定义>
 SEMICN ;
 CHARTK char
-IDENFR local_c_1
+IDENFR aa
 <变量定义>
 SEMICN ;
 CHARTK char
-IDENFR local_c_2
-<变量定义>
-SEMICN ;
-INTTK int
-IDENFR expr1
-COMMA ,
-IDENFR expr2
+IDENFR xx
 <变量定义>
 SEMICN ;
 <变量说明>
-SCANFTK scanf
-LPARENT (
-COMMA ,
-RPARENT )
-<读语句>
-SEMICN ;
-<语句>
-SCANFTK scanf
-LPARENT (
-COMMA ,
-RPARENT )
-<读语句>
-SEMICN ;
-<语句>
-PRINTFTK printf
-LPARENT (
-STRCON ---Hello World--- input:  
-<字符串>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-PRINTFTK printf
-LPARENT (
-STRCON    local_i_1 = 
-<字符串>
-COMMA ,
-IDENFR local_i_1
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-PRINTFTK printf
-LPARENT (
-STRCON    local_i_2 = 
-<字符串>
-COMMA ,
-IDENFR local_i_2
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-PRINTFTK printf
-LPARENT (
-STRCON    var_i_1 = 
-<字符串>
-COMMA ,
-IDENFR var_i_1
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-PRINTFTK printf
-LPARENT (
-STRCON    var_i_2 = 
-<字符串>
-COMMA ,
-IDENFR var_i_2
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-IDENFR expr1
+IDENFR n
 ASSIGN =
-IDENFR local_i_1
-<因子>
-<项>
-PLUS +
-IDENFR local_i_2
-<因子>
-<项>
-PLUS +
-IDENFR local_const_i_1
-<因子>
-<项>
-MINU -
-LPARENT (
-IDENFR local_const_c_1
-<因子>
-<项>
-<表达式>
-RPARENT )
-<因子>
-DIV /
-IDENFR const_i_2
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-IDENFR expr2
-ASSIGN =
-MINU -
-IDENFR const_c_1
-<因子>
-MULT *
-LPARENT (
-IDENFR const_c_2
-<因子>
-<项>
-PLUS +
-IDENFR const_c_3
-<因子>
-<项>
-<表达式>
-RPARENT )
-<因子>
-<项>
-MINU -
-IDENFR var_i_1
-<因子>
-MULT *
-LPARENT (
-LPARENT (
-IDENFR var_i_2
-<因子>
-<项>
-MINU -
-IDENFR local_i_1
-<因子>
-<项>
-<表达式>
-RPARENT )
-<因子>
-DIV /
-IDENFR local_i_2
-<因子>
-<项>
-<表达式>
-RPARENT )
+IDENFR ma
 <因子>
 <项>
 <表达式>
@@ -251,23 +106,50 @@ SEMICN ;
 <语句>
 PRINTFTK printf
 LPARENT (
-STRCON    expr1 = 
-<字符串>
-COMMA ,
-IDENFR expr1
+IDENFR n
 <因子>
 <项>
 <表达式>
+RPARENT )
+<写语句>
+SEMICN ;
+<语句>
+SCANFTK scanf
+LPARENT (
+RPARENT )
+<读语句>
+SEMICN ;
+<语句>
+PRINTFTK printf
+LPARENT (
+STRCON !!!!\\    
+<字符串>
 RPARENT )
 <写语句>
 SEMICN ;
 <语句>
 PRINTFTK printf
 LPARENT (
-STRCON    expr2 = 
+STRCON !!!!*
+<字符串>
+RPARENT )
+<写语句>
+SEMICN ;
+<语句>
+PRINTFTK printf
+LPARENT (
+STRCON !!!!    
+<字符串>
+RPARENT )
+<写语句>
+SEMICN ;
+<语句>
+PRINTFTK printf
+LPARENT (
+STRCON !!!!\\
 <字符串>
 COMMA ,
-IDENFR expr2
+IDENFR MAX
 <因子>
 <项>
 <表达式>
@@ -275,9 +157,85 @@ RPARENT )
 <写语句>
 SEMICN ;
 <语句>
-IDENFR var_i_1
+IDENFR n
 ASSIGN =
-INTCON 2333
+IDENFR n
+<因子>
+MULT *
+IDENFR n
+<因子>
+<项>
+PLUS +
+INTCON 2
+<无符号整数>
+<整数>
+<因子>
+MULT *
+CHARCON k
+<因子>
+<项>
+PLUS +
+IDENFR sss
+<因子>
+<项>
+PLUS +
+INTCON 3
+<无符号整数>
+<整数>
+<因子>
+MULT *
+LPARENT (
+INTCON 1
+<无符号整数>
+<整数>
+<因子>
+<项>
+PLUS +
+LPARENT (
+MINU -
+INTCON 2
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+RPARENT )
+<因子>
+<项>
+<表达式>
+RPARENT )
+<因子>
+<项>
+PLUS +
+LPARENT (
+INTCON 2
+<无符号整数>
+<整数>
+<因子>
+<项>
+PLUS +
+LPARENT (
+MINU -
+INTCON 9
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+RPARENT )
+<因子>
+<项>
+<表达式>
+RPARENT )
+<因子>
+<项>
+PLUS +
+INTCON 0
+<无符号整数>
+<整数>
+<因子>
+DIV /
+INTCON 1
 <无符号整数>
 <整数>
 <因子>
@@ -286,30 +244,9 @@ INTCON 2333
 <赋值语句>
 SEMICN ;
 <语句>
-IDENFR var_i_2
-ASSIGN =
-IDENFR local_i_1
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-IDENFR var_i_3
-ASSIGN =
-IDENFR local_i_2
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
 PRINTFTK printf
 LPARENT (
-STRCON    var_i_1 = 
-<字符串>
-COMMA ,
-IDENFR var_i_1
+IDENFR n
 <因子>
 <项>
 <表达式>
@@ -319,65 +256,8 @@ SEMICN ;
 <语句>
 PRINTFTK printf
 LPARENT (
-STRCON    var_i_2 = 
+STRCON Hello, World!\n
 <字符串>
-COMMA ,
-IDENFR var_i_2
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-PRINTFTK printf
-LPARENT (
-STRCON    var_i_3 = 
-<字符串>
-COMMA ,
-IDENFR var_i_3
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-PRINTFTK printf
-LPARENT (
-STRCON    expr = 
-<字符串>
-COMMA ,
-MINU -
-LPARENT (
-IDENFR local_i_1
-<因子>
-<项>
-PLUS +
-IDENFR local_i_2
-<因子>
-<项>
-PLUS +
-IDENFR local_const_i_1
-<因子>
-<项>
-MINU -
-LPARENT (
-IDENFR local_const_c_1
-<因子>
-<项>
-<表达式>
-RPARENT )
-<因子>
-DIV /
-IDENFR const_i_2
-<因子>
-<项>
-<表达式>
-RPARENT )
-<因子>
-<项>
-<表达式>
 RPARENT )
 <写语句>
 SEMICN ;

@@ -1,40 +1,23 @@
-const int const_i_1 = 1;
-const int const_i_2 = -2, const_i_3 = 3;
-const char const_c_1 = 'a', const_c_2 = 'b';
-const char const_c_3 = 'c';
-
-int var_i_1, var_i_2, var_i_3;
-char var_c_1, var_c_2, var_c_3;
+const int MAX = -100, MAXN = +111;
+const int ma = +1; const int k = 0;
+const int MA = 510;
+const char xx = 'c', s = 'x';
+const char xxx = '*'; const char xxxx = '/';
+const char xxxxxx = '+';
+const char sss = '3';
 
 void main() {
-	const int local_const_i_1 = 100;
-	const char local_const_c_1 = 'z';
-	int local_i_1;
-	int local_i_2;
-	char local_c_1;
-	char local_c_2;
-	int expr1, expr2;
-
-	scanf(local_i_1, local_i_2);
-	scanf(var_i_1, var_i_2);
-	
-	printf("---Hello World--- input:  ");
-
-	printf("   local_i_1 = ", local_i_1);
-	printf("   local_i_2 = ", local_i_2);
-	printf("   var_i_1 = ", var_i_1);
-	printf("   var_i_2 = ", var_i_2);
-	
-	expr1 = local_i_1 + local_i_2 + local_const_i_1 - (local_const_c_1) / const_i_2;
-	expr2 = - const_c_1 * ( const_c_2 + const_c_3 ) - var_i_1 * ( (var_i_2 - local_i_1) / local_i_2);
-	printf("   expr1 = ", expr1);
-	printf("   expr2 = ", expr2);
-
-	var_i_1 = 2333;
-	var_i_2 = local_i_1;
-	var_i_3 = local_i_2;
-	printf("   var_i_1 = ", var_i_1);
-	printf("   var_i_2 = ", var_i_2);
-	printf("   var_i_3 = ", var_i_3);
-	printf("   expr = ", - (local_i_1 + local_i_2 + local_const_i_1 - (local_const_c_1) / const_i_2));
+    int n;
+    char aa;
+    char xx;
+    n = ma;
+    printf(n);
+    scanf(n);
+    printf("!!!!\\    ");
+    printf("!!!!*");
+    printf("!!!!    ");
+    printf("!!!!\\", MAX);
+    n = n  *  n + 2 * 'k' + sss + 3 * (1 + (-2)) + (2 + (-9)) + 0 / 1;
+    printf(n);
+    printf("Hello, World!\n");
 }

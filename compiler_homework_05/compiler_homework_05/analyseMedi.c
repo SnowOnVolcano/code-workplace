@@ -48,7 +48,7 @@ void saveReg(char* reg_name, char* str) {
 
 // Êä³ö±êÍ·
 int beforeAnalyse() {
-	fprintf(fmips, ".global main\n\n");
+	fprintf(fmips, ".globl main\n\n");
 	fprintf(fmips, ".data\n");
 	int sum = stringPool->count;
 	SymbolItem_t* sLabel;

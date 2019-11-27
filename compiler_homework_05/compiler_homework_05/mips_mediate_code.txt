@@ -1,104 +1,37 @@
-@var int var_i_1
-@var int var_i_2
-@var int var_i_3
-@var char var_c_1
-@var char var_c_2
-@var char var_c_3
 @call main
 @exit
 @func main
-@var int local_i_1
-@var int local_i_2
-@var char local_c_1
-@var char local_c_2
-@var int expr1
-@var int expr2
-@scanf int local_i_1
-@scanf int local_i_2
-@scanf int var_i_1
-@scanf int var_i_2
-@printf string 26 String_0
-@newline
-#0 = local_i_1
+@var int n
+@var char aa
+@var char xx
+n = 1
+#0 = n
 #1 = #0
-@printf string 15 String_1
 @printf int #1
 @newline
-#2 = local_i_2
-#3 = #2
-@printf string 15 String_2
-@printf int #3
+@scanf int n
+@printf string 10 String_0
 @newline
-#4 = var_i_1
+@printf string 5 String_1
+@newline
+@printf string 8 String_2
+@newline
+@printf string 6 String_3
+@printf int -100
+@newline
+#2 = n
+#2 = #2 MULT n
+#3 = #2
+#3 = #3 PLUS 214
+#3 = #3 PLUS 51
+#3 = #3 PLUS -3
+#3 = #3 PLUS -7
+#3 = #3 PLUS 0
+n = #3
+#4 = n
 #5 = #4
-@printf string 13 String_3
 @printf int #5
 @newline
-#6 = var_i_2
-#7 = #6
-@printf string 13 String_4
-@printf int #7
-@newline
-#8 = local_i_1
-#9 = #8
-#10 = local_i_2
-#9 = #9 PLUS #10
-#9 = #9 PLUS 100
-#9 = #9 MINU -61
-expr1 = #9
-#11 = var_i_1
-#12 = var_i_2
-#13 = #12
-#14 = local_i_1
-#13 = #13 MINU #14
-#15 = #13
-#15 = #15 DIV local_i_2
-#16 = #15
-#11 = #11 MULT #16
-#17 = -19109
-#17 = #17 MINU #11
-expr2 = #17
-#18 = expr1
-#19 = #18
-@printf string 11 String_5
-@printf int #19
-@newline
-#20 = expr2
-#21 = #20
-@printf string 11 String_6
-@printf int #21
-@newline
-var_i_1 = 2333
-#22 = local_i_1
-#23 = #22
-var_i_2 = #23
-#24 = local_i_2
-#25 = #24
-var_i_3 = #25
-#26 = var_i_1
-#27 = #26
-@printf string 13 String_7
-@printf int #27
-@newline
-#28 = var_i_2
-#29 = #28
-@printf string 13 String_8
-@printf int #29
-@newline
-#30 = var_i_3
-#31 = #30
-@printf string 13 String_9
-@printf int #31
-@newline
-#32 = local_i_1
-#33 = #32
-#34 = local_i_2
-#33 = #33 PLUS #34
-#33 = #33 PLUS 100
-#33 = #33 MINU -61
-#35 = #33
-#36 = 0 MINU #35
-@printf string 10 String_10
-@printf int #36
+@printf string 15 String_4
 @newline
 @ret
