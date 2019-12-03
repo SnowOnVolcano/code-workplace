@@ -1,0 +1,7 @@
+﻿  trans_A_main.c
+  trans_X_main.c
+E:\vscode-workplace\matrix_translate\matrix_translate\trans_X_main.c(10,12): warning C4101: “nz”: 未引用的局部变量
+E:\vscode-workplace\matrix_translate\matrix_translate\trans_X_main.c(11,11): warning C4101: “I”: 未引用的局部变量
+  正在生成代码...
+E:\vscode-workplace\matrix_translate\matrix_translate\trans_X_main.c(11,16): warning C4101: “J”: 未引用的局部变量
+  matrix_translate.vcxproj -> E:\vscode-workplace\matrix_translate\Debug\matrix_translate.exe

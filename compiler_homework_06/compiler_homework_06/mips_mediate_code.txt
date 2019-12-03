@@ -1,0 +1,74 @@
+@var int var_glob_2
+@call main
+@exit
+@func testIfElse
+@para int choice
+#0 = choice
+#1 = #0
+@beqz #1 testIfElse_L_0_else_begin
+@printf string 39 String_0
+@newline
+@j testIfElse_L_1_else_over
+testIfElse_L_0_else_begin :
+@printf string 23 String_1
+@newline
+testIfElse_L_1_else_over :
+@printf string 1 String_2
+@newline
+@ret
+@func testCondition
+@para int choice
+#2 = choice
+#3 = #2
+#3 = #3 LSS 10
+@beqz #3 testCondition_L_2_else_begin
+@printf string 23 String_3
+@newline
+testCondition_L_2_else_begin :
+#4 = choice
+#5 = #4
+#5 = #5 LEQ 10
+@beqz #5 testCondition_L_4_else_begin
+@printf string 23 String_4
+@newline
+testCondition_L_4_else_begin :
+#6 = choice
+#7 = #6
+#7 = #7 GRE 20
+@beqz #7 testCondition_L_6_else_begin
+@printf string 23 String_5
+@newline
+testCondition_L_6_else_begin :
+#8 = choice
+#9 = #8
+#9 = #9 GEQ 20
+@beqz #9 testCondition_L_8_else_begin
+@printf string 23 String_6
+@newline
+testCondition_L_8_else_begin :
+#10 = choice
+#11 = #10
+#11 = #11 EQL 15
+@beqz #11 testCondition_L_10_else_begin
+@printf string 23 String_7
+@newline
+testCondition_L_10_else_begin :
+@printf string 1 String_8
+@newline
+@ret
+@func main
+@push 1
+@call testIfElse
+@push 0
+@call testIfElse
+@push 5
+@call testCondition
+@push 10
+@call testCondition
+@push 28
+@call testCondition
+@push 20
+@call testCondition
+@push 15
+@call testCondition
+@ret

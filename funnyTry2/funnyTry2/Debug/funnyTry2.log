@@ -1,0 +1,2 @@
+﻿lld-link : warning : /debug:fastlink unsupported; using /debug:full
+  funnyTry2.vcxproj -> E:\vscode-workplace\funnyTry2\Debug\funnyTry2.exe
