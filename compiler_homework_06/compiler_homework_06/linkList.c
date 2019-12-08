@@ -223,3 +223,19 @@ void destroyList(List_t* list)
 
 
 
+/* MY */
+int appendListTailWithName(List_t* list, char* name, int data)
+{
+	Node_t* newNode;
+	newNode = malloc(sizeof(Node_t));
+	
+	if (NULL == newNode) { return -1; }
+
+	strcpy(newNode->name, name);
+	newNode->data = data;
+
+	insertNode(list->head.prev, &list->head, newNode);
+	list->n += 1;
+
+	return 0;	
+}

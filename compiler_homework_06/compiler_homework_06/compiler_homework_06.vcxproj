@@ -134,6 +134,7 @@
     <ClInclude Include="head.h" />
     <ClInclude Include="linkList.h" />
     <ClInclude Include="medi.h" />
+    <ClInclude Include="medi_hash.h" />
     <ClInclude Include="parsing.h" />
     <ClInclude Include="symbolTable.h" />
     <ClInclude Include="uthash\utarray.h" />
@@ -151,6 +152,7 @@
     <ClCompile Include="linkList.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="medi.c" />
+    <ClCompile Include="medi_hash.c" />
     <ClCompile Include="parsing.c" />
     <ClCompile Include="symbolTable.c" />
   </ItemGroup>

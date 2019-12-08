@@ -395,6 +395,8 @@ void paraList() {
 			type = (symbol == INTTK) ? VARIABLE_INT : VARIABLE_CHAR;
 			((symbol == INTTK || symbol == CHARTK) && print_sym()) ? getsym() : error_and_getsym();
 
+			declare_para_medi(type, token);
+
 			(symbol == IDENFR && print_sym()) /*加入符号表*/
 				? (r = addSymbol(symbolTables[stIndex], token, type))
 				: error_and_getsym();
@@ -606,10 +608,10 @@ int factor(int* value, bool* certain, char* name) {
 			bool index_certain;
 			char* index_name = (char*)malloc(STRSIZE * sizeof(char));
 
-			type = expression(&index_value, &index_certain, index_name);
+			int tempT = expression(&index_value, &index_certain, index_name);
 
 			/*错误处理*/ /*数组元素的下标只能是整型表达式*/
-			if (type == 0) { error(ERROR_I); }
+			if (tempT == 0) { error(ERROR_I); }
 
 			if (index_certain) {
 				strcpy(index_name, new_temp());

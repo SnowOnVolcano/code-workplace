@@ -1,19 +1,17 @@
 #pragma once
 #include "parsing.h"
 #include "head.h"
+#include "medi_hash.h"
 
 FILE* fmedi;
 FILE* fmips;
 
-SymbolTable_t* global_vars;
-SymbolTable_t* local_vars;
+MediHashTable_t* global_pool;
+MediHashGrandpa_t* func_pool;
 
-int gpAddr;
 int gpOffset;
-int fpAddr;
-int fpOffset;
-int spAddr;
 int spOffset;
+int fpOffset;
 
 int init_analyseMedi();
 int beforeAnalyse();

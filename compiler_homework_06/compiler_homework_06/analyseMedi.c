@@ -1,4 +1,5 @@
 #include "analyseMedi.h"
+static char curFuncName[STRSIZE];
 
 // 初始化中间代码分析器
 int init_analyseMedi() {
@@ -7,8 +8,8 @@ int init_analyseMedi() {
 		exit(0);
 	}
 	fmips = fopen("mips.txt", "w");
-	global_vars = newSymbolTable("");
-	local_vars = newSymbolTable("");
+	global_pool = new_MediHashTable("#GlobalVars#", 0);
+	func_pool = new_MediHashGrandpa();
 	gpOffset = fpOffset = spOffset = 0;
 	return 0;
 }
@@ -21,29 +22,40 @@ void loadReg(char* reg_name, char* var_name, int index) {
 		fprintf(fmips, "li %s, %s\n", reg_name, var_name);
 	}
 	else {
-		if (getSymbolType(local_vars, var_name) < 0) {
-			fprintf(fmips, "lw %s, %d($gp)\n", reg_name, index * 4 + getSymbolOffset(global_vars, var_name));
+		MediHashTable_t* func = get_TableFromGrandpa(func_pool, curFuncName);
+		if (get_ItemFromTable(func, var_name) == NULL) {
+			fprintf(fmips, "lw %s, %d($gp)\n", reg_name, index * 4 + get_ItemFromTable(global_pool, var_name)->offset);
 		}
 		else {
-			fprintf(fmips, "lw %s, %d($sp)\n", reg_name, index * 4 + getSymbolOffset(local_vars, var_name));
+			fprintf(fmips, "lw %s, -%d($sp)\n", reg_name, 4 + index * 4 + get_ItemFromTable(func, var_name)->offset);
 		}
 	}
 }
 void saveReg(char* reg_name, char* var_name, int index) {
-	if (getSymbolType(local_vars, var_name) < 0) {
-		if (getSymbolType(global_vars, var_name) < 0) {
-			addSymbol(local_vars, var_name, VARIABLE_INT);
-			addSymbolOffset(local_vars, var_name, spOffset);
+	MediHashTable_t* func = get_TableFromGrandpa(func_pool, curFuncName);
+	if (get_ItemFromTable(func, var_name) == NULL) {
+		if (get_ItemFromTable(global_pool, var_name) == NULL) {
+			MediHashTable_t* func = get_TableFromGrandpa(func_pool, curFuncName);
+			add_NewHashItem(func, var_name, VARIABLE_INT);
+			add_offsetToOldItem(func, var_name, spOffset);
 			spOffset += 4;
-			fprintf(fmips, "sw %s, %d($sp)\n", reg_name, index * 4 + getSymbolOffset(local_vars, var_name));
+			fprintf(fmips, "sw %s, -%d($sp)\n", reg_name, 4 + index * 4 + get_ItemFromTable(func, var_name)->offset);
 		}
 		else {
-			fprintf(fmips, "sw %s, %d($gp)\n", reg_name, index * 4 + getSymbolOffset(global_vars, var_name));
+			fprintf(fmips, "sw %s, %d($gp)\n", reg_name, index * 4 + get_ItemFromTable(global_pool, var_name)->offset);
 		}
 	}
 	else {
-		fprintf(fmips, "sw %s, %d($sp)\n", reg_name, index * 4 + getSymbolOffset(local_vars, var_name));
+		fprintf(fmips, "sw %s, -%d($sp)\n", reg_name, 4 + index * 4 + get_ItemFromTable(func, var_name)->offset);
 	}
+}
+
+int getFuncIndexByName(char* name) {
+	for (int i = 0; i < func_pool->count; i++) {
+		if (!strcmp(func_pool->tableNames[i], name)) { return i; }
+	}
+	printf("No such Func in func_pool!");
+	return -1;
 }
 
 // 输出标头
@@ -56,11 +68,10 @@ int beforeAnalyse() {
 	fprintf(fmips, ".align 2\n");
 	fprintf(fmips, "_global: .space %d\n", gpOffset);
 	fprintf(fmips, ".align 2\n");
-	fprintf(fmips, "_stack: .space 800\n\n");
+	fprintf(fmips, "_stack: .space 200\n\n");
 	fprintf(fmips, ".text\n");
 	fprintf(fmips, "la $gp, _global\n");
-	fprintf(fmips, "la $sp, _stack\n");
-	fprintf(fmips, "jal main\n");
+	fprintf(fmips, "la $fp, _stack\n");
 	return 0;
 }
 
@@ -72,68 +83,95 @@ int analyseMedi() {
 	int itemCount;
 
 	while (!feof(fmedi)) {
+		memset(temp, 0, STRSIZE * 8);
+		memset(item, 0, 6 * STRSIZE);
 		fgets(temp, STRSIZE * 8, fmedi);
 		itemCount = sscanf(temp, "%s %s %s %s %s", item[1], item[2], item[3], item[4], item[5]);
 		if (!strcmp(item[1], "@var"))									// 变量声明
 		{
 			if (isGlobal) {
-				addSymbol(global_vars, item[3], strcmp(item[2], "int") ? VARIABLE_CHAR : VARIABLE_INT);
-				addSymbolOffset(global_vars, item[3], gpOffset);
+				add_NewHashItem(global_pool, item[3], strcmp(item[2], "int") ? VARIABLE_CHAR : VARIABLE_INT);
+				add_offsetToOldItem(global_pool, item[3], gpOffset);
 				gpOffset += 4;
 			}
 			else {
-				addSymbol(local_vars, item[3], strcmp(item[2], "int") ? VARIABLE_CHAR : VARIABLE_INT);
-				addSymbolOffset(local_vars, item[3], spOffset);
+				MediHashTable_t* func = get_TableFromGrandpa(func_pool, curFuncName);
+				add_NewHashItem(func, item[3], strcmp(item[2], "int") ? VARIABLE_CHAR : VARIABLE_INT);
+				add_offsetToOldItem(func, item[3], spOffset);
 				spOffset += 4;
 			}
 		}
 		else if (!strcmp(item[1], "@array"))							// 数组声明（未处理）
 		{
 			if (isGlobal) {
-				addSymbol(global_vars, item[3], strcmp(item[2], "int[]") ? ARRAY_CHAR : ARRAY_INT);
-				addSymbolIndex(global_vars, item[3], atoi(item[4]));
-				addSymbolOffset(global_vars, item[3], gpOffset);
+				add_NewHashItem(global_pool, item[3], strcmp(item[2], "int[]") ? ARRAY_CHAR : ARRAY_INT);
+				add_offsetToOldItem(global_pool, item[3], gpOffset);
 				gpOffset += 4 * atoi(item[4]);
 			}
 			else {
-				addSymbol(local_vars, item[3], strcmp(item[2], "int[]") ? ARRAY_CHAR : ARRAY_INT);
-				addSymbolIndex(global_vars, item[3], atoi(item[4]));
-				addSymbolOffset(local_vars, item[3], spOffset);
+				MediHashTable_t* func = get_TableFromGrandpa(func_pool, curFuncName);
+				add_NewHashItem(func, item[3], strcmp(item[2], "int[]") ? ARRAY_CHAR : ARRAY_INT);
+				add_offsetToOldItem(func, item[3], spOffset);
 				spOffset += 4 * atoi(item[4]);
 			}
 		}
-		else if (!strcmp(item[1], "@exit"))								// 中止（未处理）
+		else if (!strcmp(item[1], "@exit"))								// 中止（处理）
 		{
 			fprintf(fmips, "li $v0, 10\n");
 			fprintf(fmips, "syscall\n\n");
 		}
 		else if (!strcmp(item[1], "@func"))								// 函数声明（未处理）
 		{
-			spOffset = 4;
+			strcpy(curFuncName, item[2]);
+			add_NewHashTable(func_pool, item[2], 0);
+
+			fprintf(fmips, "\n");
 			fprintf(fmips, "%s:\n", item[2]);
+			fprintf(fmips, "la $fp, _stack\n");
+			spOffset = 4 * 2;
 		}
-		else if (!strcmp(item[1], "@para"))								// 函数变量声明（未处理）
+		else if (!strcmp(item[1], "@para"))								// 函数参数声明（处理）
 		{
+			add_NewHashItem(get_TableFromGrandpa(func_pool, curFuncName), item[3], strcmp(item[2], "int") ? VARIABLE_CHAR : VARIABLE_INT);
+			add_offsetToOldItem(get_TableFromGrandpa(func_pool, curFuncName), item[3], spOffset);
+			add_paraToOldTable(get_TableFromGrandpa(func_pool, curFuncName), item[3], spOffset);
+			spOffset += 4;
 			
+			
+			fprintf(fmips, "lw $t0, %d($fp)\n", -12 + spOffset);
+			saveReg("$t0", item[3], 0);
 		}
 		else if (!strcmp(item[1], "@call"))								// 函数调用（未处理）
 		{
-			if (isGlobal) { isGlobal = 1; beforeAnalyse(); }
+			if (isGlobal) { isGlobal = false; beforeAnalyse(); }
+			
+			fprintf(fmips, "sw $ra, -4($sp)\n");
+			fprintf(fmips, "move $t0, $sp\n");
+			fprintf(fmips, "subi $sp, $sp, %d\n", spOffset);
+			fprintf(fmips, "sw $t0, -8($sp)\n");
 
 			fprintf(fmips, "jal %s\n", item[2]);
+
+			fprintf(fmips, "lw $sp, -8($sp)\n");
+			fprintf(fmips, "lw $ra, -4($sp)\n");
 		}
 		else if (!strcmp(item[1], "@ret"))								// 函数返回（未处理）
 		{
+			if (itemCount > 1) {
+				loadReg("$v0", item[2], 0);
+			}
 			
 			fprintf(fmips, "jr $ra\n");
 		}
 		else if (!strcmp(item[1], "@push"))								// 函数传参（未处理）
 		{
-
+			loadReg("$t0", item[2], 0);
+			fprintf(fmips, "sw $t0, 0($fp)\n");
+			fprintf(fmips, "addi $fp, $fp, 4\n");
 		}
 		else if (!strcmp(item[1], "@get"))								// 接收返回值（未处理）
 		{
-
+			saveReg("$v0", item[2], 0);
 		}
 		else if (!strcmp(item[1], "@beqz"))								// 等于0跳转（处理）
 		{
@@ -210,12 +248,46 @@ int analyseMedi() {
 			}
 			else if (itemCount == 5) {
 				if (!strcmp(item[4], "ARGET")) {
-					loadReg("$t0", item[3], atoi(item[5]));
+					loadReg("$t1", item[5], 0);
+					fprintf(fmips, "sll $t1, $t1, 2\n");
+					
+					if (get_ItemFromTable(global_pool, item[3]) == NULL) {
+						MediHashTable_t* func = get_TableFromGrandpa(func_pool, curFuncName);
+						int tempO = 4 + get_ItemFromTable(func, item[3])->offset;
+						fprintf(fmips, "li $t2, %d\n", tempO);
+						fprintf(fmips, "add $t2, $t1, $t2\n");
+						fprintf(fmips, "sub $t2, $sp, $t2\n");
+					}
+					else {
+						int tempO = get_ItemFromTable(global_pool, item[3])->offset;
+						fprintf(fmips, "li $t2, %d\n", tempO);
+						fprintf(fmips, "add $t2, $t1, $t2\n");
+						fprintf(fmips, "add $t2, $gp, $t2\n");
+					}
+
+					fprintf(fmips, "lw $t0, 0($t2)\n");
 					saveReg("$t0", item[1], 0);
 				}
 				else if (!strcmp(item[4], "ARSET")) {
 					loadReg("$t0", item[5], 0);
-					saveReg("$t0", item[1], atoi(item[3]));
+					loadReg("$t1", item[3], 0);
+					fprintf(fmips, "sll $t1, $t1, 2\n");
+
+					if (get_ItemFromTable(global_pool, item[1]) == NULL) {
+						MediHashTable_t* func = get_TableFromGrandpa(func_pool, curFuncName);
+						int tempO = 4 + get_ItemFromTable(func, item[1])->offset;
+						fprintf(fmips, "li $t2, %d\n", tempO);
+						fprintf(fmips, "add $t2, $t1, $t2\n");
+						fprintf(fmips, "sub $t2, $sp, $t2\n");
+					}
+					else { 
+						int tempO = get_ItemFromTable(global_pool, item[1])->offset;
+						fprintf(fmips, "li $t2, %d\n", tempO);
+						fprintf(fmips, "add $t2, $t1, $t2\n");
+						fprintf(fmips, "add $t2, $gp, $t2\n");
+					}
+
+					fprintf(fmips, "sw $t0, 0($t2)\n");
 				}
 				else {
 					loadReg("$t1", item[3], 0);
@@ -239,7 +311,5 @@ int analyseMedi() {
 			}
 		}
 	}
-	fprintf(fmips, "li $v0, 10\n");
-	fprintf(fmips, "syscall\n");
 	return 0;
 }
