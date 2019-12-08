@@ -1,0 +1,335 @@
+@call main   
+@exit    
+@func factorial   
+@para int n  
+#1 = n  
+#1 = #1 LEQ 1
+@beqz #1 factorial_L_0_else_begin  
+@ret 1   
+factorial_L_0_else_begin :   
+#2 = n  
+#4 = n  
+#4 = #4 MINU 1
+@push #4   
+@call factorial   
+@get #5   
+#2 = #2 MULT #5
+#6 = #2  
+@ret #6   
+@func mod   
+@para int y  
+@para int x  
+#8 = x  
+#9 = x  
+#9 = #9 DIV y
+#9 = #9 MULT y
+#8 = #8 MINU #9
+x = #8  
+#11 = x  
+@ret #11   
+@func swap   
+@para int y  
+@para int x  
+@var int temp  
+#13 = x  
+@printf string 4 String_0 
+@printf int #13  
+@newline    
+#15 = y  
+@printf string 4 String_1 
+@printf int #15  
+@newline    
+temp = x  
+x = y  
+y = temp  
+#23 = x  
+@printf string 9 String_2 
+@printf int #23  
+@newline    
+#25 = y  
+@printf string 9 String_3 
+@printf int #25  
+@newline    
+@ret    
+@func full_num   
+@para int a  
+@para int j  
+@para int n  
+#26 = n  
+#26 = #26 MULT 100
+#27 = #26  
+#28 = j  
+#28 = #28 MULT 10
+#27 = #27 PLUS #28
+#29 = a  
+#27 = #27 PLUS #29
+@ret #27   
+@func flower_num   
+@para int a  
+@para int j  
+@para int n  
+#30 = n  
+#30 = #30 MULT n
+#30 = #30 MULT n
+#31 = #30  
+#32 = j  
+#32 = #32 MULT j
+#32 = #32 MULT j
+#31 = #31 PLUS #32
+#33 = a  
+#33 = #33 MULT a
+#33 = #33 MULT a
+#31 = #31 PLUS #33
+@ret #31   
+@func complete_flower_num   
+@array int[] k 128 
+@var int i  
+@var int j  
+@var int n  
+@var int s  
+@var int x1  
+@var int y  
+@var int m  
+@var int k2  
+@var int h  
+@var int leap  
+@var int x2  
+@var int a  
+@var int b  
+@var int c  
+j = 2  
+complete_flower_num_L_2_for_begin :   
+#35 = j  
+#35 = #35 LSS 128
+@beqz #35 complete_flower_num_L_3_for_over  
+n = -1  
+s = j  
+i = 1  
+complete_flower_num_L_4_for_begin :   
+#39 = i  
+#41 = j  
+#39 = #39 LSS #41
+@beqz #39 complete_flower_num_L_5_for_over  
+#42 = j  
+#42 = #42 DIV i
+#44 = #42  
+#44 = #44 MULT i
+x1 = #44  
+#47 = j  
+@push #47   
+#49 = i  
+@push #49   
+@call mod   
+@get #50   
+#52 = #50  
+#52 = #52 EQL 0
+@beqz #52 complete_flower_num_L_6_else_begin  
+#54 = n  
+#54 = #54 PLUS 1
+n = #54  
+#56 = s  
+#57 = i  
+#56 = #56 MINU #57
+s = #56  
+#59 = n  
+#59 = #59 GEQ 128
+@beqz #59 complete_flower_num_L_8_else_begin  
+@printf string 9 String_4 
+@newline    
+@j complete_flower_num_L_9_else_over   
+complete_flower_num_L_8_else_begin :   
+#61 = n  
+#63 = i  
+k = #61 ARSET #63
+complete_flower_num_L_9_else_over :   
+complete_flower_num_L_6_else_begin :   
+i = i PLUS 1
+@j complete_flower_num_L_4_for_begin   
+complete_flower_num_L_5_for_over :   
+#65 = s  
+#65 = #65 EQL 0
+@beqz #65 complete_flower_num_L_10_else_begin  
+#67 = j  
+@printf string 17 String_5 
+@printf int #67  
+@newline    
+i = 0  
+complete_flower_num_L_12_for_begin :   
+#69 = i  
+#71 = n  
+#69 = #69 LEQ #71
+@beqz #69 complete_flower_num_L_13_for_over  
+#73 = i  
+#74 = k ARGET #73
+#76 = #74  
+@printf string 2 String_6 
+@printf int #76  
+@newline    
+i = i PLUS 1
+@j complete_flower_num_L_12_for_begin   
+complete_flower_num_L_13_for_over :   
+@printf string 1 String_7 
+@newline    
+complete_flower_num_L_10_else_begin :   
+j = j PLUS 1
+@j complete_flower_num_L_2_for_begin   
+complete_flower_num_L_3_for_over :   
+@printf string 63 String_8 
+@newline    
+@printf string 24 String_9 
+@newline    
+y = 0  
+i = 100  
+complete_flower_num_L_14_for_begin :   
+#78 = i  
+#78 = #78 LSS 228
+@beqz #78 complete_flower_num_L_15_for_over  
+#79 = i  
+#79 = #79 DIV 100
+n = #79  
+#81 = i  
+#81 = #81 DIV 10
+#82 = #81  
+@push #82   
+@push 10   
+@call mod   
+@get #83   
+j = #83  
+#87 = i  
+@push #87   
+@push 10   
+@call mod   
+@get #88   
+a = #88  
+#92 = n  
+@push #92   
+#94 = j  
+@push #94   
+#96 = a  
+@push #96   
+@call full_num   
+@get #97   
+#99 = #97  
+#101 = n  
+@push #101   
+#103 = j  
+@push #103   
+#105 = a  
+@push #105   
+@call flower_num   
+@get #106   
+#108 = #106  
+#99 = #99 EQL #108
+@beqz #99 complete_flower_num_L_16_else_begin  
+#110 = y  
+#112 = i  
+k = #110 ARSET #112
+#114 = y  
+#114 = #114 PLUS 1
+y = #114  
+complete_flower_num_L_16_else_begin :   
+i = i PLUS 1
+@j complete_flower_num_L_14_for_begin   
+complete_flower_num_L_15_for_over :   
+i = 0  
+complete_flower_num_L_18_for_begin :   
+#116 = i  
+#118 = y  
+#116 = #116 LSS #118
+@beqz #116 complete_flower_num_L_19_for_over  
+#120 = i  
+#121 = k ARGET #120
+#123 = #121  
+@printf string 2 String_10 
+@printf int #123  
+@newline    
+i = i PLUS 1
+@j complete_flower_num_L_18_for_begin   
+complete_flower_num_L_19_for_over :   
+@printf string 1 String_11 
+@newline    
+@printf string 63 String_12 
+@newline    
+h = 0  
+leap = 1  
+m = 2  
+complete_flower_num_L_20_for_begin :   
+#125 = m  
+#125 = #125 LEQ 128
+@beqz #125 complete_flower_num_L_21_for_over  
+#126 = m  
+#126 = #126 DIV 2
+k2 = #126  
+i = 2  
+complete_flower_num_L_22_for_begin :   
+#129 = i  
+#131 = k2  
+#129 = #129 LEQ #131
+@beqz #129 complete_flower_num_L_23_for_over  
+#132 = m  
+#132 = #132 DIV i
+#134 = #132  
+#134 = #134 MULT i
+x2 = #134  
+#137 = m  
+@push #137   
+#139 = i  
+@push #139   
+@call mod   
+@get #140   
+#142 = #140  
+#142 = #142 EQL 0
+@beqz #142 complete_flower_num_L_24_else_begin  
+leap = 0  
+complete_flower_num_L_24_else_begin :   
+i = i PLUS 1
+@j complete_flower_num_L_22_for_begin   
+complete_flower_num_L_23_for_over :   
+#144 = leap  
+#144 = #144 EQL 1
+@beqz #144 complete_flower_num_L_26_else_begin  
+#146 = m  
+@printf string 1 String_13 
+@printf int #146  
+@newline    
+#148 = h  
+#148 = #148 PLUS 1
+h = #148  
+#149 = h  
+#149 = #149 DIV 10
+#151 = #149  
+#151 = #151 MULT 10
+x2 = #151  
+#154 = x2  
+#156 = h  
+#154 = #154 EQL #156
+@beqz #154 complete_flower_num_L_28_else_begin  
+@printf string 1 String_14 
+@newline    
+complete_flower_num_L_28_else_begin :   
+complete_flower_num_L_26_else_begin :   
+leap = 1  
+m = m PLUS 1
+@j complete_flower_num_L_20_for_begin   
+complete_flower_num_L_21_for_over :   
+#158 = h  
+@printf string 13 String_15 
+@printf int #158  
+@newline    
+@ret    
+@func main   
+@var int n  
+@push 5   
+@call factorial   
+@get #159   
+n = #159  
+#163 = n  
+@printf string 5 String_16 
+@printf int #163  
+@newline    
+@push 5   
+@push 10   
+@call swap   
+@call complete_flower_num   
+@ret    
+    

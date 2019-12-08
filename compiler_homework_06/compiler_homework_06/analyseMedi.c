@@ -127,7 +127,7 @@ int analyseMedi() {
 
 			fprintf(fmips, "\n");
 			fprintf(fmips, "%s:\n", item[2]);
-			fprintf(fmips, "la $fp, _stack\n");
+			// fprintf(fmips, "la $fp, _stack\n");
 			spOffset = 4 * 2;
 		}
 		else if (!strcmp(item[1], "@para"))								// 函数参数声明（处理）
@@ -137,8 +137,9 @@ int analyseMedi() {
 			add_paraToOldTable(get_TableFromGrandpa(func_pool, curFuncName), item[3], spOffset);
 			spOffset += 4;
 			
-			
-			fprintf(fmips, "lw $t0, %d($fp)\n", -12 + spOffset);
+			//fprintf(fmips, "lw $t0, %d($fp)\n", -12 + spOffset);
+			fprintf(fmips, "subi $fp, $fp, 4\n");
+			fprintf(fmips, "lw $t0, 0($fp)\n");
 			saveReg("$t0", item[3], 0);
 		}
 		else if (!strcmp(item[1], "@call"))								// 函数调用（未处理）
