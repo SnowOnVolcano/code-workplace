@@ -388,7 +388,7 @@ void paraList() {
 		if (r < 0) error(ERROR_B);
 		else addSymbolParaListItem(symbolTables[0], symbolTables[stIndex]->name, type);
 
-		// declare_para_medi(type, token);
+		declare_para_medi(type, token);
 		appendListTailWithName(tempL, token, type);
 
 		getsym();
@@ -398,7 +398,7 @@ void paraList() {
 			type = (symbol == INTTK) ? VARIABLE_INT : VARIABLE_CHAR;
 			((symbol == INTTK || symbol == CHARTK) && print_sym()) ? getsym() : error_and_getsym();
 
-			// declare_para_medi(type, token);
+			declare_para_medi(type, token);
 			appendListTailWithName(tempL, token, type);
 
 			(symbol == IDENFR && print_sym()) /*加入符号表*/
@@ -412,11 +412,11 @@ void paraList() {
 			getsym();
 		}
 
-		Node_t* tempN = getListTailNode(tempL);
+		/*Node_t* tempN = getListTailNode(tempL);
 		for (int i = 0; i < tempL->n; i++) {
 			declare_para_medi(tempN->data, tempN->name);
 			tempN = getListPrevNode(tempN);
-		}
+		}*/
 	}
 	else {
 		// 空

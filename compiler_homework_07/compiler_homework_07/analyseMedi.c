@@ -17,6 +17,7 @@ int init_analyseMedi() {
 bool isInteger(char str[]) {
 	return (str[0] == '-' || str[0] == '+' || isdigit(str[0]));
 }
+
 void loadReg(char* reg_name, char* var_name, int index) {
 	if (isInteger(var_name)) {
 		fprintf(fmips, "li %s, %s\n", reg_name, var_name);
@@ -31,11 +32,11 @@ void loadReg(char* reg_name, char* var_name, int index) {
 		}
 	}
 }
+
 void saveReg(char* reg_name, char* var_name, int index) {
 	MediHashTable_t* func = get_TableFromGrandpa(func_pool, curFuncName);
 	if (get_ItemFromTable(func, var_name) == NULL) {
 		if (get_ItemFromTable(global_pool, var_name) == NULL) {
-			MediHashTable_t* func = get_TableFromGrandpa(func_pool, curFuncName);
 			add_NewHashItem(func, var_name, VARIABLE_INT);
 			add_offsetToOldItem(func, var_name, spOffset);
 			spOffset += 4;
@@ -50,13 +51,30 @@ void saveReg(char* reg_name, char* var_name, int index) {
 	}
 }
 
-int getFuncIndexByName(char* name) {
+int getItemOffsetByName(char* item_name) {
+	MediHashTable_t* tempF = get_TableFromGrandpa(func_pool, curFuncName);
+	MediHashItem_t* tempI1 = get_ItemFromTable(tempF, item_name);
+	MediHashItem_t* tempI2 = get_ItemFromTable(global_pool, item_name);
+	if (tempI1 == NULL) {
+		if (tempI2 == NULL) {
+			add_NewHashItem(tempF, item_name, VARIABLE_INT);
+			add_offsetToOldItem(tempF, item_name, spOffset);
+			spOffset += 4;
+			return get_ItemFromTable(tempF, item_name)->offset;
+		}
+		else { return tempI2->offset; }
+	}
+	else { return tempI1->offset; }
+}
+
+int getFuncIndexByName(char* table_name) {
 	for (int i = 0; i < func_pool->count; i++) {
-		if (!strcmp(func_pool->tableNames[i], name)) { return i; }
+		if (!strcmp(func_pool->tableNames[i], table_name)) { return i; }
 	}
 	printf("No such Func in func_pool!");
 	return -1;
 }
+
 
 // 输出标头
 int beforeAnalyse() {
@@ -81,6 +99,7 @@ int analyseMedi() {
 	char item[6][STRSIZE];
 	char temp[STRSIZE * 8];
 	int itemCount;
+	
 
 	while (!feof(fmedi)) {
 		memset(temp, 0, STRSIZE * 8);
@@ -127,8 +146,10 @@ int analyseMedi() {
 
 			fprintf(fmips, "\n");
 			fprintf(fmips, "%s:\n", item[2]);
-			// fprintf(fmips, "la $fp, _stack\n");
 			spOffset = 4 * 2;
+
+			List_t* tempL = getSymbolParaList(symbolTables[0], item[2]);
+			fprintf(fmips, "addi $fp, $fp, %d\n", -4 * (tempL == NULL ? 0 : tempL->n));
 		}
 		else if (!strcmp(item[1], "@para"))								// 函数参数声明（处理）
 		{
@@ -137,9 +158,8 @@ int analyseMedi() {
 			add_paraToOldTable(get_TableFromGrandpa(func_pool, curFuncName), item[3], spOffset);
 			spOffset += 4;
 			
-			//fprintf(fmips, "lw $t0, %d($fp)\n", -12 + spOffset);
-			fprintf(fmips, "subi $fp, $fp, 4\n");
-			fprintf(fmips, "lw $t0, 0($fp)\n");
+			// fprintf(fmips, "subi $fp, $fp, 4\n");
+			fprintf(fmips, "lw $t0, %d($fp)\n", spOffset - 12);
 			saveReg("$t0", item[3], 0);
 		}
 		else if (!strcmp(item[1], "@call"))								// 函数调用（未处理）
@@ -148,7 +168,7 @@ int analyseMedi() {
 			
 			fprintf(fmips, "sw $ra, -4($sp)\n");
 			fprintf(fmips, "move $t0, $sp\n");
-			fprintf(fmips, "subi $sp, $sp, %d\n", spOffset);
+			fprintf(fmips, "addi $sp, $sp, %d\n", -spOffset);
 			fprintf(fmips, "sw $t0, -8($sp)\n");
 
 			fprintf(fmips, "jal %s\n", item[2]);

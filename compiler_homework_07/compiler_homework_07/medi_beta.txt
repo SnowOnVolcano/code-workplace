@@ -19,8 +19,8 @@ factorial_L_0_else_begin :
 #6 = #2
 @ret #6
 @func mod
-@para int y
 @para int x
+@para int y
 #7 = x
 #8 = #7
 #9 = x
@@ -32,8 +32,8 @@ x = #8
 #11 = #10
 @ret #11
 @func swap
-@para int y
 @para int x
+@para int y
 @var int temp
 #0 = x
 #1 = #0
@@ -66,9 +66,9 @@ y = #9
 @newline
 @ret
 @func full_num
-@para int a
-@para int j
 @para int n
+@para int j
+@para int a
 #14 = n
 #14 = #14 MULT 100
 #15 = #14
@@ -79,9 +79,9 @@ y = #9
 #15 = #15 PLUS #17
 @ret #15
 @func flower_num
-@para int a
-@para int j
 @para int n
+@para int j
+@para int a
 #18 = n
 #18 = #18 MULT n
 #18 = #18 MULT n
