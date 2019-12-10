@@ -161,9 +161,10 @@
   <ItemGroup>
     <Text Include="error.txt" />
     <Text Include="medi.txt" />
+    <Text Include="medi_1.txt" />
+    <Text Include="medi_beta.txt" />
     <Text Include="mips.txt" />
     <Text Include="mips_beta.txt" />
-    <Text Include="mips_mediate_code.txt" />
     <Text Include="output.txt" />
     <Text Include="stdout.txt" />
     <Text Include="testfile.txt" />

@@ -1,2 +1,9 @@
-﻿lld-link : warning : /debug:fastlink unsupported; using /debug:full
+﻿  In file included from code_optimize.c:1:
+./code_optimize.h(8,9): warning : 'NULL' macro redefined [-Wmacro-redefined]
+E:\LLVM\lib\clang\8.0.0\include\stddef.h(105,11): message : previous definition is here
+code_optimize.c(75,23): warning : format string is not a string literal (potentially insecure) [-Wformat-security]
+code_optimize.c(75,23): message : treat the string as an argument to avoid this
+code_optimize.c(147,25): warning : format string is not a string literal (potentially insecure) [-Wformat-security]
+code_optimize.c(147,25): message : treat the string as an argument to avoid this
+lld-link : warning : /debug:fastlink unsupported; using /debug:full
   compiler_homework_07.vcxproj -> E:\vscode-workplace\compiler_homework_07\Debug\compiler_homework_07.exe

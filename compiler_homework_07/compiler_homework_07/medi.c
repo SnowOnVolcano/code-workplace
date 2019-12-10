@@ -19,23 +19,23 @@ char* int2string(int n) {
 
 // 初始化中间代码生成程序
 int init_medi() {
-	fMediOut = fopen("mips_mediate_code.txt", "w");
+	fMediOut = fopen("medi_beta.txt", "w");
 	return 0;
 }
 
 void init_temp() { puts("init_temp"); }
 
 char* new_temp() {
-	/*int tempno = temps[temp_count - 1];   // get last temp
+	int tempno = temps[temp_count - 1];   // get last temp
 	static char str_t[STRSIZE];
 	strcpy(str_t, "#");
 	strcat(str_t, int2string(tempno));
 	temps[temp_count - 1] ++;
-	return str_t;*/
-	static char str_t[STRSIZE];
+	return str_t;
+	/*static char str_t[STRSIZE];
 	strcpy(str_t, "#");
 	strcat(str_t, int2string(fooooool++));
-	return str_t;
+	return str_t;*/
 }
 
 

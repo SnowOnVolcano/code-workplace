@@ -3,7 +3,6 @@ static char curFuncName[STRSIZE];
 
 // 初始化中间代码分析器
 int init_analyseMedi() {
-	// if ((fmedi = fopen("mips_mediate_code.txt", "rb")) < 0) {
 	if ((fmedi = fopen("medi.txt", "rb")) < 0) {
 		printf("Cannot open the file!\n");
 		exit(0);

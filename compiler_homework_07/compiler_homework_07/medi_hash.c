@@ -23,6 +23,7 @@ MediHashItem_t* new_MediHashItem(char* name, int type) {
 	MediHashItem_t* newone;
 	newone = (MediHashItem_t*)malloc(sizeof(MediHashItem_t));
 	strcpy(newone->name, name);
+	strcpy(newone->pal, "");
 	newone->type = type;
 	newone->offset = 0;
 	return newone;
@@ -76,6 +77,13 @@ int add_offsetToOldItem(MediHashTable_t* table, char* item_name, int offset) {
 	return 0;
 }
 
+int add_palToOldItem(MediHashTable_t* table, char* item_name, char* item_pal) {
+	MediHashItem_t* item = get_ItemFromTable(table, item_name);
+	if (item == NULL) { return -1; }
+	else { strcpy(item->pal, item_pal); }
+	return 0;
+}
+
 MediHashTable_t* get_TableFromGrandpa(MediHashGrandpa_t* grandPa, char* table_name) {
 	MediHashTable_t* table;
 	HASH_FIND_STR(grandPa->head, table_name, table);
@@ -88,4 +96,15 @@ MediHashItem_t* get_ItemFromTable(MediHashTable_t* table, char* item_name) {
 	HASH_FIND_STR(table->head, item_name, item);
 	// if (item == NULL) { printf("ERROR: Don't have that HashItem.\n"); }
 	return item;
+}
+
+int delete_MediHashItem(MediHashTable_t* table, char* item_name) {
+	MediHashItem_t* item = NULL;
+	HASH_FIND_STR(table->head, item_name, item);
+	if (item == NULL) { return -1; }
+	else {
+		HASH_DEL(table->head, item);
+		free(item);
+	}
+	return 0;
 }

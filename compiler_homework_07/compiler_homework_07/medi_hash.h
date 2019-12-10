@@ -11,6 +11,7 @@
 typedef struct mediHashItem
 {
 	char name[KEYSIZE];
+	char pal[KEYSIZE];
 	int type;
 	int offset;
 
@@ -47,9 +48,13 @@ extern int add_paraToOldTable(MediHashTable_t* table, char* para_name, int offse
 
 extern int add_typeToOldItem(MediHashTable_t* table, char* item_name, int type);
 extern int add_offsetToOldItem(MediHashTable_t* table, char* item_name, int offset);
+extern int add_palToOldItem(MediHashTable_t* table, char* item_name, char* item_pal);
 
 extern MediHashTable_t* get_TableFromGrandpa(MediHashGrandpa_t* grandPa, char* table_name);
 extern MediHashItem_t* get_ItemFromTable(MediHashTable_t* table, char* item_name);
+
+extern int delete_MediHashItem(MediHashTable_t* table, char* item_name);
+
 
 
 

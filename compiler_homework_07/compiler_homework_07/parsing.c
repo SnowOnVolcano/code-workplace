@@ -77,7 +77,7 @@ void program() {
 			getsym();
 			if (symbol == LPARENT) {
 				restorePreviousSym();
-				temps[++temp_count] = 0;
+				// temps[++temp_count] = 0;
 				if (isFuncStart == 0) { 
 					isFuncStart = 1; 
 					invoke_func_medi("main");
@@ -95,7 +95,7 @@ void program() {
 			getsym();
 			if (symbol == MAINTK) {
 				restorePreviousSym();
-				temps[++temp_count] = 0;
+				// temps[++temp_count] = 0;
 				if (isFuncStart == 0) {
 					isFuncStart = 1;
 					invoke_func_medi("main");
