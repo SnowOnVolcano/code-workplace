@@ -8,7 +8,7 @@ int init_analyseMedi() {
 		printf("Cannot open the file!\n");
 		exit(0);
 	}
-	fmips = fopen("mips.txt", "w");
+	fmips = fopen("mips_beta.txt", "w");
 	global_pool = new_MediHashTable("#GlobalVars#", 0);
 	func_pool = new_MediHashGrandpa();
 	gpOffset = fpOffset = spOffset = 0;

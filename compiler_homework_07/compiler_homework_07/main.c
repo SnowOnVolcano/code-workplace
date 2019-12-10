@@ -22,5 +22,6 @@ int main() {
 	analyseMedi();
 	fclose(fmedi);
 	fclose(fmips);
+	optimizeMips();
 	return 0;
 }
