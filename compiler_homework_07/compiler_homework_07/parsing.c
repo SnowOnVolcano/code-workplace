@@ -84,6 +84,8 @@ void program() {
 					exit_medi();
 				}
 				re_func_definition();
+
+				//end_func_medi(getSymbol(symbolTables[0], symbolTables[stIndex]->name));
 			}
 			else {
 				restorePreviousSym();
@@ -102,6 +104,8 @@ void program() {
 					exit_medi();
 				}
 				mainFunction();
+
+				//end_func_medi(getSymbol(symbolTables[0], symbolTables[stIndex]->name));
 			}
 			else {
 				restorePreviousSym();
@@ -112,6 +116,8 @@ void program() {
 					exit_medi();
 				}
 				unre_func_definition();
+
+				//end_func_medi(getSymbol(symbolTables[0], symbolTables[stIndex]->name));
 			}
 		}
 

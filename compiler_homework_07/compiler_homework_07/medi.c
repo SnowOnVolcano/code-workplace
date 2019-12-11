@@ -65,6 +65,14 @@ void declare_func_medi(SymbolItem_t* func_item) {
 	MIPS_OUTPUT(str_t);
 }
 
+// 函数结束
+void end_func_medi(SymbolItem_t* func_item) {
+	char str_t[STRSIZE];
+	strcpy(str_t, "@end_func ");
+	strcat(str_t, func_item->key);
+	MIPS_OUTPUT(str_t);
+}
+
 // 函数参数声明
 void declare_para_medi(int type, char* name)
 {

@@ -162,6 +162,7 @@
     <Text Include="error.txt" />
     <Text Include="medi.txt" />
     <Text Include="medi_1.txt" />
+    <Text Include="medi_2.txt" />
     <Text Include="medi_beta.txt" />
     <Text Include="mips.txt" />
     <Text Include="mips_beta.txt" />

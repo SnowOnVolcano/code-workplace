@@ -31,8 +31,12 @@ char* new_label(SymbolTable_t* func_item, char* info);
 
 // 结束退出
 void exit_medi();
+
 // 函数声明
 void declare_func_medi(SymbolItem_t* func_item);
+
+// 函数结束
+void end_func_medi(SymbolItem_t* func_item);
 
 // 函数参数声明
 void declare_para_medi(int type, char* name);

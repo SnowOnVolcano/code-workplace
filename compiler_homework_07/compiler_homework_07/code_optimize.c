@@ -1,6 +1,13 @@
 #include "code_optimize.h"
 
+int coisInteger(char str[]) {
+	return (str[0] == '-' || str[0] == '+' || isdigit(str[0]));
+}
 
+int coisGlobalVar(char* var_name) {
+	int r = getSymbolType(symbolTables[0], var_name);
+	return r != -1;
+}
 
 int optimizeMedi_1() {
 	FILE* moFileIn = fopen("medi_beta.txt", "rb");
@@ -37,10 +44,10 @@ int optimizeMedi_1() {
 		itemCount = nextItemCount;
 		strcpy(temp, nextTemp);
 	}
-	
+
 	if (nextItemCount) { fprintf(moFileOut, "%s %s %s %s %s\n", nextItem[1], nextItem[2], nextItem[3], nextItem[4], nextItem[5]); }
 	else { fprintf(moFileOut, "%s %s %s %s %s\n", item[1], item[2], item[3], item[4], item[5]); }
-	
+
 	fclose(moFileIn);
 	fclose(moFileOut);
 	return 0;
@@ -49,7 +56,7 @@ int optimizeMedi_1() {
 int optimizeMedi_2() {
 	FILE* moFileIn = fopen("medi_1.txt", "rb");
 	FILE* moFileOut = fopen("medi.txt", "w");
-	
+
 	char item[6][STRSIZE];
 	char temp[STRSIZE * 8];
 	int itemCount = 0;
@@ -62,7 +69,7 @@ int optimizeMedi_2() {
 		memset(item, 0, 6 * STRSIZE);
 		fgets(temp, STRSIZE * 8, moFileIn);
 		itemCount = sscanf(temp, "%s %s %s %s %s", item[1], item[2], item[3], item[4], item[5]);
-		
+
 		if (itemCount == 3 && !strcmp(item[2], "=") && item[1][0] == '#') {
 			MediHashItem_t* tempI1 = get_ItemFromTable(pool, item[1]);
 			MediHashItem_t* tempI2 = get_ItemFromTable(pool, item[3]);
@@ -108,10 +115,201 @@ int optimizeMedi_2() {
 	return 0;
 }
 
+int optimizeMedi_3() {
+	FILE* moFileIn = fopen("medi.txt", "rb");
+	FILE* moFileOut = fopen("medi_2.txt", "w");
+
+	char temp[STRSIZE * 8];
+	char item[6][STRSIZE];
+	int itemCount = 0;
+
+	char viaI[0x100];
+	char tempS[0x800];
+
+	List_t* pushStack = newList();
+
+	MediHashGrandpa_t* functions = new_MediHashGrandpa();
+	MediHashTable_t* curFunction = NULL;
+
+	while (!feof(moFileIn))
+	{
+		memset(temp, 0, STRSIZE * 8);
+		memset(item, 0, 6 * STRSIZE);
+		fgets(temp, STRSIZE * 8, moFileIn);
+		itemCount = sscanf(temp, "%s %s %s %s %s", item[1], item[2], item[3], item[4], item[5]);
+
+		if (!strcmp(item[1], "@call"))										// 函数调用
+		{
+			MediHashTable_t* tempT = get_TableFromGrandpa(functions, item[2]);
+			List_t* tempL = (tempT == NULL) ? NULL : tempT->list;
+
+			if (curFunction == NULL) { 
+				fprintf(moFileOut, temp); 
+			}
+			else if (tempL != NULL) {
+				curFunction->type = -1;
+
+				Node_t* tempN1 = getListTopNode(tempL);
+				Node_t* tempN2 = getListTailNode(pushStack);
+				for (int i = 0; i < tempL->n - 1; i++) { tempN2 = getListPrevNode(tempN2); }
+
+				if (tempT->type != -1) {
+					char tempI[4][STRSIZE];
+					for (int i = 0; i < tempL->n; i++) {
+						sscanf(tempN1->name, "%s %s %s", tempI[1], tempI[2], tempI[3]);
+
+						fprintf(moFileOut, "%s\n" ,tempN1->name);
+						fprintf(moFileOut, "%s = %s\n", tempI[1], tempN2->name);
+						tempN1 = getListNextNode(tempN1);
+						tempN2 = getListNextNode(tempN2);
+					}
+				}
+				else {
+					for (int i = 0; i < pushStack->n; i++) {
+						fprintf(moFileOut, "@push %s\n", tempN2->name);
+						tempN2 = getListNextNode(tempN2);
+					}
+					fprintf(moFileOut, temp);
+				}
+				for (int i = 0; i < tempL->n; i++) { deleteListTail(pushStack); }
+			}
+		}
+		else if (!strcmp(item[1], "@ret"))									// 函数返回
+		{
+			if (itemCount > 1) {
+				if (coisInteger(item[2])) { add_paraToOldTable(curFunction, temp, 0); }
+				else if (coisGlobalVar(item[2])) { curFunction->type = -1; }
+				else {
+					sprintf(tempS, "%s #%s", item[1], item[2]);
+					add_paraToOldTable(curFunction, tempS, 0);
+				}
+			}
+		}
+		else if (!strcmp(item[1], "@push"))									// 函数传参
+		{
+			appendListTailWithName(pushStack, item[2], 0);
+		}
+		else {
+			if (!strcmp(item[1], "@var"))									// 变量声明
+			{
+				sprintf(tempS, "%s %s #%s", item[1], item[2], item[3]);
+				add_paraToOldTable(curFunction, tempS, 0);
+			}
+			else if (!strcmp(item[1], "@array"))							// 数组声明
+			{
+				curFunction->type = -1;
+			}
+			else if (!strcmp(item[1], "@exit"))								// 中止
+			{
+			}
+			else if (!strcmp(item[1], "@func"))								// 函数声明
+			{
+				add_NewHashTable(functions, item[2], 0);
+				curFunction = get_TableFromGrandpa(functions, item[2]);
+			}
+			else if (!strcmp(item[1], "@para"))								// 函数参数声明
+			{
+				sprintf(tempS, "@var %s #%s", item[2], item[3]);
+				add_paraToOldTable(curFunction, tempS, 0);
+			}
+			else if (!strcmp(item[1], "@get"))								// 接收返回值
+			{
+			}
+			else if (!strcmp(item[1], "@beqz") || !strcmp(item[1], "@bnez"))// 等于0跳转 || 不等于0跳转
+			{
+				if (coisInteger(item[2])) { add_paraToOldTable(curFunction, temp, 0); }
+				else if (coisGlobalVar(item[2])) { curFunction->type = -1; }
+				else {
+					sprintf(tempS, "%s #%s %s", item[1], item[2], item[3]);
+					add_paraToOldTable(curFunction, tempS, 0);
+				}
+			}
+			else if (!strcmp(item[1], "@beq"))								// 相等时跳转
+			{
+				if (coisGlobalVar(item[2]) || coisGlobalVar(item[3])) {
+					curFunction->type = -1;
+				}
+				else {
+					if (!coisInteger(item[2])) { sprintf(viaI, "#%s", item[2]); strcpy(item[2], viaI); }
+					if (!coisInteger(item[3])) { sprintf(viaI, "#%s", item[3]); strcpy(item[3], viaI); }
+					sprintf(tempS, "%s %s %s %s", item[1], item[2], item[3], item[4]);
+					add_paraToOldTable(curFunction, tempS, 0);
+				}
+			}
+			else if (!strcmp(item[1], "@j"))								// 无条件跳转
+			{
+				add_paraToOldTable(curFunction, temp, 0);
+			}
+			else if (!strcmp(item[1], "@jal"))								// 无条件跳转并链接
+			{
+
+			}
+			else if (!strcmp(item[1], "@printf"))							// 输出
+			{
+				if (!strcmp(item[2], "string")) { add_paraToOldTable(curFunction, temp, 0); }
+				else if (!strcmp(item[2], "int") || !strcmp(item[2], "char")) {
+					if (coisGlobalVar(item[3])) { curFunction->type = -1;	}
+					else if (!coisInteger(item[3])) { 
+						sprintf(tempS, "%s %s #%s", item[1], item[2], item[3]);
+						add_paraToOldTable(curFunction, tempS, 0);
+					}
+				}
+			}
+			else if (!strcmp(item[1], "@newline"))							// 换行
+			{
+				add_paraToOldTable(curFunction, item[1], 0);
+			}
+			else if (!strcmp(item[1], "@scanf"))							// 输入
+			{
+				if (coisGlobalVar(item[3])) { curFunction->type = -1; }
+				else if (!coisInteger(item[3])) { 
+					sprintf(tempS, "%s %s #%s", item[1], item[2], item[3]);
+					add_paraToOldTable(curFunction, tempS, 0);
+				}
+			}
+			else if (!strcmp(item[2], ":"))									// 标签
+			{
+				sprintf(viaI, "%s %s", item[1], item[2]);
+				add_paraToOldTable(curFunction, viaI, 0);
+			}
+			else if (!strcmp(item[2], "="))									// 赋值或运算语句
+			{
+				if (itemCount == 3) {
+					if (coisGlobalVar(item[1]) || coisGlobalVar(item[3])) { curFunction->type = -1; }
+					else {
+						if (!coisInteger(item[1])) { sprintf(viaI, "#%s", item[1]); strcpy(item[1], viaI); }
+						if (!coisInteger(item[3])) { sprintf(viaI, "#%s", item[3]); strcpy(item[3], viaI); }
+						sprintf(tempS, "%s %s %s", item[1], item[2], item[3]);
+						add_paraToOldTable(curFunction, tempS, 0);
+					}
+				}
+				else {
+					if (!strcmp(item[4], "ARGET") || !strcmp(item[4], "ARSET")) { curFunction->type = -1; }
+					else {
+						if (coisGlobalVar(item[1]) || coisGlobalVar(item[3]) || coisGlobalVar(item[5])) { curFunction->type = -1; }
+						else {
+							if (!coisInteger(item[1])) { sprintf(viaI, "#%s", item[1]); strcpy(item[1], viaI); }
+							if (!coisInteger(item[3])) { sprintf(viaI, "#%s", item[3]); strcpy(item[3], viaI); }
+							if (!coisInteger(item[5])) { sprintf(viaI, "#%s", item[5]); strcpy(item[5], viaI); }
+							sprintf(tempS, "%s %s %s %s %s", item[1], item[2], item[3], item[4], item[5]);
+							add_paraToOldTable(curFunction, tempS, 0);
+						}
+					}
+				}
+			}
+			fprintf(moFileOut, temp);
+		}
+	}
+	
+	fclose(moFileIn);
+	fclose(moFileOut);
+}
+
 // 优化中间代码
 int optimizeMedi() {
 	optimizeMedi_1();
 	optimizeMedi_2();
+	optimizeMedi_3();
 	return 0;
 }
 

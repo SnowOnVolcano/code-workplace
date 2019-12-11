@@ -7,7 +7,7 @@
  /* 链表节点封装 */
 typedef struct node
 {
-	char name[0x100];	// 标识符名
+	char name[0x800];	// 标识符名
 	int data;			// 数据
 	struct node* prev;	// 前一个节点
 	struct node* next;	// 下一个节点
