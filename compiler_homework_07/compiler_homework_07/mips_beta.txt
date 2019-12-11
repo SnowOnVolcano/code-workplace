@@ -36,9 +36,6 @@ syscall
 
 
 factorial:
-addi $fp, $fp, -4
-lw $t0, 0($fp)
-sw $t0, -12($sp)
 lw $t1, -12($sp)
 li $t2, 1
 sle $t0, $t1, $t2
@@ -53,8 +50,7 @@ li $t2, 1
 sub $t0, $t1, $t2
 sw $t0, -20($sp)
 lw $t0, -20($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
+sw $t0, -32($sp)
 sw $ra, -4($sp)
 move $t0, $sp
 addi $sp, $sp, -20
@@ -72,11 +68,6 @@ lw $v0, -28($sp)
 jr $ra
 
 mod:
-addi $fp, $fp, -8
-lw $t0, 0($fp)
-sw $t0, -12($sp)
-lw $t0, 4($fp)
-sw $t0, -16($sp)
 lw $t1, -12($sp)
 lw $t2, -16($sp)
 div $t1, $t2
@@ -98,11 +89,6 @@ lw $v0, -12($sp)
 jr $ra
 
 swap:
-addi $fp, $fp, -8
-lw $t0, 0($fp)
-sw $t0, -12($sp)
-lw $t0, 4($fp)
-sw $t0, -16($sp)
 li $v0, 4
 la $a0, String_0
 syscall
@@ -151,13 +137,6 @@ syscall
 jr $ra
 
 full_num:
-addi $fp, $fp, -12
-lw $t0, 0($fp)
-sw $t0, -12($sp)
-lw $t0, 4($fp)
-sw $t0, -16($sp)
-lw $t0, 8($fp)
-sw $t0, -20($sp)
 lw $t1, -12($sp)
 li $t2, 100
 mult $t1, $t2
@@ -180,13 +159,6 @@ lw $v0, -32($sp)
 jr $ra
 
 flower_num:
-addi $fp, $fp, -12
-lw $t0, 0($fp)
-sw $t0, -12($sp)
-lw $t0, 4($fp)
-sw $t0, -16($sp)
-lw $t0, 8($fp)
-sw $t0, -20($sp)
 lw $t1, -12($sp)
 lw $t2, -12($sp)
 mult $t1, $t2
@@ -229,7 +201,6 @@ lw $v0, -32($sp)
 jr $ra
 
 complete_flower_num:
-addi $fp, $fp, 0
 li $t1, 2
 move $t0, $t1
 sw $t0, -528($sp)
@@ -269,12 +240,10 @@ sw $t0, -592($sp)
 lw $t1, -592($sp)
 move $t0, $t1
 sw $t0, -540($sp)
-lw $t0, -528($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
 lw $t0, -524($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
+sw $t0, -608($sp)
+lw $t0, -528($sp)
+sw $t0, -604($sp)
 sw $ra, -4($sp)
 move $t0, $sp
 addi $sp, $sp, -592
@@ -430,12 +399,10 @@ li $t2, 10
 div $t1, $t2
 mflo $t0
 sw $t0, -620($sp)
-lw $t0, -620($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
 li $t0, 10
-sw $t0, 0($fp)
-addi $fp, $fp, 4
+sw $t0, -640($sp)
+lw $t0, -620($sp)
+sw $t0, -636($sp)
 sw $ra, -4($sp)
 move $t0, $sp
 addi $sp, $sp, -624
@@ -447,12 +414,10 @@ sw $v0, -620($sp)
 lw $t1, -620($sp)
 move $t0, $t1
 sw $t0, -528($sp)
-lw $t0, -524($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
 li $t0, 10
-sw $t0, 0($fp)
-addi $fp, $fp, 4
+sw $t0, -640($sp)
+lw $t0, -524($sp)
+sw $t0, -636($sp)
 sw $ra, -4($sp)
 move $t0, $sp
 addi $sp, $sp, -624
@@ -464,15 +429,12 @@ sw $v0, -628($sp)
 lw $t1, -628($sp)
 move $t0, $t1
 sw $t0, -568($sp)
-lw $t0, -532($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-lw $t0, -528($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
 lw $t0, -568($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
+sw $t0, -648($sp)
+lw $t0, -528($sp)
+sw $t0, -644($sp)
+lw $t0, -532($sp)
+sw $t0, -640($sp)
 sw $ra, -4($sp)
 move $t0, $sp
 addi $sp, $sp, -628
@@ -481,15 +443,12 @@ jal full_num
 lw $sp, -8($sp)
 lw $ra, -4($sp)
 sw $v0, -632($sp)
-lw $t0, -532($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-lw $t0, -528($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
 lw $t0, -568($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
+sw $t0, -652($sp)
+lw $t0, -528($sp)
+sw $t0, -648($sp)
+lw $t0, -532($sp)
+sw $t0, -644($sp)
 sw $ra, -4($sp)
 move $t0, $sp
 addi $sp, $sp, -632
@@ -616,12 +575,10 @@ sw $t0, -664($sp)
 lw $t1, -664($sp)
 move $t0, $t1
 sw $t0, -564($sp)
-lw $t0, -548($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
 lw $t0, -524($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
+sw $t0, -680($sp)
+lw $t0, -548($sp)
+sw $t0, -676($sp)
 sw $ra, -4($sp)
 move $t0, $sp
 addi $sp, $sp, -664
@@ -716,10 +673,8 @@ syscall
 jr $ra
 
 main:
-addi $fp, $fp, 0
 li $t0, 5
-sw $t0, 0($fp)
-addi $fp, $fp, 4
+sw $t0, -24($sp)
 sw $ra, -4($sp)
 move $t0, $sp
 addi $sp, $sp, -12
@@ -740,12 +695,10 @@ syscall
 li $v0, 11
 li $a0, 10
 syscall
-li $t0, 5
-sw $t0, 0($fp)
-addi $fp, $fp, 4
 li $t0, 10
-sw $t0, 0($fp)
-addi $fp, $fp, 4
+sw $t0, -32($sp)
+li $t0, 5
+sw $t0, -28($sp)
 sw $ra, -4($sp)
 move $t0, $sp
 addi $sp, $sp, -16
