@@ -124,5 +124,11 @@
     <Text Include="output.txt">
       <Filter>资源文件</Filter>
     </Text>
+    <Text Include="mips.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="mips_beta.txt">
+      <Filter>资源文件</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -7,7 +7,7 @@
 @ret 1   
 factorial_L_0_else_begin :   
 #4 = n MINU 1
-@push #4   
+@push #4
 @call factorial   
 @get #5   
 #2 = n MULT #5
@@ -91,9 +91,15 @@ complete_flower_num_L_4_for_begin :
 #2 = j DIV i
 #4 = #2 MULT i
 x1 = #4  
-@push j   
-@push i   
-@call mod   
+@var int #x
+#x = j
+@var int #y
+#y = i
+##9 = #x DIV #y
+##9 = ##9 MULT #y
+##8 = #x MINU ##9
+#x = ##8
+@halfret #x
 @get #10   
 #12 = #10 EQL 0
 @beqz #12 complete_flower_num_L_6_else_begin  
@@ -147,25 +153,55 @@ complete_flower_num_L_14_for_begin :
 #15 = i DIV 100
 n = #15  
 #17 = i DIV 10
-@push #17   
-@push 10   
-@call mod   
+@var int #x
+#x = #17
+@var int #y
+#y = 10
+##9 = #x DIV #y
+##9 = ##9 MULT #y
+##8 = #x MINU ##9
+#x = ##8
+@halfret #x
 @get #17   
 j = #17  
-@push i   
-@push 10   
-@call mod   
+@var int #x
+#x = i
+@var int #y
+#y = 10
+##9 = #x DIV #y
+##9 = ##9 MULT #y
+##8 = #x MINU ##9
+#x = ##8
+@halfret #x
 @get #24   
 a = #24  
-@push n   
-@push j   
-@push a   
-@call full_num   
+@var int #n
+#n = n
+@var int #j
+#j = j
+@var int #a
+#a = a
+##14 = #n MULT 100
+##16 = #j MULT 10
+##15 = ##14 PLUS ##16
+##15 = ##15 PLUS #a
+@halfret ##15
 @get #33   
-@push n   
-@push j   
-@push a   
-@call flower_num   
+@var int #n
+#n = n
+@var int #j
+#j = j
+@var int #a
+#a = a
+##18 = #n MULT #n
+##18 = ##18 MULT #n
+##20 = #j MULT #j
+##20 = ##20 MULT #j
+##19 = ##18 PLUS ##20
+##21 = #a MULT #a
+##21 = ##21 MULT #a
+##19 = ##19 PLUS ##21
+@halfret ##19
 @get #42   
 #35 = #33 EQL #42
 @beqz #35 complete_flower_num_L_16_else_begin  
@@ -206,9 +242,15 @@ complete_flower_num_L_22_for_begin :
 #47 = m DIV i
 #49 = #47 MULT i
 x2 = #49  
-@push m   
-@push i   
-@call mod   
+@var int #x
+#x = m
+@var int #y
+#y = i
+##9 = #x DIV #y
+##9 = ##9 MULT #y
+##8 = #x MINU ##9
+#x = ##8
+@halfret #x
 @get #55   
 #57 = #55 EQL 0
 @beqz #57 complete_flower_num_L_24_else_begin  
@@ -243,16 +285,33 @@ complete_flower_num_L_21_for_over :
 @ret    
 @func main   
 @var int n  
-@push 5   
+@push 5
 @call factorial   
 @get #62   
 n = #62  
 @printf string 5 String_16 
 @printf int n  
 @newline    
-@push 5   
-@push 10   
-@call swap   
+@var int #x
+#x = 5
+@var int #y
+#y = 10
+@var int #temp
+@printf string 4 String_0
+@printf int #x
+@newline
+@printf string 4 String_1
+@printf int #y
+@newline
+#temp = #x
+#x = #y
+#y = #temp
+@printf string 9 String_2
+@printf int #x
+@newline
+@printf string 9 String_3
+@printf int #y
+@newline
 @call complete_flower_num   
 @ret    
     

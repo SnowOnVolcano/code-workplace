@@ -197,6 +197,11 @@ int analyseMedi() {
 			
 			fprintf(fmips, "jr $ra\n");
 		}
+		else if (!strcmp(item[1], "@halfret")) {						// 内联函数返回
+			if (itemCount > 1) {
+				loadReg("$v0", item[2]);
+			}
+		}
 		else if (!strcmp(item[1], "@push"))								// 函数传参（未处理）
 		{
 			// loadReg("$t0", item[2]);

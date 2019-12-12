@@ -55,7 +55,7 @@ int optimizeMedi_1() {
 
 int optimizeMedi_2() {
 	FILE* moFileIn = fopen("medi_1.txt", "rb");
-	FILE* moFileOut = fopen("medi.txt", "w");
+	FILE* moFileOut = fopen("medi_2.txt", "w");
 
 	char item[6][STRSIZE];
 	char temp[STRSIZE * 8];
@@ -116,8 +116,8 @@ int optimizeMedi_2() {
 }
 
 int optimizeMedi_3() {
-	FILE* moFileIn = fopen("medi.txt", "rb");
-	FILE* moFileOut = fopen("medi_2.txt", "w");
+	FILE* moFileIn = fopen("medi_2.txt", "rb");
+	FILE* moFileOut = fopen("medi.txt", "wb");
 
 	char temp[STRSIZE * 8];
 	char item[6][STRSIZE];
@@ -216,10 +216,14 @@ int optimizeMedi_3() {
 			else if (!strcmp(item[1], "@ret"))								// 函数返回
 			{
 				if (itemCount > 1) {
-					if (coisInteger(item[2])) { add_paraToOldTable(curFunction, temp, 0); }
+					if (coisInteger(item[2])) { 
+						sprintf(tempS, "@halfret %s", item[2]);
+						add_paraToOldTable(curFunction, tempS, 0);
+					}
 					else if (coisGlobalVar(item[2])) { curFunction->type = -1; }
 					else {
-						sprintf(tempS, "%s #%s", item[1], item[2]);
+						//sprintf(tempS, "%s #%s", item[1], item[2]);
+						sprintf(tempS, "@halfret #%s", item[2]);
 						add_paraToOldTable(curFunction, tempS, 0);
 					}
 				}
@@ -229,7 +233,10 @@ int optimizeMedi_3() {
 			}
 			else if (!strcmp(item[1], "@beqz") || !strcmp(item[1], "@bnez"))// 等于0跳转 || 不等于0跳转
 			{
-				if (coisInteger(item[2])) { add_paraToOldTable(curFunction, temp, 0); }
+				if (coisInteger(item[2])) { 
+					sprintf(tempS, "%s %s %s", item[1], item[2], item[3]);
+					add_paraToOldTable(curFunction, tempS, 0);
+				}
 				else if (coisGlobalVar(item[2])) { curFunction->type = -1; }
 				else {
 					sprintf(tempS, "%s #%s %s", item[1], item[2], item[3]);
@@ -248,7 +255,8 @@ int optimizeMedi_3() {
 			}
 			else if (!strcmp(item[1], "@j"))								// 无条件跳转
 			{
-				add_paraToOldTable(curFunction, temp, 0);
+				sprintf(tempS, "%s %s", item[1], item[2]);
+				add_paraToOldTable(curFunction, tempS, 0);
 			}
 			else if (!strcmp(item[1], "@jal"))								// 无条件跳转并链接
 			{
@@ -256,7 +264,10 @@ int optimizeMedi_3() {
 			}
 			else if (!strcmp(item[1], "@printf"))							// 输出
 			{
-				if (!strcmp(item[2], "string")) { add_paraToOldTable(curFunction, temp, 0); }
+				if (!strcmp(item[2], "string")) { 
+					sprintf(tempS, "%s %s %s %s", item[1], item[2], item[3], item[4]);
+					add_paraToOldTable(curFunction, tempS, 0);
+				}
 				else if (!strcmp(item[2], "int") || !strcmp(item[2], "char")) {
 					if (coisGlobalVar(item[3])) { curFunction->type = -1; }
 					else if (!coisInteger(item[3])) {
@@ -267,7 +278,7 @@ int optimizeMedi_3() {
 			}
 			else if (!strcmp(item[1], "@newline"))							// 换行
 			{
-				add_paraToOldTable(curFunction, temp, 0);
+				add_paraToOldTable(curFunction, item[1], 0);
 			}
 			else if (!strcmp(item[1], "@scanf"))							// 输入
 			{
@@ -279,7 +290,8 @@ int optimizeMedi_3() {
 			}
 			else if (!strcmp(item[2], ":"))									// 标签
 			{
-				add_paraToOldTable(curFunction, temp, 0);
+				sprintf(tempS, "%s %s", item[1], item[2]);
+				add_paraToOldTable(curFunction, tempS, 0);
 			}
 			else if (!strcmp(item[2], "="))									// 赋值或运算语句
 			{
@@ -325,7 +337,7 @@ int optimizeMedi() {
 // 优化汇编代码
 int optimizeMips() {
 	FILE* mipsFileIn = fopen("mips_beta.txt", "rb");
-	FILE* mipsFileOut = fopen("mips.txt", "w");
+	FILE* mipsFileOut = fopen("mips.txt", "wb");
 
 	char lastItem[6][STRSIZE];
 	int lastItemCount = 0;
