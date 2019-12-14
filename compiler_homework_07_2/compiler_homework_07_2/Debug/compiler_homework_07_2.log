@@ -1,13 +1,2 @@
-﻿code_optimize.c(92,24): warning : format string is not a string literal (potentially insecure) [-Wformat-security]
-code_optimize.c(92,24): message : treat the string as an argument to avoid this
-code_optimize.c(129,25): warning : format string is not a string literal (potentially insecure) [-Wformat-security]
-code_optimize.c(129,25): message : treat the string as an argument to avoid this
-code_optimize.c(274,23): warning : format string is not a string literal (potentially insecure) [-Wformat-security]
-code_optimize.c(274,23): message : treat the string as an argument to avoid this
-code_optimize.c(280,1): warning : control reaches end of non-void function [-Wreturn-type]
-code_optimize.c(308,23): warning : format string is not a string literal (potentially insecure) [-Wformat-security]
-code_optimize.c(308,23): message : treat the string as an argument to avoid this
-code_optimize.c(382,25): warning : format string is not a string literal (potentially insecure) [-Wformat-security]
-code_optimize.c(382,25): message : treat the string as an argument to avoid this
-lld-link : warning : /debug:fastlink unsupported; using /debug:full
+﻿lld-link : warning : /debug:fastlink unsupported; using /debug:full
   compiler_homework_07_2.vcxproj -> E:\vscode-workplace\compiler_homework_07_2\Debug\compiler_homework_07_2.exe

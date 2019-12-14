@@ -1,5 +1,12 @@
 #include "analyseMedi.h"
+#define S_REG_SIZE 8
 static char curFuncName[STRSIZE];
+MediHashTable_t* curFunc;
+char s_regs[S_REG_SIZE][10] = { "$s0", "$s1", "$s2", "$s3", "$s4", "$s5", "$s6", "$s7" };
+char s_regs_member[S_REG_SIZE][10];
+int sReg = -1;
+List_t* t_regs;
+MediHashTable_t* var2tReg;
 
 // 初始化中间代码分析器
 int init_analyseMedi() {
@@ -18,17 +25,68 @@ bool isInteger(char str[]) {
 	return (str[0] == '-' || str[0] == '+' || isdigit(str[0]));
 }
 
+int tRegInit() {
+	var2tReg = new_MediHashTable("", 0);
+	t_regs = newList();
+	appendListTailWithName(t_regs, "$t3", 0);
+	appendListTailWithName(t_regs, "$t4", 0);
+	appendListTailWithName(t_regs, "$t5", 0);
+	appendListTailWithName(t_regs, "$t6", 0);
+	appendListTailWithName(t_regs, "$t7", 0);
+	appendListTailWithName(t_regs, "$t8", 0);
+	appendListTailWithName(t_regs, "$t9", 0);
+	return 0;
+}
+
+int isUseReg(char* var_name) {
+	MediHashItem_t* item = get_ItemFromTable(curFunc, var_name);
+	if (get_ItemFromTable(global_pool, var_name) != NULL) { return 0; }
+	else { return item != NULL && strlen(item->pal) > 0; }
+}
+
+void loadReg_SP(char* reg_name, char* var_name) {
+	if (isInteger(var_name)) {
+		fprintf(fmips, "li %s, %s\n", reg_name, var_name);
+	}
+	else {
+		if (get_ItemFromTable(curFunc, var_name) == NULL) {
+			fprintf(fmips, "lw %s, %d($gp)\n", reg_name, get_ItemFromTable(global_pool, var_name)->offset);
+		}
+		else {
+			fprintf(fmips, "lw %s, -%d($sp)\n", reg_name, 4 + get_ItemFromTable(curFunc, var_name)->offset); 
+		}
+	}
+}
+
+void saveReg_SP(char* reg_name, char* var_name) {
+	MediHashTable_t* func = get_TableFromGrandpa(func_pool, curFuncName);
+	if (get_ItemFromTable(func, var_name) == NULL) {
+		if (get_ItemFromTable(global_pool, var_name) == NULL) {
+			add_NewHashItem(func, var_name, VARIABLE_INT);
+			add_offsetToOldItem(func, var_name, spOffset);
+			spOffset += 4;
+			fprintf(fmips, "sw %s, -%d($sp)\n", reg_name, 4 + get_ItemFromTable(func, var_name)->offset);
+		}
+		else {
+			fprintf(fmips, "sw %s, %d($gp)\n", reg_name, get_ItemFromTable(global_pool, var_name)->offset);
+		}
+	}
+	else {
+		fprintf(fmips, "sw %s, -%d($sp)\n", reg_name, 4 + get_ItemFromTable(func, var_name)->offset); 
+	}
+}
+
 void loadReg(char* reg_name, char* var_name) {
 	if (isInteger(var_name)) {
 		fprintf(fmips, "li %s, %s\n", reg_name, var_name);
 	}
 	else {
-		MediHashTable_t* func = get_TableFromGrandpa(func_pool, curFuncName);
-		if (get_ItemFromTable(func, var_name) == NULL) {
+		if (get_ItemFromTable(curFunc, var_name) == NULL) {
 			fprintf(fmips, "lw %s, %d($gp)\n", reg_name, get_ItemFromTable(global_pool, var_name)->offset);
 		}
 		else {
-			fprintf(fmips, "lw %s, -%d($sp)\n", reg_name, 4 + get_ItemFromTable(func, var_name)->offset);
+			if (isUseReg(var_name)) { fprintf(fmips, "move %s, %s\n", reg_name, get_ItemFromTable(curFunc, var_name)->pal); }
+			else { fprintf(fmips, "lw %s, -%d($sp)\n", reg_name, 4 + get_ItemFromTable(curFunc, var_name)->offset); }
 		}
 	}
 }
@@ -47,9 +105,11 @@ void saveReg(char* reg_name, char* var_name) {
 		}
 	}
 	else {
-		fprintf(fmips, "sw %s, -%d($sp)\n", reg_name, 4 + get_ItemFromTable(func, var_name)->offset);
+		if (isUseReg(var_name)) { fprintf(fmips, "move %s, %s\n", get_ItemFromTable(curFunc, var_name)->pal, reg_name); }
+		else { fprintf(fmips, "sw %s, -%d($sp)\n", reg_name, 4 + get_ItemFromTable(func, var_name)->offset); }
 	}
 }
+
 
 int getItemOffsetByName(char* item_name) {
 	MediHashTable_t* tempF = get_TableFromGrandpa(func_pool, curFuncName);
@@ -74,6 +134,7 @@ int getFuncIndexByName(char* table_name) {
 	printf("No such Func in func_pool!");
 	return -1;
 }
+
 
 
 // 输出标头
@@ -101,7 +162,7 @@ int analyseMedi() {
 	int itemCount;
 
 	List_t* pushStack = newList();
-	
+
 	while (!feof(fmedi)) {
 		memset(temp, 0, STRSIZE * 8);
 		memset(item, 0, 6 * STRSIZE);
@@ -115,10 +176,15 @@ int analyseMedi() {
 				gpOffset += 4;
 			}
 			else {
-				MediHashTable_t* func = get_TableFromGrandpa(func_pool, curFuncName);
-				add_NewHashItem(func, item[3], strcmp(item[2], "int") ? VARIABLE_CHAR : VARIABLE_INT);
-				add_offsetToOldItem(func, item[3], spOffset);
+				//MediHashTable_t* func = get_TableFromGrandpa(func_pool, curFuncName);
+				add_NewHashItem(curFunc, item[3], strcmp(item[2], "int") ? VARIABLE_CHAR : VARIABLE_INT);
+				add_offsetToOldItem(curFunc, item[3], spOffset);
 				spOffset += 4;
+
+				if (sReg + 1 < S_REG_SIZE) {
+					add_palToOldItem(curFunc, item[3], s_regs[++sReg]); 
+					strcpy(s_regs_member[sReg], item[3]);
+				}
 			}
 		}
 		else if (!strcmp(item[1], "@array"))							// 数组声明（未处理）
@@ -129,9 +195,9 @@ int analyseMedi() {
 				gpOffset += 4 * atoi(item[4]);
 			}
 			else {
-				MediHashTable_t* func = get_TableFromGrandpa(func_pool, curFuncName);
-				add_NewHashItem(func, item[3], strcmp(item[2], "int[]") ? ARRAY_CHAR : ARRAY_INT);
-				add_offsetToOldItem(func, item[3], spOffset);
+				//MediHashTable_t* func = get_TableFromGrandpa(func_pool, curFuncName);
+				add_NewHashItem(curFunc, item[3], strcmp(item[2], "int[]") ? ARRAY_CHAR : ARRAY_INT);
+				add_offsetToOldItem(curFunc, item[3], spOffset);
 				spOffset += 4 * atoi(item[4]);
 			}
 		}
@@ -144,24 +210,27 @@ int analyseMedi() {
 		{
 			strcpy(curFuncName, item[2]);
 			add_NewHashTable(func_pool, item[2], 0);
+			curFunc = get_TableFromGrandpa(func_pool, curFuncName);
+
+			sReg = -1;
+			tRegInit();
 
 			fprintf(fmips, "\n");
 			fprintf(fmips, "%s:\n", item[2]);
 			spOffset = 4 * 2;
-
-			// List_t* tempL = getSymbolParaList(symbolTables[0], item[2]);
-			// fprintf(fmips, "addi $fp, $fp, %d\n", -4 * (tempL == NULL ? 0 : tempL->n));
 		}
 		else if (!strcmp(item[1], "@para"))								// 函数参数声明（处理）
 		{
-			add_NewHashItem(get_TableFromGrandpa(func_pool, curFuncName), item[3], strcmp(item[2], "int") ? VARIABLE_CHAR : VARIABLE_INT);
-			add_offsetToOldItem(get_TableFromGrandpa(func_pool, curFuncName), item[3], spOffset);
-			add_paraToOldTable(get_TableFromGrandpa(func_pool, curFuncName), item[3], spOffset);
+			//MediHashTable_t* func = get_TableFromGrandpa(func_pool, curFuncName);
+			add_NewHashItem(curFunc, item[3], strcmp(item[2], "int") ? VARIABLE_CHAR : VARIABLE_INT);
+			add_offsetToOldItem(curFunc, item[3], spOffset);
+			add_paraToOldTable(curFunc, item[3], spOffset);
 			spOffset += 4;
-			
-			// fprintf(fmips, "subi $fp, $fp, 4\n");
-			// fprintf(fmips, "lw $t0, %d($fp)\n", spOffset - 12);
-			// saveReg("$t0", item[3]);
+
+			/*if (sReg + 1 < S_REG_SIZE) {
+				add_palToOldItem(curFunc, item[3], s_regs[++sReg]); 
+				strcpy(s_regs_member[sReg], item[3]);
+			}*/
 		}
 		else if (!strcmp(item[1], "@call"))								// 函数调用（未处理）
 		{
@@ -179,6 +248,9 @@ int analyseMedi() {
 				}
 			}
 
+			for (int i = 0; i <= sReg; i++) {
+				saveReg_SP(s_regs[i], s_regs_member[i]);
+			}
 			fprintf(fmips, "sw $ra, -4($sp)\n");
 			fprintf(fmips, "move $t0, $sp\n");
 			fprintf(fmips, "addi $sp, $sp, %d\n", -spOffset);
@@ -186,42 +258,53 @@ int analyseMedi() {
 
 			fprintf(fmips, "jal %s\n", item[2]);
 
+			for (int i = 0; i <= sReg; i++) {
+				loadReg_SP(s_regs[i], s_regs_member[i]);
+			}
+
 			fprintf(fmips, "lw $sp, -8($sp)\n");
 			fprintf(fmips, "lw $ra, -4($sp)\n");
 		}
 		else if (!strcmp(item[1], "@ret"))								// 函数返回（未处理）
 		{
 			if (itemCount > 1) {
-				loadReg("$v0", item[2]);
+				loadReg("$v0", item[2]); 
 			}
 			
 			fprintf(fmips, "jr $ra\n");
 		}
 		else if (!strcmp(item[1], "@halfret")) {						// 内联函数返回
 			if (itemCount > 1) {
-				loadReg("$v0", item[2]);
+				loadReg("$v0", item[2]); 
 			}
 		}
 		else if (!strcmp(item[1], "@push"))								// 函数传参（未处理）
 		{
-			// loadReg("$t0", item[2]);
-			// fprintf(fmips, "sw $t0, 0($fp)\n");
-			// fprintf(fmips, "addi $fp, $fp, 4\n");
 			appendListTailWithName(pushStack, item[2], 0);
 		}
 		else if (!strcmp(item[1], "@get"))								// 接收返回值（未处理）
 		{
-			saveReg("$v0", item[2]);
+			saveReg("$v0", item[2]); 
 		}
 		else if (!strcmp(item[1], "@beqz"))								// 等于0跳转（处理）
 		{
-			loadReg("$t0", item[2]);
-			fprintf(fmips, "beqz $t0 %s\n", item[3]);
+			if (isUseReg(item[2])) { 
+				fprintf(fmips, "beqz %s, %s\n", get_ItemFromTable(curFunc, item[2])->pal, item[3]); 
+			}
+			else { 
+				loadReg("$t0", item[2]);
+				fprintf(fmips, "beqz $t0 %s\n", item[3]);
+			}
 		}
 		else if (!strcmp(item[1], "@bnez"))								// 不等于0跳转（处理）
 		{
-			loadReg("$t0", item[2]);
-			fprintf(fmips, "bnez $t0 %s\n", item[3]);
+			if (isUseReg(item[2])) {
+				fprintf(fmips, "bnez %s, %s\n", get_ItemFromTable(curFunc, item[2])->pal, item[3]);
+			}
+			else {
+				loadReg("$t0", item[2]);
+				fprintf(fmips, "bnez $t0 %s\n", item[3]);
+			}
 		}
 		else if (!strcmp(item[1], "@beq"))								// 相等时跳转（未处理）
 		{
@@ -282,9 +365,14 @@ int analyseMedi() {
 		else if (!strcmp(item[2], "="))									// 赋值或运算语句（未处理 数组）
 		{
 			if (itemCount == 3) {
-				loadReg("$t1", item[3]);
-				fprintf(fmips, "move $t0, $t1\n");
-				saveReg("$t0", item[1]);
+				if (isUseReg(item[3])) {
+					saveReg(get_ItemFromTable(curFunc, item[3])->pal, item[1]);
+				}
+				else {
+					loadReg("$t1", item[3]);
+					fprintf(fmips, "move $t0, $t1\n");
+					saveReg("$t0", item[1]);
+				}
 			}
 			else if (itemCount == 5) {
 				if (!strcmp(item[4], "ARGET")) {

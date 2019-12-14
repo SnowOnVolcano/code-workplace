@@ -109,13 +109,11 @@ li $a0, 10
 syscall    
 lw $t1, -12($sp)  
 move $t0, $t1  
-sw $t0, -20($sp)  
+move $s0, $t0  
 lw $t1, -16($sp)  
 move $t0, $t1  
 sw $t0, -12($sp)  
-lw $t1, -20($sp)  
-move $t0, $t1  
-sw $t0, -16($sp)  
+sw $s0, -16($sp)  
 li $v0, 4  
 la $a0, String_2  
 syscall    
@@ -203,9 +201,9 @@ jr $ra
 complete_flower_num:    
 li $t1, 2  
 move $t0, $t1  
-sw $t0, -528($sp)  
+move $s1, $t0  
 complete_flower_num_L_2_for_begin:    
-lw $t1, -528($sp)  
+move $t1, $s1  
 li $t2, 128  
 slt $t0, $t1, $t2 
 sw $t0, -580($sp)  
@@ -213,44 +211,42 @@ move $t0, $t0
 beqz $t0 complete_flower_num_L_3_for_over  
 li $t1, -1  
 move $t0, $t1  
-sw $t0, -532($sp)  
-lw $t1, -528($sp)  
-move $t0, $t1  
-sw $t0, -536($sp)  
+move $s2, $t0  
+move $s3, $s1  
 li $t1, 1  
 move $t0, $t1  
-sw $t0, -524($sp)  
+move $s0, $t0  
 complete_flower_num_L_4_for_begin:    
-lw $t1, -524($sp)  
-lw $t2, -528($sp)  
+move $t1, $s0  
+move $t2, $s1  
 slt $t0, $t1, $t2 
 sw $t0, -584($sp)  
 move $t0, $t0
 beqz $t0 complete_flower_num_L_5_for_over  
-lw $t1, -528($sp)  
-lw $t2, -524($sp)  
+move $t1, $s1  
+move $t2, $s0  
 div $t1, $t2  
 mflo $t0   
 sw $t0, -588($sp)  
 move $t1, $t0
-lw $t2, -524($sp)  
+move $t2, $s0  
 mult $t1, $t2  
 mflo $t0   
 sw $t0, -592($sp)  
 move $t1, $t0
 move $t0, $t1  
-sw $t0, -540($sp)  
-lw $t1, -528($sp)  
-lw $t2, -524($sp)  
+move $s4, $t0  
+move $t1, $s1  
+move $t2, $s0  
 div $t1, $t2  
 mflo $t0   
 sw $t0, -596($sp)  
 move $t1, $t0
-lw $t2, -524($sp)  
+move $t2, $s0  
 mult $t1, $t2  
 mflo $t0   
 sw $t0, -596($sp)  
-lw $t1, -528($sp)  
+move $t1, $s1  
 lw $t2, -596($sp)  
 sub $t0, $t1, $t2 
 sw $t0, -600($sp)  
@@ -262,21 +258,21 @@ seq $t0, $t1, $t2
 sw $t0, -608($sp)  
 move $t0, $t0
 beqz $t0 complete_flower_num_L_6_else_begin  
-lw $t1, -532($sp)  
+move $t1, $s2  
 li $t2, 1  
 add $t0, $t1, $t2 
 sw $t0, -612($sp)  
 move $t1, $t0
 move $t0, $t1  
-sw $t0, -532($sp)  
-lw $t1, -536($sp)  
-lw $t2, -524($sp)  
+move $s2, $t0  
+move $t1, $s3  
+move $t2, $s0  
 sub $t0, $t1, $t2 
 sw $t0, -616($sp)  
 move $t1, $t0
 move $t0, $t1  
-sw $t0, -536($sp)  
-lw $t1, -532($sp)  
+move $s3, $t0  
+move $t1, $s2  
 li $t2, 128  
 sge $t0, $t1, $t2 
 sw $t0, -608($sp)  
@@ -290,8 +286,8 @@ li $a0, 10
 syscall    
 j complete_flower_num_L_9_else_over   
 complete_flower_num_L_8_else_begin:    
-lw $t0, -524($sp)  
-lw $t1, -532($sp)  
+move $t0, $s0  
+move $t1, $s2  
 sll $t1, $t1, 2 
 li $t2, 12  
 add $t2, $t1, $t2 
@@ -299,13 +295,13 @@ sub $t2, $sp, $t2
 sw $t0, 0($t2)  
 complete_flower_num_L_9_else_over:    
 complete_flower_num_L_6_else_begin:    
-lw $t1, -524($sp)  
+move $t1, $s0  
 li $t2, 1  
 add $t0, $t1, $t2 
-sw $t0, -524($sp)  
+move $s0, $t0  
 j complete_flower_num_L_4_for_begin   
 complete_flower_num_L_5_for_over:    
-lw $t1, -536($sp)  
+move $t1, $s3  
 li $t2, 0  
 seq $t0, $t1, $t2 
 sw $t0, -620($sp)  
@@ -315,22 +311,22 @@ li $v0, 4
 la $a0, String_5  
 syscall    
 li $v0, 1  
-lw $a0, -528($sp)  
+move $a0, $s1  
 syscall    
 li $v0, 11  
 li $a0, 10  
 syscall    
 li $t1, 0  
 move $t0, $t1  
-sw $t0, -524($sp)  
+move $s0, $t0  
 complete_flower_num_L_12_for_begin:    
-lw $t1, -524($sp)  
-lw $t2, -532($sp)  
+move $t1, $s0  
+move $t2, $s2  
 sle $t0, $t1, $t2 
 sw $t0, -624($sp)  
 move $t0, $t0
 beqz $t0 complete_flower_num_L_13_for_over  
-lw $t1, -524($sp)  
+move $t1, $s0  
 sll $t1, $t1, 2 
 li $t2, 12  
 add $t2, $t1, $t2 
@@ -346,10 +342,10 @@ syscall
 li $v0, 11  
 li $a0, 10  
 syscall    
-lw $t1, -524($sp)  
+move $t1, $s0  
 li $t2, 1  
 add $t0, $t1, $t2 
-sw $t0, -524($sp)  
+move $s0, $t0  
 j complete_flower_num_L_12_for_begin   
 complete_flower_num_L_13_for_over:    
 li $v0, 4  
@@ -359,10 +355,10 @@ li $v0, 11
 li $a0, 10  
 syscall    
 complete_flower_num_L_10_else_begin:    
-lw $t1, -528($sp)  
+move $t1, $s1  
 li $t2, 1  
 add $t0, $t1, $t2 
-sw $t0, -528($sp)  
+move $s1, $t0  
 j complete_flower_num_L_2_for_begin   
 complete_flower_num_L_3_for_over:    
 li $v0, 4  
@@ -379,26 +375,26 @@ li $a0, 10
 syscall    
 li $t1, 0  
 move $t0, $t1  
-sw $t0, -544($sp)  
+move $s5, $t0  
 li $t1, 100  
 move $t0, $t1  
-sw $t0, -524($sp)  
+move $s0, $t0  
 complete_flower_num_L_14_for_begin:    
-lw $t1, -524($sp)  
+move $t1, $s0  
 li $t2, 228  
 slt $t0, $t1, $t2 
 sw $t0, -624($sp)  
 move $t0, $t0
 beqz $t0 complete_flower_num_L_15_for_over  
-lw $t1, -524($sp)  
+move $t1, $s0  
 li $t2, 100  
 div $t1, $t2  
 mflo $t0   
 sw $t0, -632($sp)  
 move $t1, $t0
 move $t0, $t1  
-sw $t0, -532($sp)  
-lw $t1, -524($sp)  
+move $s2, $t0  
+move $t1, $s0  
 li $t2, 10  
 div $t1, $t2  
 mflo $t0   
@@ -421,8 +417,8 @@ move $v0, $t0
 sw $v0, -628($sp)  
 move $t1, $v0
 move $t0, $t1  
-sw $t0, -528($sp)  
-lw $t1, -524($sp)  
+move $s1, $t0  
+move $t1, $s0  
 li $t2, 10  
 div $t1, $t2  
 mflo $t0   
@@ -432,7 +428,7 @@ li $t2, 10
 mult $t1, $t2  
 mflo $t0   
 sw $t0, -596($sp)  
-lw $t1, -524($sp)  
+move $t1, $s0  
 lw $t2, -596($sp)  
 sub $t0, $t1, $t2 
 sw $t0, -600($sp)  
@@ -441,12 +437,12 @@ sw $v0, -636($sp)
 move $t1, $v0
 move $t0, $t1  
 sw $t0, -568($sp)  
-lw $t1, -532($sp)  
+move $t1, $s2  
 li $t2, 100  
 mult $t1, $t2  
 mflo $t0   
 sw $t0, -640($sp)  
-lw $t1, -528($sp)  
+move $t1, $s1  
 li $t2, 10  
 mult $t1, $t2  
 mflo $t0   
@@ -461,23 +457,23 @@ add $t0, $t1, $t2
 sw $t0, -648($sp)  
 move $v0, $t0
 sw $v0, -652($sp)  
-lw $t1, -532($sp)  
-lw $t2, -532($sp)  
+move $t1, $s2  
+move $t2, $s2  
 mult $t1, $t2  
 mflo $t0   
 sw $t0, -656($sp)  
 move $t1, $t0
-lw $t2, -532($sp)  
+move $t2, $s2  
 mult $t1, $t2  
 mflo $t0   
 sw $t0, -656($sp)  
-lw $t1, -528($sp)  
-lw $t2, -528($sp)  
+move $t1, $s1  
+move $t2, $s1  
 mult $t1, $t2  
 mflo $t0   
 sw $t0, -660($sp)  
 move $t1, $t0
-lw $t2, -528($sp)  
+move $t2, $s1  
 mult $t1, $t2  
 mflo $t0   
 sw $t0, -660($sp)  
@@ -507,38 +503,38 @@ seq $t0, $t1, $t2
 sw $t0, -676($sp)  
 move $t0, $t0
 beqz $t0 complete_flower_num_L_16_else_begin  
-lw $t0, -524($sp)  
-lw $t1, -544($sp)  
+move $t0, $s0  
+move $t1, $s5  
 sll $t1, $t1, 2 
 li $t2, 12  
 add $t2, $t1, $t2 
 sub $t2, $sp, $t2 
 sw $t0, 0($t2)  
-lw $t1, -544($sp)  
+move $t1, $s5  
 li $t2, 1  
 add $t0, $t1, $t2 
 sw $t0, -680($sp)  
 move $t1, $t0
 move $t0, $t1  
-sw $t0, -544($sp)  
+move $s5, $t0  
 complete_flower_num_L_16_else_begin:    
-lw $t1, -524($sp)  
+move $t1, $s0  
 li $t2, 1  
 add $t0, $t1, $t2 
-sw $t0, -524($sp)  
+move $s0, $t0  
 j complete_flower_num_L_14_for_begin   
 complete_flower_num_L_15_for_over:    
 li $t1, 0  
 move $t0, $t1  
-sw $t0, -524($sp)  
+move $s0, $t0  
 complete_flower_num_L_18_for_begin:    
-lw $t1, -524($sp)  
-lw $t2, -544($sp)  
+move $t1, $s0  
+move $t2, $s5  
 slt $t0, $t1, $t2 
 sw $t0, -684($sp)  
 move $t0, $t0
 beqz $t0 complete_flower_num_L_19_for_over  
-lw $t1, -524($sp)  
+move $t1, $s0  
 sll $t1, $t1, 2 
 li $t2, 12  
 add $t2, $t1, $t2 
@@ -554,10 +550,10 @@ syscall
 li $v0, 11  
 li $a0, 10  
 syscall    
-lw $t1, -524($sp)  
+move $t1, $s0  
 li $t2, 1  
 add $t0, $t1, $t2 
-sw $t0, -524($sp)  
+move $s0, $t0  
 j complete_flower_num_L_18_for_begin   
 complete_flower_num_L_19_for_over:    
 li $v0, 4  
@@ -580,56 +576,56 @@ move $t0, $t1
 sw $t0, -560($sp)  
 li $t1, 2  
 move $t0, $t1  
-sw $t0, -548($sp)  
+move $s6, $t0  
 complete_flower_num_L_20_for_begin:    
-lw $t1, -548($sp)  
+move $t1, $s6  
 li $t2, 128  
 sle $t0, $t1, $t2 
 sw $t0, -684($sp)  
 move $t0, $t0
 beqz $t0 complete_flower_num_L_21_for_over  
-lw $t1, -548($sp)  
+move $t1, $s6  
 li $t2, 2  
 div $t1, $t2  
 mflo $t0   
 sw $t0, -692($sp)  
 move $t1, $t0
 move $t0, $t1  
-sw $t0, -552($sp)  
+move $s7, $t0  
 li $t1, 2  
 move $t0, $t1  
-sw $t0, -524($sp)  
+move $s0, $t0  
 complete_flower_num_L_22_for_begin:    
-lw $t1, -524($sp)  
-lw $t2, -552($sp)  
+move $t1, $s0  
+move $t2, $s7  
 sle $t0, $t1, $t2 
 sw $t0, -696($sp)  
 move $t0, $t0
 beqz $t0 complete_flower_num_L_23_for_over  
-lw $t1, -548($sp)  
-lw $t2, -524($sp)  
+move $t1, $s6  
+move $t2, $s0  
 div $t1, $t2  
 mflo $t0   
 sw $t0, -688($sp)  
 move $t1, $t0
-lw $t2, -524($sp)  
+move $t2, $s0  
 mult $t1, $t2  
 mflo $t0   
 sw $t0, -700($sp)  
 move $t1, $t0
 move $t0, $t1  
 sw $t0, -564($sp)  
-lw $t1, -548($sp)  
-lw $t2, -524($sp)  
+move $t1, $s6  
+move $t2, $s0  
 div $t1, $t2  
 mflo $t0   
 sw $t0, -596($sp)  
 move $t1, $t0
-lw $t2, -524($sp)  
+move $t2, $s0  
 mult $t1, $t2  
 mflo $t0   
 sw $t0, -596($sp)  
-lw $t1, -548($sp)  
+move $t1, $s6  
 lw $t2, -596($sp)  
 sub $t0, $t1, $t2 
 sw $t0, -600($sp)  
@@ -645,10 +641,10 @@ li $t1, 0
 move $t0, $t1  
 sw $t0, -560($sp)  
 complete_flower_num_L_24_else_begin:    
-lw $t1, -524($sp)  
+move $t1, $s0  
 li $t2, 1  
 add $t0, $t1, $t2 
-sw $t0, -524($sp)  
+move $s0, $t0  
 j complete_flower_num_L_22_for_begin   
 complete_flower_num_L_23_for_over:    
 lw $t1, -560($sp)  
@@ -661,7 +657,7 @@ li $v0, 4
 la $a0, String_13  
 syscall    
 li $v0, 1  
-lw $a0, -548($sp)  
+move $a0, $s6  
 syscall    
 li $v0, 11  
 li $a0, 10  
@@ -703,10 +699,10 @@ complete_flower_num_L_26_else_begin:
 li $t1, 1  
 move $t0, $t1  
 sw $t0, -560($sp)  
-lw $t1, -548($sp)  
+move $t1, $s6  
 li $t2, 1  
 add $t0, $t1, $t2 
-sw $t0, -548($sp)  
+move $s6, $t0  
 j complete_flower_num_L_20_for_begin   
 complete_flower_num_L_21_for_over:    
 li $v0, 4  
@@ -723,22 +719,24 @@ jr $ra
 main:    
 li $t0, 5  
 sw $t0, -24($sp)  
+sw $s0, -12($sp)  
 sw $ra, -4($sp)  
 move $t0, $sp  
 addi $sp, $sp, -12 
 sw $t0, -8($sp)  
 jal factorial   
+lw $s0, -12($sp)  
 lw $sp, -8($sp)  
 lw $ra, -4($sp)  
 sw $v0, -16($sp)  
 move $t1, $v0
 move $t0, $t1  
-sw $t0, -12($sp)  
+move $s0, $t0  
 li $v0, 4  
 la $a0, String_16  
 syscall    
 li $v0, 1  
-lw $a0, -12($sp)  
+move $a0, $s0  
 syscall    
 li $v0, 11  
 li $a0, 10  
@@ -779,11 +777,15 @@ syscall
 li $v0, 11  
 li $a0, 10  
 syscall    
+sw $s0, -12($sp)  
+sw $s1, -20($sp)  
 sw $ra, -4($sp)  
 move $t0, $sp  
 addi $sp, $sp, -20 
 sw $t0, -8($sp)  
 jal complete_flower_num   
+lw $s0, -12($sp)  
+lw $s1, -20($sp)  
 lw $sp, -8($sp)  
 lw $ra, -4($sp)  
 jr $ra   
