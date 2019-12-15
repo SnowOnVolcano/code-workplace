@@ -1,0 +1,156 @@
+@array int[] arr 10 
+@array int[] tmp 10 
+@call main   
+@exit    
+@func merge   
+@para int s1  
+@para int l1  
+@para int s2  
+@para int l2  
+@var int i  
+@var int j  
+@var int k  
+i = 0  
+j = 0  
+k = s1  
+merge_L_0_while_begin :   
+#3 = i LSS l1
+@beqz #3 merge_L_1_while_over  
+#3 = j LSS l2
+@beqz #3 merge_L_2_else_begin  
+#3 = s1 PLUS i
+#5 = arr ARGET #3
+#9 = s2 PLUS j
+#11 = arr ARGET #9
+#7 = #5 GRE #11
+@beqz #7 merge_L_4_else_begin  
+#5 = s2 PLUS j
+#7 = arr ARGET #5
+tmp = k ARSET #7
+#11 = j PLUS 1
+j = #11  
+@j merge_L_5_else_over   
+merge_L_4_else_begin :   
+#15 = s1 PLUS i
+#17 = arr ARGET #15
+tmp = k ARSET #17
+#21 = i PLUS 1
+i = #21  
+merge_L_5_else_over :   
+#13 = k PLUS 1
+k = #13  
+@j merge_L_3_else_over   
+merge_L_2_else_begin :   
+merge_L_6_while_begin :   
+#15 = i LSS l1
+@beqz #15 merge_L_7_while_over  
+#17 = s1 PLUS i
+#19 = arr ARGET #17
+tmp = k ARSET #19
+#23 = k PLUS 1
+k = #23  
+#25 = i PLUS 1
+i = #25  
+@j merge_L_6_while_begin   
+merge_L_7_while_over :   
+merge_L_3_else_over :   
+@j merge_L_0_while_begin   
+merge_L_1_while_over :   
+merge_L_8_while_begin :   
+#15 = j LSS l2
+@beqz #15 merge_L_9_while_over  
+#17 = s2 PLUS j
+#19 = arr ARGET #17
+tmp = k ARSET #19
+#23 = k PLUS 1
+k = #23  
+#25 = j PLUS 1
+j = #25  
+@j merge_L_8_while_begin   
+merge_L_9_while_over :   
+i = s1  
+merge_L_10_for_begin :   
+#17 = i LSS k
+@beqz #17 merge_L_11_for_over  
+#18 = tmp ARGET i
+arr = i ARSET #18
+i = i PLUS 1
+@j merge_L_10_for_begin   
+merge_L_11_for_over :   
+@ret    
+@func inner_merge_sort   
+@para int start  
+@para int length  
+@var int tmp  
+@var int mid  
+#1 = length LEQ 1
+@beqz #1 inner_merge_sort_L_12_else_begin  
+@ret    
+inner_merge_sort_L_12_else_begin :   
+#3 = length EQL 2
+@beqz #3 inner_merge_sort_L_14_else_begin  
+#4 = arr ARGET start
+#8 = start PLUS 1
+#9 = arr ARGET #8
+#6 = #4 GRE #9
+@beqz #6 inner_merge_sort_L_16_else_begin  
+#4 = arr ARGET start
+tmp = #4  
+#10 = start PLUS 1
+#11 = arr ARGET #10
+arr = start ARSET #11
+#15 = start PLUS 1
+arr = #15 ARSET tmp
+inner_merge_sort_L_16_else_begin :   
+@ret    
+inner_merge_sort_L_14_else_begin :   
+#12 = length DIV 2
+mid = #12  
+@push start   
+@push mid   
+@call inner_merge_sort   
+#19 = start PLUS mid
+#22 = length MINU mid
+@push #19   
+@push #22   
+@call inner_merge_sort   
+#29 = start PLUS mid
+#32 = length MINU mid
+@push start   
+@push mid   
+@push #29   
+@push #32   
+@call merge   
+@ret    
+@func main   
+@var int n  
+@var int i  
+@var int a  
+@printf string 8 String_0 
+@newline    
+@scanf int n  
+i = 0  
+main_L_18_for_begin :   
+#35 = i LSS n
+@beqz #35 main_L_19_for_over  
+@scanf int a  
+arr = i ARSET a
+i = i PLUS 1
+@j main_L_18_for_begin   
+main_L_19_for_over :   
+@push 0   
+@push n   
+@call inner_merge_sort   
+i = 0  
+main_L_20_for_begin :   
+#37 = i LSS n
+@beqz #37 main_L_21_for_over  
+#38 = arr ARGET i
+@printf int #38  
+@newline    
+i = i PLUS 1
+@j main_L_20_for_begin   
+main_L_21_for_over :   
+@ret    
+    
+    

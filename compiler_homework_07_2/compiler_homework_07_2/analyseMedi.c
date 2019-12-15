@@ -292,8 +292,8 @@ int analyseMedi() {
 				fprintf(fmips, "beqz %s, %s\n", get_ItemFromTable(curFunc, item[2])->pal, item[3]); 
 			}
 			else { 
-				//loadReg("$t0", item[2]);
-				fprintf(fmips, "beqz $t0 %s\n", item[3]);
+				loadReg("$t0", item[2]);
+				fprintf(fmips, "beqz $t0, %s\n", item[3]);
 			}
 		}
 		else if (!strcmp(item[1], "@bnez"))								// 不等于0跳转（处理）
@@ -302,8 +302,8 @@ int analyseMedi() {
 				fprintf(fmips, "bnez %s, %s\n", get_ItemFromTable(curFunc, item[2])->pal, item[3]);
 			}
 			else {
-				//loadReg("$t0", item[2]);
-				fprintf(fmips, "bnez $t0 %s\n", item[3]);
+				loadReg("$t0", item[2]);
+				fprintf(fmips, "bnez $t0, %s\n", item[3]);
 			}
 		}
 		else if (!strcmp(item[1], "@beq"))								// 相等时跳转（未处理）
@@ -426,19 +426,18 @@ int analyseMedi() {
 					if (isUseReg(item[5])) { strcpy(tempR2, get_ItemFromTable(curFunc, item[5])->pal); }
 					else { loadReg("$t2", item[5]); }
 					
-					int tempIsSave = 1;
 					if (!strcmp(item[4], "PLUS")) { fprintf(fmips, "add $t0, %s, %s\n", tempR1, tempR2); }
 					else if (!strcmp(item[4], "MINU")) { fprintf(fmips, "sub $t0, %s, %s\n", tempR1, tempR2); }
 					else if (!strcmp(item[4], "MULT")) { fprintf(fmips, "mult %s, %s\nmflo $t0\n", tempR1, tempR2); }
 					else if (!strcmp(item[4], "DIV")) { fprintf(fmips, "div %s, %s\nmflo $t0\n", tempR1, tempR2); }
-					else if (!strcmp(item[4], "LSS")) { fprintf(fmips, "slt $t0, %s, %s\n", tempR1, tempR2); tempIsSave = 0; }
-					else if (!strcmp(item[4], "LEQ")) { fprintf(fmips, "sle $t0, %s, %s\n", tempR1, tempR2); tempIsSave = 0;}
-					else if (!strcmp(item[4], "GRE")) { fprintf(fmips, "sgt $t0, %s, %s\n", tempR1, tempR2); tempIsSave = 0; }
-					else if (!strcmp(item[4], "GEQ")) { fprintf(fmips, "sge $t0, %s, %s\n", tempR1, tempR2); tempIsSave = 0; }
-					else if (!strcmp(item[4], "EQL")) { fprintf(fmips, "seq $t0, %s, %s\n", tempR1, tempR2); tempIsSave = 0; }
-					else if (!strcmp(item[4], "NEQ")) { fprintf(fmips, "sne $t0, %s, %s\n", tempR1, tempR2); tempIsSave = 0; }
+					else if (!strcmp(item[4], "LSS")) { fprintf(fmips, "slt $t0, %s, %s\n", tempR1, tempR2); }
+					else if (!strcmp(item[4], "LEQ")) { fprintf(fmips, "sle $t0, %s, %s\n", tempR1, tempR2); }
+					else if (!strcmp(item[4], "GRE")) { fprintf(fmips, "sgt $t0, %s, %s\n", tempR1, tempR2); }
+					else if (!strcmp(item[4], "GEQ")) { fprintf(fmips, "sge $t0, %s, %s\n", tempR1, tempR2); }
+					else if (!strcmp(item[4], "EQL")) { fprintf(fmips, "seq $t0, %s, %s\n", tempR1, tempR2); }
+					else if (!strcmp(item[4], "NEQ")) { fprintf(fmips, "sne $t0, %s, %s\n", tempR1, tempR2); }
 					else { printf("Analyse medi_calculation fault!"); }
-					if (tempIsSave) { saveReg("$t0", item[1]); }
+					saveReg("$t0", item[1]); 
 				}
 			}
 			else {

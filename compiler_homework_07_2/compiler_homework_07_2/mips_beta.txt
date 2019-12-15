@@ -32,10 +32,14 @@ move $s2, $t0
 merge_L_0_while_begin:
 lw $t2, -16($sp)
 slt $t0, $s0, $t2
-beqz $t0 merge_L_1_while_over
+sw $t0, -40($sp)
+lw $t0, -40($sp)
+beqz $t0, merge_L_1_while_over
 lw $t2, -24($sp)
 slt $t0, $s1, $t2
-beqz $t0 merge_L_2_else_begin
+sw $t0, -40($sp)
+lw $t0, -40($sp)
+beqz $t0, merge_L_2_else_begin
 lw $t1, -12($sp)
 add $t0, $t1, $s0
 sw $t0, -40($sp)
@@ -59,7 +63,9 @@ sw $t0, -52($sp)
 lw $t1, -44($sp)
 lw $t2, -52($sp)
 sgt $t0, $t1, $t2
-beqz $t0 merge_L_4_else_begin
+sw $t0, -56($sp)
+lw $t0, -56($sp)
+beqz $t0, merge_L_4_else_begin
 lw $t1, -20($sp)
 add $t0, $t1, $s1
 sw $t0, -44($sp)
@@ -120,7 +126,9 @@ merge_L_2_else_begin:
 merge_L_6_while_begin:
 lw $t2, -16($sp)
 slt $t0, $s0, $t2
-beqz $t0 merge_L_7_while_over
+sw $t0, -60($sp)
+lw $t0, -60($sp)
+beqz $t0, merge_L_7_while_over
 lw $t1, -12($sp)
 add $t0, $t1, $s0
 sw $t0, -64($sp)
@@ -158,7 +166,9 @@ merge_L_1_while_over:
 merge_L_8_while_begin:
 lw $t2, -24($sp)
 slt $t0, $s1, $t2
-beqz $t0 merge_L_9_while_over
+sw $t0, -60($sp)
+lw $t0, -60($sp)
+beqz $t0, merge_L_9_while_over
 lw $t1, -20($sp)
 add $t0, $t1, $s1
 sw $t0, -64($sp)
@@ -195,7 +205,9 @@ move $t0, $t1
 move $s0, $t0
 merge_L_10_for_begin:
 slt $t0, $s0, $s2
-beqz $t0 merge_L_11_for_over
+sw $t0, -64($sp)
+lw $t0, -64($sp)
+beqz $t0, merge_L_11_for_over
 move $t1, $s0
 sll $t1, $t1, 2
 li $t2, 40
@@ -221,45 +233,24 @@ inner_merge_sort:
 lw $t1, -16($sp)
 li $t2, 1
 sle $t0, $t1, $t2
-beqz $t0 inner_merge_sort_L_12_else_begin
+sw $t0, -28($sp)
+lw $t0, -28($sp)
+beqz $t0, inner_merge_sort_L_12_else_begin
 jr $ra
 inner_merge_sort_L_12_else_begin:
 lw $t1, -16($sp)
 li $t2, 2
 seq $t0, $t1, $t2
-beqz $t0 inner_merge_sort_L_14_else_begin
-lw $t1, -12($sp)
-sll $t1, $t1, 2
-li $t2, 0
-add $t2, $t1, $t2
-add $t2, $gp, $t2
-lw $t0, 0($t2)
-sw $t0, -28($sp)
-lw $t1, -12($sp)
-li $t2, 1
-add $t0, $t1, $t2
 sw $t0, -32($sp)
-lw $t1, -32($sp)
+lw $t0, -32($sp)
+beqz $t0, inner_merge_sort_L_14_else_begin
+lw $t1, -12($sp)
 sll $t1, $t1, 2
 li $t2, 0
 add $t2, $t1, $t2
 add $t2, $gp, $t2
 lw $t0, 0($t2)
 sw $t0, -36($sp)
-lw $t1, -28($sp)
-lw $t2, -36($sp)
-sgt $t0, $t1, $t2
-beqz $t0 inner_merge_sort_L_16_else_begin
-lw $t1, -12($sp)
-sll $t1, $t1, 2
-li $t2, 0
-add $t2, $t1, $t2
-add $t2, $gp, $t2
-lw $t0, 0($t2)
-sw $t0, -28($sp)
-lw $t1, -28($sp)
-move $t0, $t1
-sw $t0, -20($sp)
 lw $t1, -12($sp)
 li $t2, 1
 add $t0, $t1, $t2
@@ -271,7 +262,34 @@ add $t2, $t1, $t2
 add $t2, $gp, $t2
 lw $t0, 0($t2)
 sw $t0, -44($sp)
-lw $t0, -44($sp)
+lw $t1, -36($sp)
+lw $t2, -44($sp)
+sgt $t0, $t1, $t2
+sw $t0, -48($sp)
+lw $t0, -48($sp)
+beqz $t0, inner_merge_sort_L_16_else_begin
+lw $t1, -12($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+lw $t0, 0($t2)
+sw $t0, -36($sp)
+lw $t1, -36($sp)
+move $t0, $t1
+sw $t0, -20($sp)
+lw $t1, -12($sp)
+li $t2, 1
+add $t0, $t1, $t2
+sw $t0, -52($sp)
+lw $t1, -52($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+lw $t0, 0($t2)
+sw $t0, -56($sp)
+lw $t0, -56($sp)
 lw $t1, -12($sp)
 sll $t1, $t1, 2
 li $t2, 0
@@ -281,9 +299,9 @@ sw $t0, 0($t2)
 lw $t1, -12($sp)
 li $t2, 1
 add $t0, $t1, $t2
-sw $t0, -48($sp)
+sw $t0, -60($sp)
 lw $t0, -20($sp)
-lw $t1, -48($sp)
+lw $t1, -60($sp)
 sll $t1, $t1, 2
 li $t2, 0
 add $t2, $t1, $t2
@@ -296,65 +314,65 @@ lw $t1, -16($sp)
 li $t2, 2
 div $t1, $t2
 mflo $t0
-sw $t0, -52($sp)
-lw $t1, -52($sp)
+sw $t0, -64($sp)
+lw $t1, -64($sp)
 move $t0, $t1
 move $s1, $t0
 move $t0, $s1
-sw $t0, -68($sp)
-lw $t0, -12($sp)
-sw $t0, -64($sp)
-sw $s0, -20($sp)
-sw $s1, -24($sp)
-sw $ra, -4($sp)
-move $t0, $sp
-addi $sp, $sp, -52
-sw $t0, -8($sp)
-jal inner_merge_sort
-lw $s0, -20($sp)
-lw $s1, -24($sp)
-lw $sp, -8($sp)
-lw $ra, -4($sp)
-lw $t1, -12($sp)
-add $t0, $t1, $s1
-sw $t0, -56($sp)
-lw $t1, -16($sp)
-sub $t0, $t1, $s1
-sw $t0, -60($sp)
-lw $t0, -60($sp)
-sw $t0, -76($sp)
-lw $t0, -56($sp)
-sw $t0, -72($sp)
-sw $s0, -20($sp)
-sw $s1, -24($sp)
-sw $ra, -4($sp)
-move $t0, $sp
-addi $sp, $sp, -60
-sw $t0, -8($sp)
-jal inner_merge_sort
-lw $s0, -20($sp)
-lw $s1, -24($sp)
-lw $sp, -8($sp)
-lw $ra, -4($sp)
-lw $t1, -12($sp)
-add $t0, $t1, $s1
-sw $t0, -64($sp)
-lw $t1, -16($sp)
-sub $t0, $t1, $s1
-sw $t0, -68($sp)
-lw $t0, -68($sp)
-sw $t0, -92($sp)
-lw $t0, -64($sp)
-sw $t0, -88($sp)
-move $t0, $s1
-sw $t0, -84($sp)
-lw $t0, -12($sp)
 sw $t0, -80($sp)
+lw $t0, -12($sp)
+sw $t0, -76($sp)
 sw $s0, -20($sp)
 sw $s1, -24($sp)
 sw $ra, -4($sp)
 move $t0, $sp
-addi $sp, $sp, -68
+addi $sp, $sp, -64
+sw $t0, -8($sp)
+jal inner_merge_sort
+lw $s0, -20($sp)
+lw $s1, -24($sp)
+lw $sp, -8($sp)
+lw $ra, -4($sp)
+lw $t1, -12($sp)
+add $t0, $t1, $s1
+sw $t0, -68($sp)
+lw $t1, -16($sp)
+sub $t0, $t1, $s1
+sw $t0, -72($sp)
+lw $t0, -72($sp)
+sw $t0, -88($sp)
+lw $t0, -68($sp)
+sw $t0, -84($sp)
+sw $s0, -20($sp)
+sw $s1, -24($sp)
+sw $ra, -4($sp)
+move $t0, $sp
+addi $sp, $sp, -72
+sw $t0, -8($sp)
+jal inner_merge_sort
+lw $s0, -20($sp)
+lw $s1, -24($sp)
+lw $sp, -8($sp)
+lw $ra, -4($sp)
+lw $t1, -12($sp)
+add $t0, $t1, $s1
+sw $t0, -76($sp)
+lw $t1, -16($sp)
+sub $t0, $t1, $s1
+sw $t0, -80($sp)
+lw $t0, -80($sp)
+sw $t0, -104($sp)
+lw $t0, -76($sp)
+sw $t0, -100($sp)
+move $t0, $s1
+sw $t0, -96($sp)
+lw $t0, -12($sp)
+sw $t0, -92($sp)
+sw $s0, -20($sp)
+sw $s1, -24($sp)
+sw $ra, -4($sp)
+move $t0, $sp
+addi $sp, $sp, -80
 sw $t0, -8($sp)
 jal merge
 lw $s0, -20($sp)
@@ -378,7 +396,9 @@ move $t0, $t1
 move $s1, $t0
 main_L_18_for_begin:
 slt $t0, $s1, $s0
-beqz $t0 main_L_19_for_over
+sw $t0, -24($sp)
+lw $t0, -24($sp)
+beqz $t0, main_L_19_for_over
 li $v0, 5
 syscall
 move $s2, $v0
@@ -395,15 +415,15 @@ move $s1, $t0
 j main_L_18_for_begin
 main_L_19_for_over:
 move $t0, $s0
-sw $t0, -36($sp)
+sw $t0, -40($sp)
 li $t0, 0
-sw $t0, -32($sp)
+sw $t0, -36($sp)
 sw $s0, -12($sp)
 sw $s1, -16($sp)
 sw $s2, -20($sp)
 sw $ra, -4($sp)
 move $t0, $sp
-addi $sp, $sp, -20
+addi $sp, $sp, -24
 sw $t0, -8($sp)
 jal inner_merge_sort
 lw $s0, -12($sp)
@@ -416,16 +436,18 @@ move $t0, $t1
 move $s1, $t0
 main_L_20_for_begin:
 slt $t0, $s1, $s0
-beqz $t0 main_L_21_for_over
+sw $t0, -28($sp)
+lw $t0, -28($sp)
+beqz $t0, main_L_21_for_over
 move $t1, $s1
 sll $t1, $t1, 2
 li $t2, 0
 add $t2, $t1, $t2
 add $t2, $gp, $t2
 lw $t0, 0($t2)
-sw $t0, -24($sp)
+sw $t0, -32($sp)
 li $v0, 1
-lw $a0, -24($sp)
+lw $a0, -32($sp)
 syscall
 li $v0, 11
 li $a0, 10

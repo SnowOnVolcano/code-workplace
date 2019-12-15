@@ -382,7 +382,6 @@ int optimizeMips_1(char* fileIn, char* fileOut) {
 			fprintf(mipsFileOut, "move %s %c%c%c\n", item[2], lastItem[2][0], lastItem[2][1], lastItem[2][2]);
 		}
 		else if (!strcmp(item[2], ".asciiz")) {
-			// temp[strlen(temp) - 1] = '\0';
 			fprintf(mipsFileOut, temp);
 		}
 		else {
@@ -398,7 +397,7 @@ int optimizeMips_1(char* fileIn, char* fileOut) {
 	return 0;
 }
 
-// （优化汇编代码）
+// （优化汇编代码）	move $t2, $t1 ; move $t3, $t2 ---> move $t3, $t1
 int optimizeMips_2(char* fileIn, char* fileOut) {
 	FILE* mipsFileIn = fopen(fileIn, "rb");
 	FILE* mipsFileOut = fopen(fileOut, "wb");
@@ -423,15 +422,58 @@ int optimizeMips_2(char* fileIn, char* fileOut) {
 		nextItemCount = sscanf(nextTemp, "%s %s %s %s %s", nextItem[1], nextItem[2], nextItem[3], nextItem[4], nextItem[5]);
 		if (itemCount == 3 && nextItemCount == 3
 			&& !strcmp(item[1], "move") && !strcmp(nextItem[1], "move")
-			&& item[2][1] == nextItem[3][1] && item[2][2] == nextItem[3][2]) {
+			/*&& item[2][1] == 't'*/ && item[2][1] == nextItem[3][1] && item[2][2] == nextItem[3][2]) {
 			nextItem[3][1] = item[3][1];
 			nextItem[3][2] = item[3][2];
 		}
 		else {
 			if (!strcmp(item[2], ".asciiz")) { fprintf(mipsFileOut, temp); }
-			else if (!strcmp(item[1], "move") && item[2][1] == item[3][1] && item[2][2] == item[3][2]) {}
+			else if (!strcmp(item[1], "move") && item[2][1] == item[3][1] && item[2][2] == item[3][2]) {
+			}
 			else { fprintf(mipsFileOut, "%s %s %s %s %s\n", item[1], item[2], item[3], item[4], item[5]); }
 		}
+		for (int i = 0; i < 6; i++) { strcpy(item[i], nextItem[i]); }
+		itemCount = nextItemCount;
+		strcpy(temp, nextTemp);
+	}
+
+	if (nextItemCount) { fprintf(mipsFileOut, "%s %s %s %s %s\n", nextItem[1], nextItem[2], nextItem[3], nextItem[4], nextItem[5]); }
+	else { fprintf(mipsFileOut, "%s %s %s %s %s\n", item[1], item[2], item[3], item[4], item[5]); }
+
+	fclose(mipsFileIn);
+	fclose(mipsFileOut);
+	return 0;
+}
+
+// （优化汇编代码）	sw $t0, <int>($sp) ; b $t0, <label> ----> b $t0, <label>
+int optimizeMips_3(char* fileIn, char* fileOut) {
+	FILE* mipsFileIn = fopen(fileIn, "rb");
+	FILE* mipsFileOut = fopen(fileOut, "wb");
+
+	char item[6][STRSIZE];
+	char temp[STRSIZE * 8];
+	int itemCount = 0;
+
+	char nextItem[6][STRSIZE];
+	char nextTemp[STRSIZE * 8];
+	int nextItemCount = 0;
+
+	memset(temp, 0, STRSIZE * 8);
+	memset(item, 0, 6 * STRSIZE);
+	fgets(temp, STRSIZE * 8, mipsFileIn);
+	itemCount = sscanf(temp, "%s %s %s %s %s", item[1], item[2], item[3], item[4], item[5]);
+
+	while (!feof(mipsFileIn)) {
+		memset(nextTemp, 0, STRSIZE * 8);
+		memset(nextItem, 0, 6 * STRSIZE);
+		fgets(nextTemp, STRSIZE * 8, mipsFileIn);
+		nextItemCount = sscanf(nextTemp, "%s %s %s %s %s", nextItem[1], nextItem[2], nextItem[3], nextItem[4], nextItem[5]);
+
+		if (!strcmp(item[1], "sw") && (!strcmp(nextItem[1], "beqz") || !strcmp(nextItem[1], "bnez"))
+			&& !strcmp(item[2], "$t0,") && !strcmp(nextItem[2], "$t0,")) {
+		}
+		else { fprintf(mipsFileOut, temp); }
+
 		for (int i = 0; i < 6; i++) { strcpy(item[i], nextItem[i]); }
 		itemCount = nextItemCount;
 		strcpy(temp, nextTemp);
@@ -448,6 +490,7 @@ int optimizeMips_2(char* fileIn, char* fileOut) {
 // 优化汇编代码
 int optimizeMips() {
 	optimizeMips_1("mips_beta.txt", "mips_1.txt");
-	optimizeMips_2("mips_1.txt", "mips.txt");
+	optimizeMips_2("mips_1.txt", "mips_2.txt");
+	optimizeMips_3("mips_2.txt", "mips.txt");
 	return 0;
 }
