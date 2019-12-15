@@ -1,1248 +1,707 @@
-CONSTTK const
 INTTK int
-IDENFR MAX_NUM
-ASSIGN =
-INTCON 128
+IDENFR arr
+LBRACK [
+INTCON 10
 <无符号整数>
-<整数>
-<常量定义>
+RBRACK ]
+COMMA ,
+IDENFR tmp
+LBRACK [
+INTCON 10
+<无符号整数>
+RBRACK ]
+<变量定义>
 SEMICN ;
-<常量说明>
-INTTK int
-IDENFR factorial
-<声明头部>
+<变量说明>
+VOIDTK void
+IDENFR merge
 LPARENT (
 INTTK int
-IDENFR n
+IDENFR s1
+COMMA ,
+INTTK int
+IDENFR l1
+COMMA ,
+INTTK int
+IDENFR s2
+COMMA ,
+INTTK int
+IDENFR l2
 <参数表>
 RPARENT )
 LBRACE {
-IFTK if
-LPARENT (
-IDENFR n
+INTTK int
+IDENFR i
+COMMA ,
+IDENFR j
+COMMA ,
+IDENFR k
+<变量定义>
+SEMICN ;
+<变量说明>
+IDENFR i
+ASSIGN =
+INTCON 0
+<无符号整数>
+<整数>
 <因子>
 <项>
 <表达式>
-LEQ <=
-INTCON 1
+<赋值语句>
+SEMICN ;
+<语句>
+IDENFR j
+ASSIGN =
+INTCON 0
 <无符号整数>
 <整数>
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+IDENFR k
+ASSIGN =
+IDENFR s1
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+WHILETK while
+LPARENT (
+IDENFR i
+<因子>
+<项>
+<表达式>
+LSS <
+IDENFR l1
 <因子>
 <项>
 <表达式>
 <条件>
 RPARENT )
-RETURNTK return
+LBRACE {
+IFTK if
 LPARENT (
+IDENFR j
+<因子>
+<项>
+<表达式>
+LSS <
+IDENFR l2
+<因子>
+<项>
+<表达式>
+<条件>
+RPARENT )
+LBRACE {
+IFTK if
+LPARENT (
+IDENFR arr
+LBRACK [
+IDENFR s1
+<因子>
+<项>
+PLUS +
+IDENFR i
+<因子>
+<项>
+<表达式>
+RBRACK ]
+<因子>
+<项>
+<表达式>
+GRE >
+IDENFR arr
+LBRACK [
+IDENFR s2
+<因子>
+<项>
+PLUS +
+IDENFR j
+<因子>
+<项>
+<表达式>
+RBRACK ]
+<因子>
+<项>
+<表达式>
+<条件>
+RPARENT )
+LBRACE {
+IDENFR tmp
+LBRACK [
+IDENFR k
+<因子>
+<项>
+<表达式>
+RBRACK ]
+ASSIGN =
+IDENFR arr
+LBRACK [
+IDENFR s2
+<因子>
+<项>
+PLUS +
+IDENFR j
+<因子>
+<项>
+<表达式>
+RBRACK ]
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+IDENFR j
+ASSIGN =
+IDENFR j
+<因子>
+<项>
+PLUS +
 INTCON 1
 <无符号整数>
 <整数>
 <因子>
 <项>
 <表达式>
-RPARENT )
-<返回语句>
+<赋值语句>
 SEMICN ;
+<语句>
+<语句列>
+RBRACE }
+<语句>
+ELSETK else
+LBRACE {
+IDENFR tmp
+LBRACK [
+IDENFR k
+<因子>
+<项>
+<表达式>
+RBRACK ]
+ASSIGN =
+IDENFR arr
+LBRACK [
+IDENFR s1
+<因子>
+<项>
+PLUS +
+IDENFR i
+<因子>
+<项>
+<表达式>
+RBRACK ]
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+IDENFR i
+ASSIGN =
+IDENFR i
+<因子>
+<项>
+PLUS +
+INTCON 1
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+<语句列>
+RBRACE }
 <语句>
 <条件语句>
 <语句>
-RETURNTK return
-LPARENT (
-IDENFR n
-<因子>
-MULT *
-IDENFR factorial
-LPARENT (
-IDENFR n
+IDENFR k
+ASSIGN =
+IDENFR k
 <因子>
 <项>
-MINU -
+PLUS +
 INTCON 1
 <无符号整数>
 <整数>
 <因子>
 <项>
 <表达式>
-<值参数表>
-RPARENT )
-<有返回值函数调用语句>
-<因子>
-<项>
-<表达式>
-RPARENT )
-<返回语句>
+<赋值语句>
 SEMICN ;
 <语句>
 <语句列>
-<复合语句>
 RBRACE }
-<有返回值函数定义>
-INTTK int
-IDENFR mod
-<声明头部>
-LPARENT (
-INTTK int
-IDENFR x
-COMMA ,
-INTTK int
-IDENFR y
-<参数表>
-RPARENT )
+<语句>
+ELSETK else
 LBRACE {
-IDENFR x
-ASSIGN =
-IDENFR x
+WHILETK while
+LPARENT (
+IDENFR i
 <因子>
 <项>
-MINU -
-IDENFR x
+<表达式>
+LSS <
+IDENFR l1
 <因子>
-DIV /
-IDENFR y
+<项>
+<表达式>
+<条件>
+RPARENT )
+LBRACE {
+IDENFR tmp
+LBRACK [
+IDENFR k
 <因子>
-MULT *
-IDENFR y
+<项>
+<表达式>
+RBRACK ]
+ASSIGN =
+IDENFR arr
+LBRACK [
+IDENFR s1
+<因子>
+<项>
+PLUS +
+IDENFR i
+<因子>
+<项>
+<表达式>
+RBRACK ]
 <因子>
 <项>
 <表达式>
 <赋值语句>
 SEMICN ;
 <语句>
-RETURNTK return
-LPARENT (
-IDENFR x
+IDENFR k
+ASSIGN =
+IDENFR k
+<因子>
+<项>
+PLUS +
+INTCON 1
+<无符号整数>
+<整数>
 <因子>
 <项>
 <表达式>
-RPARENT )
-<返回语句>
+<赋值语句>
+SEMICN ;
+<语句>
+IDENFR i
+ASSIGN =
+IDENFR i
+<因子>
+<项>
+PLUS +
+INTCON 1
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+<赋值语句>
 SEMICN ;
 <语句>
 <语句列>
-<复合语句>
 RBRACE }
-<有返回值函数定义>
-VOIDTK void
-IDENFR swap
+<语句>
+<循环语句>
+<语句>
+<语句列>
+RBRACE }
+<语句>
+<条件语句>
+<语句>
+<语句列>
+RBRACE }
+<语句>
+<循环语句>
+<语句>
+WHILETK while
 LPARENT (
-INTTK int
-IDENFR x
-COMMA ,
-INTTK int
-IDENFR y
-<参数表>
+IDENFR j
+<因子>
+<项>
+<表达式>
+LSS <
+IDENFR l2
+<因子>
+<项>
+<表达式>
+<条件>
 RPARENT )
 LBRACE {
-INTTK int
-IDENFR temp
-<变量定义>
-SEMICN ;
-<变量说明>
-PRINTFTK printf
-LPARENT (
-STRCON x = 
-<字符串>
-COMMA ,
-IDENFR x
+IDENFR tmp
+LBRACK [
+IDENFR k
 <因子>
 <项>
 <表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-PRINTFTK printf
-LPARENT (
-STRCON y = 
-<字符串>
-COMMA ,
-IDENFR y
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-IDENFR temp
+RBRACK ]
 ASSIGN =
-IDENFR x
+IDENFR arr
+LBRACK [
+IDENFR s2
+<因子>
+<项>
+PLUS +
+IDENFR j
+<因子>
+<项>
+<表达式>
+RBRACK ]
 <因子>
 <项>
 <表达式>
 <赋值语句>
 SEMICN ;
 <语句>
-IDENFR x
+IDENFR k
 ASSIGN =
-IDENFR y
+IDENFR k
+<因子>
+<项>
+PLUS +
+INTCON 1
+<无符号整数>
+<整数>
 <因子>
 <项>
 <表达式>
 <赋值语句>
 SEMICN ;
 <语句>
-IDENFR y
+IDENFR j
 ASSIGN =
-IDENFR temp
+IDENFR j
+<因子>
+<项>
+PLUS +
+INTCON 1
+<无符号整数>
+<整数>
 <因子>
 <项>
 <表达式>
 <赋值语句>
 SEMICN ;
 <语句>
-PRINTFTK printf
+<语句列>
+RBRACE }
+<语句>
+<循环语句>
+<语句>
+FORTK for
 LPARENT (
-STRCON SWAP x = 
-<字符串>
-COMMA ,
-IDENFR x
+ASSIGN =
+IDENFR s1
 <因子>
 <项>
 <表达式>
+SEMICN ;
+IDENFR i
+<因子>
+<项>
+<表达式>
+LSS <
+IDENFR k
+<因子>
+<项>
+<表达式>
+<条件>
+SEMICN ;
+ASSIGN =
+PLUS +
+INTCON 1
+<无符号整数>
+<步长>
 RPARENT )
-<写语句>
+IDENFR arr
+LBRACK [
+IDENFR i
+<因子>
+<项>
+<表达式>
+RBRACK ]
+ASSIGN =
+IDENFR tmp
+LBRACK [
+IDENFR i
+<因子>
+<项>
+<表达式>
+RBRACK ]
+<因子>
+<项>
+<表达式>
+<赋值语句>
 SEMICN ;
 <语句>
-PRINTFTK printf
-LPARENT (
-STRCON SWAP y = 
-<字符串>
-COMMA ,
-IDENFR y
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
+<循环语句>
 <语句>
 <语句列>
 <复合语句>
 RBRACE }
 <无返回值函数定义>
-INTTK int
-IDENFR full_num
-<声明头部>
-LPARENT (
-INTTK int
-IDENFR n
-COMMA ,
-INTTK int
-IDENFR j
-COMMA ,
-INTTK int
-IDENFR a
-<参数表>
-RPARENT )
-LBRACE {
-RETURNTK return
-LPARENT (
-IDENFR n
-<因子>
-MULT *
-INTCON 100
-<无符号整数>
-<整数>
-<因子>
-<项>
-PLUS +
-IDENFR j
-<因子>
-MULT *
-INTCON 10
-<无符号整数>
-<整数>
-<因子>
-<项>
-PLUS +
-IDENFR a
-<因子>
-<项>
-<表达式>
-RPARENT )
-<返回语句>
-SEMICN ;
-<语句>
-<语句列>
-<复合语句>
-RBRACE }
-<有返回值函数定义>
-INTTK int
-IDENFR flower_num
-<声明头部>
-LPARENT (
-INTTK int
-IDENFR n
-COMMA ,
-INTTK int
-IDENFR j
-COMMA ,
-INTTK int
-IDENFR a
-<参数表>
-RPARENT )
-LBRACE {
-RETURNTK return
-LPARENT (
-IDENFR n
-<因子>
-MULT *
-IDENFR n
-<因子>
-MULT *
-IDENFR n
-<因子>
-<项>
-PLUS +
-IDENFR j
-<因子>
-MULT *
-IDENFR j
-<因子>
-MULT *
-IDENFR j
-<因子>
-<项>
-PLUS +
-IDENFR a
-<因子>
-MULT *
-IDENFR a
-<因子>
-MULT *
-IDENFR a
-<因子>
-<项>
-<表达式>
-RPARENT )
-<返回语句>
-SEMICN ;
-<语句>
-<语句列>
-<复合语句>
-RBRACE }
-<有返回值函数定义>
 VOIDTK void
-IDENFR complete_flower_num
+IDENFR inner_merge_sort
 LPARENT (
+INTTK int
+IDENFR start
+COMMA ,
+INTTK int
+IDENFR length
 <参数表>
 RPARENT )
 LBRACE {
 INTTK int
-IDENFR k
-LBRACK [
-INTCON 128
-<无符号整数>
-RBRACK ]
-<变量定义>
-SEMICN ;
-INTTK int
-IDENFR i
+IDENFR tmp
 COMMA ,
-IDENFR j
-COMMA ,
-IDENFR n
-COMMA ,
-IDENFR s
-COMMA ,
-IDENFR x1
-COMMA ,
-IDENFR y
-<变量定义>
-SEMICN ;
-INTTK int
-IDENFR m
-COMMA ,
-IDENFR k2
-COMMA ,
-IDENFR h
-COMMA ,
-IDENFR leap
-COMMA ,
-IDENFR x2
-<变量定义>
-SEMICN ;
-INTTK int
-IDENFR a
-COMMA ,
-IDENFR b
-COMMA ,
-IDENFR c
+IDENFR mid
 <变量定义>
 SEMICN ;
 <变量说明>
-FORTK for
+IFTK if
 LPARENT (
-ASSIGN =
+IDENFR length
+<因子>
+<项>
+<表达式>
+LEQ <=
+INTCON 1
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+<条件>
+RPARENT )
+RETURNTK return
+<返回语句>
+SEMICN ;
+<语句>
+<条件语句>
+<语句>
+IFTK if
+LPARENT (
+IDENFR length
+<因子>
+<项>
+<表达式>
+EQL ==
 INTCON 2
 <无符号整数>
 <整数>
 <因子>
 <项>
 <表达式>
-SEMICN ;
-IDENFR j
+<条件>
+RPARENT )
+LBRACE {
+IFTK if
+LPARENT (
+IDENFR arr
+LBRACK [
+IDENFR start
 <因子>
 <项>
 <表达式>
-LSS <
-IDENFR MAX_NUM
+RBRACK ]
+<因子>
+<项>
+<表达式>
+GRE >
+IDENFR arr
+LBRACK [
+IDENFR start
+<因子>
+<项>
+PLUS +
+INTCON 1
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+RBRACK ]
 <因子>
 <项>
 <表达式>
 <条件>
-SEMICN ;
+RPARENT )
+LBRACE {
+IDENFR tmp
 ASSIGN =
+IDENFR arr
+LBRACK [
+IDENFR start
+<因子>
+<项>
+<表达式>
+RBRACK ]
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+IDENFR arr
+LBRACK [
+IDENFR start
+<因子>
+<项>
+<表达式>
+RBRACK ]
+ASSIGN =
+IDENFR arr
+LBRACK [
+IDENFR start
+<因子>
+<项>
 PLUS +
 INTCON 1
 <无符号整数>
-<步长>
-RPARENT )
-LBRACE {
-IDENFR n
+<整数>
+<因子>
+<项>
+<表达式>
+RBRACK ]
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+IDENFR arr
+LBRACK [
+IDENFR start
+<因子>
+<项>
+PLUS +
+INTCON 1
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+RBRACK ]
 ASSIGN =
+IDENFR tmp
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+<语句列>
+RBRACE }
+<语句>
+<条件语句>
+<语句>
+RETURNTK return
+<返回语句>
+SEMICN ;
+<语句>
+<语句列>
+RBRACE }
+<语句>
+<条件语句>
+<语句>
+IDENFR mid
+ASSIGN =
+IDENFR length
+<因子>
+DIV /
+INTCON 2
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+IDENFR inner_merge_sort
+LPARENT (
+IDENFR start
+<因子>
+<项>
+<表达式>
+COMMA ,
+IDENFR mid
+<因子>
+<项>
+<表达式>
+<值参数表>
+RPARENT )
+<无返回值函数调用语句>
+SEMICN ;
+<语句>
+IDENFR inner_merge_sort
+LPARENT (
+IDENFR start
+<因子>
+<项>
+PLUS +
+IDENFR mid
+<因子>
+<项>
+<表达式>
+COMMA ,
+IDENFR length
+<因子>
+<项>
 MINU -
-INTCON 1
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-IDENFR s
-ASSIGN =
-IDENFR j
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-FORTK for
-LPARENT (
-ASSIGN =
-INTCON 1
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-SEMICN ;
-IDENFR i
-<因子>
-<项>
-<表达式>
-LSS <
-IDENFR j
-<因子>
-<项>
-<表达式>
-<条件>
-SEMICN ;
-ASSIGN =
-PLUS +
-INTCON 1
-<无符号整数>
-<步长>
-RPARENT )
-LBRACE {
-IDENFR x1
-ASSIGN =
-LPARENT (
-IDENFR j
-<因子>
-DIV /
-IDENFR i
-<因子>
-<项>
-<表达式>
-RPARENT )
-<因子>
-MULT *
-IDENFR i
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-IFTK if
-LPARENT (
-IDENFR mod
-LPARENT (
-IDENFR j
-<因子>
-<项>
-<表达式>
-COMMA ,
-IDENFR i
+IDENFR mid
 <因子>
 <项>
 <表达式>
 <值参数表>
 RPARENT )
-<有返回值函数调用语句>
+<无返回值函数调用语句>
+SEMICN ;
+<语句>
+IDENFR merge
+LPARENT (
+IDENFR start
 <因子>
 <项>
 <表达式>
-EQL ==
-INTCON 0
-<无符号整数>
-<整数>
+COMMA ,
+IDENFR mid
 <因子>
 <项>
 <表达式>
-<条件>
-RPARENT )
-LBRACE {
-IDENFR n
-ASSIGN =
-IDENFR n
+COMMA ,
+IDENFR start
 <因子>
 <项>
 PLUS +
-INTCON 1
-<无符号整数>
-<整数>
+IDENFR mid
 <因子>
 <项>
 <表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-IDENFR s
-ASSIGN =
-IDENFR s
+COMMA ,
+IDENFR length
 <因子>
 <项>
 MINU -
-IDENFR i
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-IFTK if
-LPARENT (
-IDENFR n
-<因子>
-<项>
-<表达式>
-GEQ >=
-INTCON 128
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<条件>
-RPARENT )
-PRINTFTK printf
-LPARENT (
-STRCON OVERFLOW!
-<字符串>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-ELSETK else
-IDENFR k
-LBRACK [
-IDENFR n
-<因子>
-<项>
-<表达式>
-RBRACK ]
-ASSIGN =
-IDENFR i
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-<条件语句>
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<条件语句>
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<循环语句>
-<语句>
-IFTK if
-LPARENT (
-IDENFR s
-<因子>
-<项>
-<表达式>
-EQL ==
-INTCON 0
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<条件>
-RPARENT )
-LBRACE {
-PRINTFTK printf
-LPARENT (
-STRCON complete number: 
-<字符串>
-COMMA ,
-IDENFR j
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-FORTK for
-LPARENT (
-ASSIGN =
-INTCON 0
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-SEMICN ;
-IDENFR i
-<因子>
-<项>
-<表达式>
-LEQ <=
-IDENFR n
-<因子>
-<项>
-<表达式>
-<条件>
-SEMICN ;
-ASSIGN =
-PLUS +
-INTCON 1
-<无符号整数>
-<步长>
-RPARENT )
-PRINTFTK printf
-LPARENT (
-STRCON   
-<字符串>
-COMMA ,
-IDENFR k
-LBRACK [
-IDENFR i
-<因子>
-<项>
-<表达式>
-RBRACK ]
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-<循环语句>
-<语句>
-PRINTFTK printf
-LPARENT (
-STRCON  
-<字符串>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<条件语句>
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<循环语句>
-<语句>
-PRINTFTK printf
-LPARENT (
-STRCON ---------------------------------------------------------------
-<字符串>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-PRINTFTK printf
-LPARENT (
-STRCON 'water flower'number is:
-<字符串>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-IDENFR y
-ASSIGN =
-INTCON 0
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-FORTK for
-LPARENT (
-ASSIGN =
-INTCON 100
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-SEMICN ;
-IDENFR i
-<因子>
-<项>
-<表达式>
-LSS <
-INTCON 100
-<无符号整数>
-<整数>
-<因子>
-<项>
-PLUS +
-IDENFR MAX_NUM
-<因子>
-<项>
-<表达式>
-<条件>
-SEMICN ;
-ASSIGN =
-PLUS +
-INTCON 1
-<无符号整数>
-<步长>
-RPARENT )
-LBRACE {
-IDENFR n
-ASSIGN =
-IDENFR i
-<因子>
-DIV /
-INTCON 100
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-IDENFR j
-ASSIGN =
-IDENFR mod
-LPARENT (
-IDENFR i
-<因子>
-DIV /
-INTCON 10
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-COMMA ,
-INTCON 10
-<无符号整数>
-<整数>
+IDENFR mid
 <因子>
 <项>
 <表达式>
 <值参数表>
 RPARENT )
-<有返回值函数调用语句>
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-IDENFR a
-ASSIGN =
-IDENFR mod
-LPARENT (
-IDENFR i
-<因子>
-<项>
-<表达式>
-COMMA ,
-INTCON 10
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<值参数表>
-RPARENT )
-<有返回值函数调用语句>
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-IFTK if
-LPARENT (
-IDENFR full_num
-LPARENT (
-IDENFR n
-<因子>
-<项>
-<表达式>
-COMMA ,
-IDENFR j
-<因子>
-<项>
-<表达式>
-COMMA ,
-IDENFR a
-<因子>
-<项>
-<表达式>
-<值参数表>
-RPARENT )
-<有返回值函数调用语句>
-<因子>
-<项>
-<表达式>
-EQL ==
-IDENFR flower_num
-LPARENT (
-IDENFR n
-<因子>
-<项>
-<表达式>
-COMMA ,
-IDENFR j
-<因子>
-<项>
-<表达式>
-COMMA ,
-IDENFR a
-<因子>
-<项>
-<表达式>
-<值参数表>
-RPARENT )
-<有返回值函数调用语句>
-<因子>
-<项>
-<表达式>
-<条件>
-RPARENT )
-LBRACE {
-IDENFR k
-LBRACK [
-IDENFR y
-<因子>
-<项>
-<表达式>
-RBRACK ]
-ASSIGN =
-IDENFR i
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-IDENFR y
-ASSIGN =
-IDENFR y
-<因子>
-<项>
-PLUS +
-INTCON 1
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<条件语句>
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<循环语句>
-<语句>
-FORTK for
-LPARENT (
-ASSIGN =
-INTCON 0
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-SEMICN ;
-IDENFR i
-<因子>
-<项>
-<表达式>
-LSS <
-IDENFR y
-<因子>
-<项>
-<表达式>
-<条件>
-SEMICN ;
-ASSIGN =
-PLUS +
-INTCON 1
-<无符号整数>
-<步长>
-RPARENT )
-LBRACE {
-PRINTFTK printf
-LPARENT (
-STRCON   
-<字符串>
-COMMA ,
-IDENFR k
-LBRACK [
-IDENFR i
-<因子>
-<项>
-<表达式>
-RBRACK ]
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<循环语句>
-<语句>
-PRINTFTK printf
-LPARENT (
-STRCON  
-<字符串>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-PRINTFTK printf
-LPARENT (
-STRCON ---------------------------------------------------------------
-<字符串>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-IDENFR h
-ASSIGN =
-INTCON 0
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-IDENFR leap
-ASSIGN =
-INTCON 1
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-FORTK for
-LPARENT (
-ASSIGN =
-INTCON 2
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-SEMICN ;
-IDENFR m
-<因子>
-<项>
-<表达式>
-LEQ <=
-IDENFR MAX_NUM
-<因子>
-<项>
-<表达式>
-<条件>
-SEMICN ;
-ASSIGN =
-PLUS +
-INTCON 1
-<无符号整数>
-<步长>
-RPARENT )
-LBRACE {
-IDENFR k2
-ASSIGN =
-IDENFR m
-<因子>
-DIV /
-INTCON 2
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-FORTK for
-LPARENT (
-ASSIGN =
-INTCON 2
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-SEMICN ;
-IDENFR i
-<因子>
-<项>
-<表达式>
-LEQ <=
-IDENFR k2
-<因子>
-<项>
-<表达式>
-<条件>
-SEMICN ;
-ASSIGN =
-PLUS +
-INTCON 1
-<无符号整数>
-<步长>
-RPARENT )
-LBRACE {
-IDENFR x2
-ASSIGN =
-LPARENT (
-IDENFR m
-<因子>
-DIV /
-IDENFR i
-<因子>
-<项>
-<表达式>
-RPARENT )
-<因子>
-MULT *
-IDENFR i
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-IFTK if
-LPARENT (
-IDENFR mod
-LPARENT (
-IDENFR m
-<因子>
-<项>
-<表达式>
-COMMA ,
-IDENFR i
-<因子>
-<项>
-<表达式>
-<值参数表>
-RPARENT )
-<有返回值函数调用语句>
-<因子>
-<项>
-<表达式>
-EQL ==
-INTCON 0
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<条件>
-RPARENT )
-LBRACE {
-IDENFR leap
-ASSIGN =
-INTCON 0
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<条件语句>
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<循环语句>
-<语句>
-IFTK if
-LPARENT (
-IDENFR leap
-<因子>
-<项>
-<表达式>
-EQL ==
-INTCON 1
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<条件>
-RPARENT )
-LBRACE {
-PRINTFTK printf
-LPARENT (
-STRCON  
-<字符串>
-COMMA ,
-IDENFR m
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-IDENFR h
-ASSIGN =
-IDENFR h
-<因子>
-<项>
-PLUS +
-INTCON 1
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-IDENFR x2
-ASSIGN =
-LPARENT (
-IDENFR h
-<因子>
-DIV /
-INTCON 10
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-RPARENT )
-<因子>
-MULT *
-INTCON 10
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-IFTK if
-LPARENT (
-IDENFR x2
-<因子>
-<项>
-<表达式>
-EQL ==
-IDENFR h
-<因子>
-<项>
-<表达式>
-<条件>
-RPARENT )
-PRINTFTK printf
-LPARENT (
-STRCON  
-<字符串>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-<条件语句>
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<条件语句>
-<语句>
-IDENFR leap
-ASSIGN =
-INTCON 1
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<循环语句>
-<语句>
-PRINTFTK printf
-LPARENT (
-STRCON The total is 
-<字符串>
-COMMA ,
-IDENFR h
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
+<无返回值函数调用语句>
 SEMICN ;
 <语句>
 <语句列>
@@ -1256,34 +715,135 @@ RPARENT )
 LBRACE {
 INTTK int
 IDENFR n
+COMMA ,
+IDENFR i
+COMMA ,
+IDENFR a
 <变量定义>
 SEMICN ;
 <变量说明>
-IDENFR n
-ASSIGN =
-IDENFR factorial
+PRINTFTK printf
 LPARENT (
-INTCON 5
+STRCON 17373248
+<字符串>
+RPARENT )
+<写语句>
+SEMICN ;
+<语句>
+SCANFTK scanf
+LPARENT (
+RPARENT )
+<读语句>
+SEMICN ;
+<语句>
+FORTK for
+LPARENT (
+ASSIGN =
+INTCON 0
 <无符号整数>
 <整数>
 <因子>
 <项>
 <表达式>
-<值参数表>
+SEMICN ;
+IDENFR i
+<因子>
+<项>
+<表达式>
+LSS <
+IDENFR n
+<因子>
+<项>
+<表达式>
+<条件>
+SEMICN ;
+ASSIGN =
+PLUS +
+INTCON 1
+<无符号整数>
+<步长>
 RPARENT )
-<有返回值函数调用语句>
+LBRACE {
+SCANFTK scanf
+LPARENT (
+RPARENT )
+<读语句>
+SEMICN ;
+<语句>
+IDENFR arr
+LBRACK [
+IDENFR i
+<因子>
+<项>
+<表达式>
+RBRACK ]
+ASSIGN =
+IDENFR a
 <因子>
 <项>
 <表达式>
 <赋值语句>
 SEMICN ;
 <语句>
-PRINTFTK printf
+<语句列>
+RBRACE }
+<语句>
+<循环语句>
+<语句>
+IDENFR inner_merge_sort
 LPARENT (
-STRCON 5 != 
-<字符串>
+INTCON 0
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
 COMMA ,
 IDENFR n
+<因子>
+<项>
+<表达式>
+<值参数表>
+RPARENT )
+<无返回值函数调用语句>
+SEMICN ;
+<语句>
+FORTK for
+LPARENT (
+ASSIGN =
+INTCON 0
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+SEMICN ;
+IDENFR i
+<因子>
+<项>
+<表达式>
+LSS <
+IDENFR n
+<因子>
+<项>
+<表达式>
+<条件>
+SEMICN ;
+ASSIGN =
+PLUS +
+INTCON 1
+<无符号整数>
+<步长>
+RPARENT )
+PRINTFTK printf
+LPARENT (
+IDENFR arr
+LBRACK [
+IDENFR i
+<因子>
+<项>
+<表达式>
+RBRACK ]
 <因子>
 <项>
 <表达式>
@@ -1291,32 +851,7 @@ RPARENT )
 <写语句>
 SEMICN ;
 <语句>
-IDENFR swap
-LPARENT (
-INTCON 5
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-COMMA ,
-INTCON 10
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<值参数表>
-RPARENT )
-<无返回值函数调用语句>
-SEMICN ;
-<语句>
-IDENFR complete_flower_num
-LPARENT (
-<值参数表>
-RPARENT )
-<无返回值函数调用语句>
-SEMICN ;
+<循环语句>
 <语句>
 <语句列>
 <复合语句>

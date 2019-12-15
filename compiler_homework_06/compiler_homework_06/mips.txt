@@ -1,23 +1,7 @@
 .data
-String_0: .asciiz "x = "
-String_1: .asciiz "y = "
-String_2: .asciiz "SWAP x = "
-String_3: .asciiz "SWAP y = "
-String_4: .asciiz "OVERFLOW!"
-String_5: .asciiz "complete number: "
-String_6: .asciiz "  "
-String_7: .asciiz " "
-String_8: .asciiz "---------------------------------------------------------------"
-String_9: .asciiz "'water flower'number is:"
-String_10: .asciiz "  "
-String_11: .asciiz " "
-String_12: .asciiz "---------------------------------------------------------------"
-String_13: .asciiz " "
-String_14: .asciiz " "
-String_15: .asciiz "The total is "
-String_16: .asciiz "5 != "
+String_0: .asciiz "17373248"
 .align 2
-_global: .space 0
+_global: .space 80
 .align 2
 _stack: .space 200
 
@@ -35,140 +19,26 @@ li $v0, 10
 syscall
 
 
-factorial:
-subi $fp, $fp, 4
-lw $t0, 0($fp)
-sw $t0, -12($sp)
-lw $t1, -12($sp)
-move $t0, $t1
-sw $t0, -16($sp)
-lw $t1, -16($sp)
-move $t0, $t1
-sw $t0, -20($sp)
-lw $t1, -20($sp)
-li $t2, 1
-sle $t0, $t1, $t2
-sw $t0, -20($sp)
-lw $t0, -20($sp)
-beqz $t0 factorial_L_0_else_begin
-li $v0, 1
-jr $ra
-factorial_L_0_else_begin:
-lw $t1, -12($sp)
-move $t0, $t1
-sw $t0, -24($sp)
-lw $t1, -12($sp)
-move $t0, $t1
-sw $t0, -28($sp)
-lw $t1, -28($sp)
-move $t0, $t1
-sw $t0, -32($sp)
-lw $t1, -32($sp)
-li $t2, 1
-sub $t0, $t1, $t2
-sw $t0, -32($sp)
-lw $t0, -32($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-sw $ra, -4($sp)
-move $t0, $sp
-subi $sp, $sp, 32
-sw $t0, -8($sp)
-jal factorial
-lw $sp, -8($sp)
-lw $ra, -4($sp)
-sw $v0, -36($sp)
-lw $t1, -24($sp)
-lw $t2, -36($sp)
-mult $t1, $t2
-mflo $t0
-sw $t0, -24($sp)
-lw $t1, -24($sp)
-move $t0, $t1
-sw $t0, -40($sp)
-lw $v0, -40($sp)
-jr $ra
-
-mod:
+merge:
 subi $fp, $fp, 4
 lw $t0, 0($fp)
 sw $t0, -12($sp)
 subi $fp, $fp, 4
 lw $t0, 0($fp)
 sw $t0, -16($sp)
-lw $t1, -16($sp)
-move $t0, $t1
+subi $fp, $fp, 4
+lw $t0, 0($fp)
 sw $t0, -20($sp)
-lw $t1, -20($sp)
-move $t0, $t1
-sw $t0, -24($sp)
-lw $t1, -16($sp)
-move $t0, $t1
-sw $t0, -28($sp)
-lw $t1, -28($sp)
-lw $t2, -12($sp)
-div $t1, $t2
-mflo $t0
-sw $t0, -28($sp)
-lw $t1, -28($sp)
-lw $t2, -12($sp)
-mult $t1, $t2
-mflo $t0
-sw $t0, -28($sp)
-lw $t1, -24($sp)
-lw $t2, -28($sp)
-sub $t0, $t1, $t2
-sw $t0, -24($sp)
-lw $t1, -24($sp)
-move $t0, $t1
-sw $t0, -16($sp)
-lw $t1, -16($sp)
-move $t0, $t1
-sw $t0, -32($sp)
-lw $t1, -32($sp)
-move $t0, $t1
-sw $t0, -36($sp)
-lw $v0, -36($sp)
-jr $ra
-
-swap:
 subi $fp, $fp, 4
 lw $t0, 0($fp)
-sw $t0, -12($sp)
-subi $fp, $fp, 4
-lw $t0, 0($fp)
-sw $t0, -16($sp)
-lw $t1, -16($sp)
-move $t0, $t1
 sw $t0, -24($sp)
-lw $t1, -24($sp)
+li $t1, 0
 move $t0, $t1
 sw $t0, -28($sp)
-li $v0, 4
-la $a0, String_0
-syscall
-li $v0, 1
-lw $a0, -28($sp)
-syscall
-li $v0, 11
-li $a0, 10
-syscall
-lw $t1, -12($sp)
+li $t1, 0
 move $t0, $t1
 sw $t0, -32($sp)
-lw $t1, -32($sp)
-move $t0, $t1
-sw $t0, -36($sp)
-li $v0, 4
-la $a0, String_1
-syscall
-li $v0, 1
-lw $a0, -36($sp)
-syscall
-li $v0, 11
-li $a0, 10
-syscall
-lw $t1, -16($sp)
+lw $t1, -24($sp)
 move $t0, $t1
 sw $t0, -40($sp)
 lw $t1, -40($sp)
@@ -176,1054 +46,899 @@ move $t0, $t1
 sw $t0, -44($sp)
 lw $t1, -44($sp)
 move $t0, $t1
-sw $t0, -20($sp)
-lw $t1, -12($sp)
+sw $t0, -36($sp)
+merge_L_0_while_begin:
+lw $t1, -28($sp)
 move $t0, $t1
 sw $t0, -48($sp)
 lw $t1, -48($sp)
 move $t0, $t1
 sw $t0, -52($sp)
-lw $t1, -52($sp)
-move $t0, $t1
-sw $t0, -16($sp)
 lw $t1, -20($sp)
 move $t0, $t1
 sw $t0, -56($sp)
 lw $t1, -56($sp)
 move $t0, $t1
 sw $t0, -60($sp)
-lw $t1, -60($sp)
-move $t0, $t1
-sw $t0, -12($sp)
-lw $t1, -16($sp)
+lw $t1, -52($sp)
+lw $t2, -60($sp)
+slt $t0, $t1, $t2
+sw $t0, -52($sp)
+lw $t0, -52($sp)
+beqz $t0 merge_L_1_while_over
+lw $t1, -32($sp)
 move $t0, $t1
 sw $t0, -64($sp)
 lw $t1, -64($sp)
 move $t0, $t1
 sw $t0, -68($sp)
-li $v0, 4
-la $a0, String_2
-syscall
-li $v0, 1
-lw $a0, -68($sp)
-syscall
-li $v0, 11
-li $a0, 10
-syscall
 lw $t1, -12($sp)
 move $t0, $t1
 sw $t0, -72($sp)
 lw $t1, -72($sp)
 move $t0, $t1
 sw $t0, -76($sp)
-li $v0, 4
-la $a0, String_3
-syscall
-li $v0, 1
-lw $a0, -76($sp)
-syscall
-li $v0, 11
-li $a0, 10
-syscall
+lw $t1, -68($sp)
+lw $t2, -76($sp)
+slt $t0, $t1, $t2
+sw $t0, -68($sp)
+lw $t0, -68($sp)
+beqz $t0 merge_L_2_else_begin
+lw $t1, -24($sp)
+move $t0, $t1
+sw $t0, -80($sp)
+lw $t1, -80($sp)
+move $t0, $t1
+sw $t0, -84($sp)
+lw $t1, -28($sp)
+move $t0, $t1
+sw $t0, -88($sp)
+lw $t1, -84($sp)
+lw $t2, -88($sp)
+add $t0, $t1, $t2
+sw $t0, -84($sp)
+lw $t1, -84($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+lw $t0, 0($t2)
+sw $t0, -92($sp)
+lw $t1, -92($sp)
+move $t0, $t1
+sw $t0, -96($sp)
+lw $t1, -96($sp)
+move $t0, $t1
+sw $t0, -100($sp)
+lw $t1, -16($sp)
+move $t0, $t1
+sw $t0, -104($sp)
+lw $t1, -104($sp)
+move $t0, $t1
+sw $t0, -108($sp)
+lw $t1, -32($sp)
+move $t0, $t1
+sw $t0, -112($sp)
+lw $t1, -108($sp)
+lw $t2, -112($sp)
+add $t0, $t1, $t2
+sw $t0, -108($sp)
+lw $t1, -108($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+lw $t0, 0($t2)
+sw $t0, -116($sp)
+lw $t1, -116($sp)
+move $t0, $t1
+sw $t0, -120($sp)
+lw $t1, -120($sp)
+move $t0, $t1
+sw $t0, -124($sp)
+lw $t1, -100($sp)
+lw $t2, -124($sp)
+sgt $t0, $t1, $t2
+sw $t0, -100($sp)
+lw $t0, -100($sp)
+beqz $t0 merge_L_4_else_begin
+lw $t1, -36($sp)
+move $t0, $t1
+sw $t0, -128($sp)
+lw $t1, -128($sp)
+move $t0, $t1
+sw $t0, -132($sp)
+lw $t1, -16($sp)
+move $t0, $t1
+sw $t0, -136($sp)
+lw $t1, -136($sp)
+move $t0, $t1
+sw $t0, -140($sp)
+lw $t1, -32($sp)
+move $t0, $t1
+sw $t0, -144($sp)
+lw $t1, -140($sp)
+lw $t2, -144($sp)
+add $t0, $t1, $t2
+sw $t0, -140($sp)
+lw $t1, -140($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+lw $t0, 0($t2)
+sw $t0, -148($sp)
+lw $t1, -148($sp)
+move $t0, $t1
+sw $t0, -152($sp)
+lw $t1, -152($sp)
+move $t0, $t1
+sw $t0, -156($sp)
+lw $t0, -156($sp)
+lw $t1, -132($sp)
+sll $t1, $t1, 2
+li $t2, 40
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+sw $t0, 0($t2)
+lw $t1, -32($sp)
+move $t0, $t1
+sw $t0, -160($sp)
+lw $t1, -160($sp)
+move $t0, $t1
+sw $t0, -164($sp)
+lw $t1, -164($sp)
+li $t2, 1
+add $t0, $t1, $t2
+sw $t0, -164($sp)
+lw $t1, -164($sp)
+move $t0, $t1
+sw $t0, -32($sp)
+j merge_L_5_else_over
+merge_L_4_else_begin:
+lw $t1, -36($sp)
+move $t0, $t1
+sw $t0, -168($sp)
+lw $t1, -168($sp)
+move $t0, $t1
+sw $t0, -172($sp)
+lw $t1, -24($sp)
+move $t0, $t1
+sw $t0, -176($sp)
+lw $t1, -176($sp)
+move $t0, $t1
+sw $t0, -180($sp)
+lw $t1, -28($sp)
+move $t0, $t1
+sw $t0, -184($sp)
+lw $t1, -180($sp)
+lw $t2, -184($sp)
+add $t0, $t1, $t2
+sw $t0, -180($sp)
+lw $t1, -180($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+lw $t0, 0($t2)
+sw $t0, -188($sp)
+lw $t1, -188($sp)
+move $t0, $t1
+sw $t0, -192($sp)
+lw $t1, -192($sp)
+move $t0, $t1
+sw $t0, -196($sp)
+lw $t0, -196($sp)
+lw $t1, -172($sp)
+sll $t1, $t1, 2
+li $t2, 40
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+sw $t0, 0($t2)
+lw $t1, -28($sp)
+move $t0, $t1
+sw $t0, -200($sp)
+lw $t1, -200($sp)
+move $t0, $t1
+sw $t0, -204($sp)
+lw $t1, -204($sp)
+li $t2, 1
+add $t0, $t1, $t2
+sw $t0, -204($sp)
+lw $t1, -204($sp)
+move $t0, $t1
+sw $t0, -28($sp)
+merge_L_5_else_over:
+lw $t1, -36($sp)
+move $t0, $t1
+sw $t0, -208($sp)
+lw $t1, -208($sp)
+move $t0, $t1
+sw $t0, -212($sp)
+lw $t1, -212($sp)
+li $t2, 1
+add $t0, $t1, $t2
+sw $t0, -212($sp)
+lw $t1, -212($sp)
+move $t0, $t1
+sw $t0, -36($sp)
+j merge_L_3_else_over
+merge_L_2_else_begin:
+merge_L_6_while_begin:
+lw $t1, -28($sp)
+move $t0, $t1
+sw $t0, -216($sp)
+lw $t1, -216($sp)
+move $t0, $t1
+sw $t0, -220($sp)
+lw $t1, -20($sp)
+move $t0, $t1
+sw $t0, -224($sp)
+lw $t1, -224($sp)
+move $t0, $t1
+sw $t0, -228($sp)
+lw $t1, -220($sp)
+lw $t2, -228($sp)
+slt $t0, $t1, $t2
+sw $t0, -220($sp)
+lw $t0, -220($sp)
+beqz $t0 merge_L_7_while_over
+lw $t1, -36($sp)
+move $t0, $t1
+sw $t0, -232($sp)
+lw $t1, -232($sp)
+move $t0, $t1
+sw $t0, -236($sp)
+lw $t1, -24($sp)
+move $t0, $t1
+sw $t0, -240($sp)
+lw $t1, -240($sp)
+move $t0, $t1
+sw $t0, -244($sp)
+lw $t1, -28($sp)
+move $t0, $t1
+sw $t0, -248($sp)
+lw $t1, -244($sp)
+lw $t2, -248($sp)
+add $t0, $t1, $t2
+sw $t0, -244($sp)
+lw $t1, -244($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+lw $t0, 0($t2)
+sw $t0, -252($sp)
+lw $t1, -252($sp)
+move $t0, $t1
+sw $t0, -256($sp)
+lw $t1, -256($sp)
+move $t0, $t1
+sw $t0, -260($sp)
+lw $t0, -260($sp)
+lw $t1, -236($sp)
+sll $t1, $t1, 2
+li $t2, 40
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+sw $t0, 0($t2)
+lw $t1, -36($sp)
+move $t0, $t1
+sw $t0, -264($sp)
+lw $t1, -264($sp)
+move $t0, $t1
+sw $t0, -268($sp)
+lw $t1, -268($sp)
+li $t2, 1
+add $t0, $t1, $t2
+sw $t0, -268($sp)
+lw $t1, -268($sp)
+move $t0, $t1
+sw $t0, -36($sp)
+lw $t1, -28($sp)
+move $t0, $t1
+sw $t0, -272($sp)
+lw $t1, -272($sp)
+move $t0, $t1
+sw $t0, -276($sp)
+lw $t1, -276($sp)
+li $t2, 1
+add $t0, $t1, $t2
+sw $t0, -276($sp)
+lw $t1, -276($sp)
+move $t0, $t1
+sw $t0, -28($sp)
+j merge_L_6_while_begin
+merge_L_7_while_over:
+merge_L_3_else_over:
+j merge_L_0_while_begin
+merge_L_1_while_over:
+merge_L_8_while_begin:
+lw $t1, -32($sp)
+move $t0, $t1
+sw $t0, -280($sp)
+lw $t1, -280($sp)
+move $t0, $t1
+sw $t0, -284($sp)
+lw $t1, -12($sp)
+move $t0, $t1
+sw $t0, -288($sp)
+lw $t1, -288($sp)
+move $t0, $t1
+sw $t0, -292($sp)
+lw $t1, -284($sp)
+lw $t2, -292($sp)
+slt $t0, $t1, $t2
+sw $t0, -284($sp)
+lw $t0, -284($sp)
+beqz $t0 merge_L_9_while_over
+lw $t1, -36($sp)
+move $t0, $t1
+sw $t0, -296($sp)
+lw $t1, -296($sp)
+move $t0, $t1
+sw $t0, -300($sp)
+lw $t1, -16($sp)
+move $t0, $t1
+sw $t0, -304($sp)
+lw $t1, -304($sp)
+move $t0, $t1
+sw $t0, -308($sp)
+lw $t1, -32($sp)
+move $t0, $t1
+sw $t0, -312($sp)
+lw $t1, -308($sp)
+lw $t2, -312($sp)
+add $t0, $t1, $t2
+sw $t0, -308($sp)
+lw $t1, -308($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+lw $t0, 0($t2)
+sw $t0, -316($sp)
+lw $t1, -316($sp)
+move $t0, $t1
+sw $t0, -320($sp)
+lw $t1, -320($sp)
+move $t0, $t1
+sw $t0, -324($sp)
+lw $t0, -324($sp)
+lw $t1, -300($sp)
+sll $t1, $t1, 2
+li $t2, 40
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+sw $t0, 0($t2)
+lw $t1, -36($sp)
+move $t0, $t1
+sw $t0, -328($sp)
+lw $t1, -328($sp)
+move $t0, $t1
+sw $t0, -332($sp)
+lw $t1, -332($sp)
+li $t2, 1
+add $t0, $t1, $t2
+sw $t0, -332($sp)
+lw $t1, -332($sp)
+move $t0, $t1
+sw $t0, -36($sp)
+lw $t1, -32($sp)
+move $t0, $t1
+sw $t0, -336($sp)
+lw $t1, -336($sp)
+move $t0, $t1
+sw $t0, -340($sp)
+lw $t1, -340($sp)
+li $t2, 1
+add $t0, $t1, $t2
+sw $t0, -340($sp)
+lw $t1, -340($sp)
+move $t0, $t1
+sw $t0, -32($sp)
+j merge_L_8_while_begin
+merge_L_9_while_over:
+lw $t1, -24($sp)
+move $t0, $t1
+sw $t0, -344($sp)
+lw $t1, -344($sp)
+move $t0, $t1
+sw $t0, -348($sp)
+lw $t1, -348($sp)
+move $t0, $t1
+sw $t0, -28($sp)
+merge_L_10_for_begin:
+lw $t1, -28($sp)
+move $t0, $t1
+sw $t0, -352($sp)
+lw $t1, -352($sp)
+move $t0, $t1
+sw $t0, -356($sp)
+lw $t1, -36($sp)
+move $t0, $t1
+sw $t0, -360($sp)
+lw $t1, -360($sp)
+move $t0, $t1
+sw $t0, -364($sp)
+lw $t1, -356($sp)
+lw $t2, -364($sp)
+slt $t0, $t1, $t2
+sw $t0, -356($sp)
+lw $t0, -356($sp)
+beqz $t0 merge_L_11_for_over
+lw $t1, -28($sp)
+move $t0, $t1
+sw $t0, -368($sp)
+lw $t1, -368($sp)
+move $t0, $t1
+sw $t0, -372($sp)
+lw $t1, -28($sp)
+move $t0, $t1
+sw $t0, -376($sp)
+lw $t1, -376($sp)
+move $t0, $t1
+sw $t0, -380($sp)
+lw $t1, -380($sp)
+sll $t1, $t1, 2
+li $t2, 40
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+lw $t0, 0($t2)
+sw $t0, -384($sp)
+lw $t1, -384($sp)
+move $t0, $t1
+sw $t0, -388($sp)
+lw $t1, -388($sp)
+move $t0, $t1
+sw $t0, -392($sp)
+lw $t0, -392($sp)
+lw $t1, -372($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+sw $t0, 0($t2)
+lw $t1, -28($sp)
+li $t2, 1
+add $t0, $t1, $t2
+sw $t0, -28($sp)
+j merge_L_10_for_begin
+merge_L_11_for_over:
 jr $ra
 
-full_num:
+inner_merge_sort:
 subi $fp, $fp, 4
 lw $t0, 0($fp)
 sw $t0, -12($sp)
 subi $fp, $fp, 4
 lw $t0, 0($fp)
 sw $t0, -16($sp)
-subi $fp, $fp, 4
-lw $t0, 0($fp)
-sw $t0, -20($sp)
-lw $t1, -20($sp)
-move $t0, $t1
-sw $t0, -24($sp)
-lw $t1, -24($sp)
-li $t2, 100
-mult $t1, $t2
-mflo $t0
-sw $t0, -24($sp)
-lw $t1, -24($sp)
-move $t0, $t1
-sw $t0, -28($sp)
-lw $t1, -16($sp)
-move $t0, $t1
-sw $t0, -32($sp)
-lw $t1, -32($sp)
-li $t2, 10
-mult $t1, $t2
-mflo $t0
-sw $t0, -32($sp)
-lw $t1, -28($sp)
-lw $t2, -32($sp)
-add $t0, $t1, $t2
-sw $t0, -28($sp)
 lw $t1, -12($sp)
 move $t0, $t1
-sw $t0, -36($sp)
-lw $t1, -28($sp)
-lw $t2, -36($sp)
-add $t0, $t1, $t2
 sw $t0, -28($sp)
-lw $v0, -28($sp)
+lw $t1, -28($sp)
+move $t0, $t1
+sw $t0, -32($sp)
+lw $t1, -32($sp)
+li $t2, 1
+sle $t0, $t1, $t2
+sw $t0, -32($sp)
+lw $t0, -32($sp)
+beqz $t0 inner_merge_sort_L_12_else_begin
 jr $ra
-
-flower_num:
-subi $fp, $fp, 4
-lw $t0, 0($fp)
-sw $t0, -12($sp)
-subi $fp, $fp, 4
-lw $t0, 0($fp)
-sw $t0, -16($sp)
-subi $fp, $fp, 4
-lw $t0, 0($fp)
-sw $t0, -20($sp)
-lw $t1, -20($sp)
-move $t0, $t1
-sw $t0, -24($sp)
-lw $t1, -24($sp)
-lw $t2, -20($sp)
-mult $t1, $t2
-mflo $t0
-sw $t0, -24($sp)
-lw $t1, -24($sp)
-lw $t2, -20($sp)
-mult $t1, $t2
-mflo $t0
-sw $t0, -24($sp)
-lw $t1, -24($sp)
-move $t0, $t1
-sw $t0, -28($sp)
-lw $t1, -16($sp)
-move $t0, $t1
-sw $t0, -32($sp)
-lw $t1, -32($sp)
-lw $t2, -16($sp)
-mult $t1, $t2
-mflo $t0
-sw $t0, -32($sp)
-lw $t1, -32($sp)
-lw $t2, -16($sp)
-mult $t1, $t2
-mflo $t0
-sw $t0, -32($sp)
-lw $t1, -28($sp)
-lw $t2, -32($sp)
-add $t0, $t1, $t2
-sw $t0, -28($sp)
+inner_merge_sort_L_12_else_begin:
 lw $t1, -12($sp)
 move $t0, $t1
 sw $t0, -36($sp)
 lw $t1, -36($sp)
-lw $t2, -12($sp)
-mult $t1, $t2
-mflo $t0
-sw $t0, -36($sp)
-lw $t1, -36($sp)
-lw $t2, -12($sp)
-mult $t1, $t2
-mflo $t0
-sw $t0, -36($sp)
-lw $t1, -28($sp)
-lw $t2, -36($sp)
+move $t0, $t1
+sw $t0, -40($sp)
+lw $t1, -40($sp)
+li $t2, 2
+seq $t0, $t1, $t2
+sw $t0, -40($sp)
+lw $t0, -40($sp)
+beqz $t0 inner_merge_sort_L_14_else_begin
+lw $t1, -16($sp)
+move $t0, $t1
+sw $t0, -44($sp)
+lw $t1, -44($sp)
+move $t0, $t1
+sw $t0, -48($sp)
+lw $t1, -48($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+lw $t0, 0($t2)
+sw $t0, -52($sp)
+lw $t1, -52($sp)
+move $t0, $t1
+sw $t0, -56($sp)
+lw $t1, -56($sp)
+move $t0, $t1
+sw $t0, -60($sp)
+lw $t1, -16($sp)
+move $t0, $t1
+sw $t0, -64($sp)
+lw $t1, -64($sp)
+move $t0, $t1
+sw $t0, -68($sp)
+lw $t1, -68($sp)
+li $t2, 1
 add $t0, $t1, $t2
-sw $t0, -28($sp)
-lw $v0, -28($sp)
+sw $t0, -68($sp)
+lw $t1, -68($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+lw $t0, 0($t2)
+sw $t0, -72($sp)
+lw $t1, -72($sp)
+move $t0, $t1
+sw $t0, -76($sp)
+lw $t1, -76($sp)
+move $t0, $t1
+sw $t0, -80($sp)
+lw $t1, -60($sp)
+lw $t2, -80($sp)
+sgt $t0, $t1, $t2
+sw $t0, -60($sp)
+lw $t0, -60($sp)
+beqz $t0 inner_merge_sort_L_16_else_begin
+lw $t1, -16($sp)
+move $t0, $t1
+sw $t0, -84($sp)
+lw $t1, -84($sp)
+move $t0, $t1
+sw $t0, -88($sp)
+lw $t1, -88($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+lw $t0, 0($t2)
+sw $t0, -92($sp)
+lw $t1, -92($sp)
+move $t0, $t1
+sw $t0, -96($sp)
+lw $t1, -96($sp)
+move $t0, $t1
+sw $t0, -100($sp)
+lw $t1, -100($sp)
+move $t0, $t1
+sw $t0, -20($sp)
+lw $t1, -16($sp)
+move $t0, $t1
+sw $t0, -104($sp)
+lw $t1, -104($sp)
+move $t0, $t1
+sw $t0, -108($sp)
+lw $t1, -16($sp)
+move $t0, $t1
+sw $t0, -112($sp)
+lw $t1, -112($sp)
+move $t0, $t1
+sw $t0, -116($sp)
+lw $t1, -116($sp)
+li $t2, 1
+add $t0, $t1, $t2
+sw $t0, -116($sp)
+lw $t1, -116($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+lw $t0, 0($t2)
+sw $t0, -120($sp)
+lw $t1, -120($sp)
+move $t0, $t1
+sw $t0, -124($sp)
+lw $t1, -124($sp)
+move $t0, $t1
+sw $t0, -128($sp)
+lw $t0, -128($sp)
+lw $t1, -108($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+sw $t0, 0($t2)
+lw $t1, -16($sp)
+move $t0, $t1
+sw $t0, -132($sp)
+lw $t1, -132($sp)
+move $t0, $t1
+sw $t0, -136($sp)
+lw $t1, -136($sp)
+li $t2, 1
+add $t0, $t1, $t2
+sw $t0, -136($sp)
+lw $t1, -20($sp)
+move $t0, $t1
+sw $t0, -140($sp)
+lw $t1, -140($sp)
+move $t0, $t1
+sw $t0, -144($sp)
+lw $t0, -144($sp)
+lw $t1, -136($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+sw $t0, 0($t2)
+inner_merge_sort_L_16_else_begin:
 jr $ra
-
-complete_flower_num:
-li $t1, 2
-move $t0, $t1
-sw $t0, -528($sp)
-complete_flower_num_L_2_for_begin:
-lw $t1, -528($sp)
-move $t0, $t1
-sw $t0, -580($sp)
-lw $t1, -580($sp)
-move $t0, $t1
-sw $t0, -584($sp)
-lw $t1, -584($sp)
-li $t2, 128
-slt $t0, $t1, $t2
-sw $t0, -584($sp)
-lw $t0, -584($sp)
-beqz $t0 complete_flower_num_L_3_for_over
-li $t1, -1
-move $t0, $t1
-sw $t0, -532($sp)
-lw $t1, -528($sp)
-move $t0, $t1
-sw $t0, -588($sp)
-lw $t1, -588($sp)
-move $t0, $t1
-sw $t0, -592($sp)
-lw $t1, -592($sp)
-move $t0, $t1
-sw $t0, -536($sp)
-li $t1, 1
-move $t0, $t1
-sw $t0, -524($sp)
-complete_flower_num_L_4_for_begin:
-lw $t1, -524($sp)
-move $t0, $t1
-sw $t0, -596($sp)
-lw $t1, -596($sp)
-move $t0, $t1
-sw $t0, -600($sp)
-lw $t1, -528($sp)
-move $t0, $t1
-sw $t0, -604($sp)
-lw $t1, -604($sp)
-move $t0, $t1
-sw $t0, -608($sp)
-lw $t1, -600($sp)
-lw $t2, -608($sp)
-slt $t0, $t1, $t2
-sw $t0, -600($sp)
-lw $t0, -600($sp)
-beqz $t0 complete_flower_num_L_5_for_over
-lw $t1, -528($sp)
-move $t0, $t1
-sw $t0, -612($sp)
-lw $t1, -612($sp)
-lw $t2, -524($sp)
-div $t1, $t2
-mflo $t0
-sw $t0, -612($sp)
-lw $t1, -612($sp)
-move $t0, $t1
-sw $t0, -616($sp)
-lw $t1, -616($sp)
-move $t0, $t1
-sw $t0, -620($sp)
-lw $t1, -620($sp)
-lw $t2, -524($sp)
-mult $t1, $t2
-mflo $t0
-sw $t0, -620($sp)
-lw $t1, -620($sp)
-move $t0, $t1
-sw $t0, -624($sp)
-lw $t1, -624($sp)
-move $t0, $t1
-sw $t0, -540($sp)
-lw $t1, -528($sp)
-move $t0, $t1
-sw $t0, -628($sp)
-lw $t1, -628($sp)
-move $t0, $t1
-sw $t0, -632($sp)
-lw $t0, -632($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-lw $t1, -524($sp)
-move $t0, $t1
-sw $t0, -636($sp)
-lw $t1, -636($sp)
-move $t0, $t1
-sw $t0, -640($sp)
-lw $t0, -640($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-sw $ra, -4($sp)
-move $t0, $sp
-subi $sp, $sp, 640
-sw $t0, -8($sp)
-jal mod
-lw $sp, -8($sp)
-lw $ra, -4($sp)
-sw $v0, -644($sp)
-lw $t1, -644($sp)
-move $t0, $t1
-sw $t0, -648($sp)
-lw $t1, -648($sp)
-move $t0, $t1
-sw $t0, -652($sp)
-lw $t1, -652($sp)
-li $t2, 0
-seq $t0, $t1, $t2
-sw $t0, -652($sp)
-lw $t0, -652($sp)
-beqz $t0 complete_flower_num_L_6_else_begin
-lw $t1, -532($sp)
-move $t0, $t1
-sw $t0, -656($sp)
-lw $t1, -656($sp)
-move $t0, $t1
-sw $t0, -660($sp)
-lw $t1, -660($sp)
-li $t2, 1
-add $t0, $t1, $t2
-sw $t0, -660($sp)
-lw $t1, -660($sp)
-move $t0, $t1
-sw $t0, -532($sp)
-lw $t1, -536($sp)
-move $t0, $t1
-sw $t0, -664($sp)
-lw $t1, -664($sp)
-move $t0, $t1
-sw $t0, -668($sp)
-lw $t1, -524($sp)
-move $t0, $t1
-sw $t0, -672($sp)
-lw $t1, -668($sp)
-lw $t2, -672($sp)
-sub $t0, $t1, $t2
-sw $t0, -668($sp)
-lw $t1, -668($sp)
-move $t0, $t1
-sw $t0, -536($sp)
-lw $t1, -532($sp)
-move $t0, $t1
-sw $t0, -676($sp)
-lw $t1, -676($sp)
-move $t0, $t1
-sw $t0, -680($sp)
-lw $t1, -680($sp)
-li $t2, 128
-sge $t0, $t1, $t2
-sw $t0, -680($sp)
-lw $t0, -680($sp)
-beqz $t0 complete_flower_num_L_8_else_begin
-li $v0, 4
-la $a0, String_4
-syscall
-li $v0, 11
-li $a0, 10
-syscall
-j complete_flower_num_L_9_else_over
-complete_flower_num_L_8_else_begin:
-lw $t1, -532($sp)
-move $t0, $t1
-sw $t0, -684($sp)
-lw $t1, -684($sp)
-move $t0, $t1
-sw $t0, -688($sp)
-lw $t1, -524($sp)
-move $t0, $t1
-sw $t0, -692($sp)
-lw $t1, -692($sp)
-move $t0, $t1
-sw $t0, -696($sp)
-lw $t0, -696($sp)
-lw $t1, -688($sp)
-sll $t1, $t1, 2
-li $t2, 12
-add $t2, $t1, $t2
-sub $t2, $sp, $t2
-sw $t0, 0($t2)
-complete_flower_num_L_9_else_over:
-complete_flower_num_L_6_else_begin:
-lw $t1, -524($sp)
-li $t2, 1
-add $t0, $t1, $t2
-sw $t0, -524($sp)
-j complete_flower_num_L_4_for_begin
-complete_flower_num_L_5_for_over:
-lw $t1, -536($sp)
-move $t0, $t1
-sw $t0, -700($sp)
-lw $t1, -700($sp)
-move $t0, $t1
-sw $t0, -704($sp)
-lw $t1, -704($sp)
-li $t2, 0
-seq $t0, $t1, $t2
-sw $t0, -704($sp)
-lw $t0, -704($sp)
-beqz $t0 complete_flower_num_L_10_else_begin
-lw $t1, -528($sp)
-move $t0, $t1
-sw $t0, -708($sp)
-lw $t1, -708($sp)
-move $t0, $t1
-sw $t0, -712($sp)
-li $v0, 4
-la $a0, String_5
-syscall
-li $v0, 1
-lw $a0, -712($sp)
-syscall
-li $v0, 11
-li $a0, 10
-syscall
-li $t1, 0
-move $t0, $t1
-sw $t0, -524($sp)
-complete_flower_num_L_12_for_begin:
-lw $t1, -524($sp)
-move $t0, $t1
-sw $t0, -716($sp)
-lw $t1, -716($sp)
-move $t0, $t1
-sw $t0, -720($sp)
-lw $t1, -532($sp)
-move $t0, $t1
-sw $t0, -724($sp)
-lw $t1, -724($sp)
-move $t0, $t1
-sw $t0, -728($sp)
-lw $t1, -720($sp)
-lw $t2, -728($sp)
-sle $t0, $t1, $t2
-sw $t0, -720($sp)
-lw $t0, -720($sp)
-beqz $t0 complete_flower_num_L_13_for_over
-lw $t1, -524($sp)
-move $t0, $t1
-sw $t0, -732($sp)
-lw $t1, -732($sp)
-move $t0, $t1
-sw $t0, -736($sp)
-lw $t1, -736($sp)
-sll $t1, $t1, 2
-li $t2, 12
-add $t2, $t1, $t2
-sub $t2, $sp, $t2
-lw $t0, 0($t2)
-sw $t0, -740($sp)
-lw $t1, -740($sp)
-move $t0, $t1
-sw $t0, -744($sp)
-lw $t1, -744($sp)
-move $t0, $t1
-sw $t0, -748($sp)
-li $v0, 4
-la $a0, String_6
-syscall
-li $v0, 1
-lw $a0, -748($sp)
-syscall
-li $v0, 11
-li $a0, 10
-syscall
-lw $t1, -524($sp)
-li $t2, 1
-add $t0, $t1, $t2
-sw $t0, -524($sp)
-j complete_flower_num_L_12_for_begin
-complete_flower_num_L_13_for_over:
-li $v0, 4
-la $a0, String_7
-syscall
-li $v0, 11
-li $a0, 10
-syscall
-complete_flower_num_L_10_else_begin:
-lw $t1, -528($sp)
-li $t2, 1
-add $t0, $t1, $t2
-sw $t0, -528($sp)
-j complete_flower_num_L_2_for_begin
-complete_flower_num_L_3_for_over:
-li $v0, 4
-la $a0, String_8
-syscall
-li $v0, 11
-li $a0, 10
-syscall
-li $v0, 4
-la $a0, String_9
-syscall
-li $v0, 11
-li $a0, 10
-syscall
-li $t1, 0
-move $t0, $t1
-sw $t0, -544($sp)
-li $t1, 100
-move $t0, $t1
-sw $t0, -524($sp)
-complete_flower_num_L_14_for_begin:
-lw $t1, -524($sp)
-move $t0, $t1
-sw $t0, -752($sp)
-lw $t1, -752($sp)
-move $t0, $t1
-sw $t0, -756($sp)
-lw $t1, -756($sp)
-li $t2, 228
-slt $t0, $t1, $t2
-sw $t0, -756($sp)
-lw $t0, -756($sp)
-beqz $t0 complete_flower_num_L_15_for_over
-lw $t1, -524($sp)
-move $t0, $t1
-sw $t0, -760($sp)
-lw $t1, -760($sp)
-li $t2, 100
-div $t1, $t2
-mflo $t0
-sw $t0, -760($sp)
-lw $t1, -760($sp)
-move $t0, $t1
-sw $t0, -764($sp)
-lw $t1, -764($sp)
-move $t0, $t1
-sw $t0, -532($sp)
-lw $t1, -524($sp)
-move $t0, $t1
-sw $t0, -768($sp)
-lw $t1, -768($sp)
-li $t2, 10
-div $t1, $t2
-mflo $t0
-sw $t0, -768($sp)
-lw $t1, -768($sp)
-move $t0, $t1
-sw $t0, -772($sp)
-lw $t0, -772($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-li $t0, 10
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-sw $ra, -4($sp)
-move $t0, $sp
-subi $sp, $sp, 772
-sw $t0, -8($sp)
-jal mod
-lw $sp, -8($sp)
-lw $ra, -4($sp)
-sw $v0, -776($sp)
-lw $t1, -776($sp)
-move $t0, $t1
-sw $t0, -780($sp)
-lw $t1, -780($sp)
-move $t0, $t1
-sw $t0, -784($sp)
-lw $t1, -784($sp)
-move $t0, $t1
-sw $t0, -528($sp)
-lw $t1, -524($sp)
-move $t0, $t1
-sw $t0, -788($sp)
-lw $t1, -788($sp)
-move $t0, $t1
-sw $t0, -792($sp)
-lw $t0, -792($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-li $t0, 10
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-sw $ra, -4($sp)
-move $t0, $sp
-subi $sp, $sp, 792
-sw $t0, -8($sp)
-jal mod
-lw $sp, -8($sp)
-lw $ra, -4($sp)
-sw $v0, -796($sp)
-lw $t1, -796($sp)
-move $t0, $t1
-sw $t0, -800($sp)
-lw $t1, -800($sp)
-move $t0, $t1
-sw $t0, -804($sp)
-lw $t1, -804($sp)
-move $t0, $t1
-sw $t0, -568($sp)
-lw $t1, -532($sp)
-move $t0, $t1
-sw $t0, -808($sp)
-lw $t1, -808($sp)
-move $t0, $t1
-sw $t0, -812($sp)
-lw $t0, -812($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-lw $t1, -528($sp)
-move $t0, $t1
-sw $t0, -816($sp)
-lw $t1, -816($sp)
-move $t0, $t1
-sw $t0, -820($sp)
-lw $t0, -820($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-lw $t1, -568($sp)
-move $t0, $t1
-sw $t0, -824($sp)
-lw $t1, -824($sp)
-move $t0, $t1
-sw $t0, -828($sp)
-lw $t0, -828($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-sw $ra, -4($sp)
-move $t0, $sp
-subi $sp, $sp, 828
-sw $t0, -8($sp)
-jal full_num
-lw $sp, -8($sp)
-lw $ra, -4($sp)
-sw $v0, -832($sp)
-lw $t1, -832($sp)
-move $t0, $t1
-sw $t0, -836($sp)
-lw $t1, -836($sp)
-move $t0, $t1
-sw $t0, -840($sp)
-lw $t1, -532($sp)
-move $t0, $t1
-sw $t0, -844($sp)
-lw $t1, -844($sp)
-move $t0, $t1
-sw $t0, -848($sp)
-lw $t0, -848($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-lw $t1, -528($sp)
-move $t0, $t1
-sw $t0, -852($sp)
-lw $t1, -852($sp)
-move $t0, $t1
-sw $t0, -856($sp)
-lw $t0, -856($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-lw $t1, -568($sp)
-move $t0, $t1
-sw $t0, -860($sp)
-lw $t1, -860($sp)
-move $t0, $t1
-sw $t0, -864($sp)
-lw $t0, -864($sp)
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-sw $ra, -4($sp)
-move $t0, $sp
-subi $sp, $sp, 864
-sw $t0, -8($sp)
-jal flower_num
-lw $sp, -8($sp)
-lw $ra, -4($sp)
-sw $v0, -868($sp)
-lw $t1, -868($sp)
-move $t0, $t1
-sw $t0, -872($sp)
-lw $t1, -872($sp)
-move $t0, $t1
-sw $t0, -876($sp)
-lw $t1, -840($sp)
-lw $t2, -876($sp)
-seq $t0, $t1, $t2
-sw $t0, -840($sp)
-lw $t0, -840($sp)
-beqz $t0 complete_flower_num_L_16_else_begin
-lw $t1, -544($sp)
-move $t0, $t1
-sw $t0, -880($sp)
-lw $t1, -880($sp)
-move $t0, $t1
-sw $t0, -884($sp)
-lw $t1, -524($sp)
-move $t0, $t1
-sw $t0, -888($sp)
-lw $t1, -888($sp)
-move $t0, $t1
-sw $t0, -892($sp)
-lw $t0, -892($sp)
-lw $t1, -884($sp)
-sll $t1, $t1, 2
-li $t2, 12
-add $t2, $t1, $t2
-sub $t2, $sp, $t2
-sw $t0, 0($t2)
-lw $t1, -544($sp)
-move $t0, $t1
-sw $t0, -896($sp)
-lw $t1, -896($sp)
-move $t0, $t1
-sw $t0, -900($sp)
-lw $t1, -900($sp)
-li $t2, 1
-add $t0, $t1, $t2
-sw $t0, -900($sp)
-lw $t1, -900($sp)
-move $t0, $t1
-sw $t0, -544($sp)
-complete_flower_num_L_16_else_begin:
-lw $t1, -524($sp)
-li $t2, 1
-add $t0, $t1, $t2
-sw $t0, -524($sp)
-j complete_flower_num_L_14_for_begin
-complete_flower_num_L_15_for_over:
-li $t1, 0
-move $t0, $t1
-sw $t0, -524($sp)
-complete_flower_num_L_18_for_begin:
-lw $t1, -524($sp)
-move $t0, $t1
-sw $t0, -904($sp)
-lw $t1, -904($sp)
-move $t0, $t1
-sw $t0, -908($sp)
-lw $t1, -544($sp)
-move $t0, $t1
-sw $t0, -912($sp)
-lw $t1, -912($sp)
-move $t0, $t1
-sw $t0, -916($sp)
-lw $t1, -908($sp)
-lw $t2, -916($sp)
-slt $t0, $t1, $t2
-sw $t0, -908($sp)
-lw $t0, -908($sp)
-beqz $t0 complete_flower_num_L_19_for_over
-lw $t1, -524($sp)
-move $t0, $t1
-sw $t0, -920($sp)
-lw $t1, -920($sp)
-move $t0, $t1
-sw $t0, -924($sp)
-lw $t1, -924($sp)
-sll $t1, $t1, 2
-li $t2, 12
-add $t2, $t1, $t2
-sub $t2, $sp, $t2
-lw $t0, 0($t2)
-sw $t0, -928($sp)
-lw $t1, -928($sp)
-move $t0, $t1
-sw $t0, -932($sp)
-lw $t1, -932($sp)
-move $t0, $t1
-sw $t0, -936($sp)
-li $v0, 4
-la $a0, String_10
-syscall
-li $v0, 1
-lw $a0, -936($sp)
-syscall
-li $v0, 11
-li $a0, 10
-syscall
-lw $t1, -524($sp)
-li $t2, 1
-add $t0, $t1, $t2
-sw $t0, -524($sp)
-j complete_flower_num_L_18_for_begin
-complete_flower_num_L_19_for_over:
-li $v0, 4
-la $a0, String_11
-syscall
-li $v0, 11
-li $a0, 10
-syscall
-li $v0, 4
-la $a0, String_12
-syscall
-li $v0, 11
-li $a0, 10
-syscall
-li $t1, 0
-move $t0, $t1
-sw $t0, -556($sp)
-li $t1, 1
-move $t0, $t1
-sw $t0, -560($sp)
-li $t1, 2
-move $t0, $t1
-sw $t0, -548($sp)
-complete_flower_num_L_20_for_begin:
-lw $t1, -548($sp)
-move $t0, $t1
-sw $t0, -940($sp)
-lw $t1, -940($sp)
-move $t0, $t1
-sw $t0, -944($sp)
-lw $t1, -944($sp)
-li $t2, 128
-sle $t0, $t1, $t2
-sw $t0, -944($sp)
-lw $t0, -944($sp)
-beqz $t0 complete_flower_num_L_21_for_over
-lw $t1, -548($sp)
-move $t0, $t1
-sw $t0, -948($sp)
-lw $t1, -948($sp)
+inner_merge_sort_L_14_else_begin:
+lw $t1, -12($sp)
+move $t0, $t1
+sw $t0, -148($sp)
+lw $t1, -148($sp)
 li $t2, 2
 div $t1, $t2
 mflo $t0
-sw $t0, -948($sp)
-lw $t1, -948($sp)
+sw $t0, -148($sp)
+lw $t1, -148($sp)
 move $t0, $t1
-sw $t0, -952($sp)
-lw $t1, -952($sp)
+sw $t0, -152($sp)
+lw $t1, -152($sp)
 move $t0, $t1
-sw $t0, -552($sp)
-li $t1, 2
+sw $t0, -24($sp)
+lw $t1, -16($sp)
 move $t0, $t1
-sw $t0, -524($sp)
-complete_flower_num_L_22_for_begin:
-lw $t1, -524($sp)
+sw $t0, -156($sp)
+lw $t1, -156($sp)
 move $t0, $t1
-sw $t0, -956($sp)
-lw $t1, -956($sp)
-move $t0, $t1
-sw $t0, -960($sp)
-lw $t1, -552($sp)
-move $t0, $t1
-sw $t0, -964($sp)
-lw $t1, -964($sp)
-move $t0, $t1
-sw $t0, -968($sp)
-lw $t1, -960($sp)
-lw $t2, -968($sp)
-sle $t0, $t1, $t2
-sw $t0, -960($sp)
-lw $t0, -960($sp)
-beqz $t0 complete_flower_num_L_23_for_over
-lw $t1, -548($sp)
-move $t0, $t1
-sw $t0, -972($sp)
-lw $t1, -972($sp)
-lw $t2, -524($sp)
-div $t1, $t2
-mflo $t0
-sw $t0, -972($sp)
-lw $t1, -972($sp)
-move $t0, $t1
-sw $t0, -976($sp)
-lw $t1, -976($sp)
-move $t0, $t1
-sw $t0, -980($sp)
-lw $t1, -980($sp)
-lw $t2, -524($sp)
-mult $t1, $t2
-mflo $t0
-sw $t0, -980($sp)
-lw $t1, -980($sp)
-move $t0, $t1
-sw $t0, -984($sp)
-lw $t1, -984($sp)
-move $t0, $t1
-sw $t0, -564($sp)
-lw $t1, -548($sp)
-move $t0, $t1
-sw $t0, -988($sp)
-lw $t1, -988($sp)
-move $t0, $t1
-sw $t0, -992($sp)
-lw $t0, -992($sp)
+sw $t0, -160($sp)
+lw $t0, -160($sp)
 sw $t0, 0($fp)
 addi $fp, $fp, 4
-lw $t1, -524($sp)
+lw $t1, -24($sp)
 move $t0, $t1
-sw $t0, -996($sp)
-lw $t1, -996($sp)
+sw $t0, -164($sp)
+lw $t1, -164($sp)
 move $t0, $t1
-sw $t0, -1000($sp)
-lw $t0, -1000($sp)
+sw $t0, -168($sp)
+lw $t0, -168($sp)
 sw $t0, 0($fp)
 addi $fp, $fp, 4
 sw $ra, -4($sp)
 move $t0, $sp
-subi $sp, $sp, 1000
+subi $sp, $sp, 168
 sw $t0, -8($sp)
-jal mod
+jal inner_merge_sort
 lw $sp, -8($sp)
 lw $ra, -4($sp)
-sw $v0, -1004($sp)
-lw $t1, -1004($sp)
+lw $t1, -16($sp)
 move $t0, $t1
-sw $t0, -1008($sp)
-lw $t1, -1008($sp)
+sw $t0, -172($sp)
+lw $t1, -172($sp)
 move $t0, $t1
-sw $t0, -1012($sp)
-lw $t1, -1012($sp)
-li $t2, 0
-seq $t0, $t1, $t2
-sw $t0, -1012($sp)
-lw $t0, -1012($sp)
-beqz $t0 complete_flower_num_L_24_else_begin
-li $t1, 0
+sw $t0, -176($sp)
+lw $t1, -24($sp)
 move $t0, $t1
-sw $t0, -560($sp)
-complete_flower_num_L_24_else_begin:
-lw $t1, -524($sp)
-li $t2, 1
+sw $t0, -180($sp)
+lw $t1, -176($sp)
+lw $t2, -180($sp)
 add $t0, $t1, $t2
-sw $t0, -524($sp)
-j complete_flower_num_L_22_for_begin
-complete_flower_num_L_23_for_over:
-lw $t1, -560($sp)
+sw $t0, -176($sp)
+lw $t0, -176($sp)
+sw $t0, 0($fp)
+addi $fp, $fp, 4
+lw $t1, -12($sp)
 move $t0, $t1
-sw $t0, -1016($sp)
-lw $t1, -1016($sp)
+sw $t0, -184($sp)
+lw $t1, -184($sp)
 move $t0, $t1
-sw $t0, -1020($sp)
-lw $t1, -1020($sp)
-li $t2, 1
-seq $t0, $t1, $t2
-sw $t0, -1020($sp)
-lw $t0, -1020($sp)
-beqz $t0 complete_flower_num_L_26_else_begin
-lw $t1, -548($sp)
+sw $t0, -188($sp)
+lw $t1, -24($sp)
 move $t0, $t1
-sw $t0, -1024($sp)
-lw $t1, -1024($sp)
+sw $t0, -192($sp)
+lw $t1, -188($sp)
+lw $t2, -192($sp)
+sub $t0, $t1, $t2
+sw $t0, -188($sp)
+lw $t0, -188($sp)
+sw $t0, 0($fp)
+addi $fp, $fp, 4
+sw $ra, -4($sp)
+move $t0, $sp
+subi $sp, $sp, 192
+sw $t0, -8($sp)
+jal inner_merge_sort
+lw $sp, -8($sp)
+lw $ra, -4($sp)
+lw $t1, -16($sp)
 move $t0, $t1
-sw $t0, -1028($sp)
-li $v0, 4
-la $a0, String_13
-syscall
-li $v0, 1
-lw $a0, -1028($sp)
-syscall
-li $v0, 11
-li $a0, 10
-syscall
-lw $t1, -556($sp)
+sw $t0, -196($sp)
+lw $t1, -196($sp)
 move $t0, $t1
-sw $t0, -1032($sp)
-lw $t1, -1032($sp)
+sw $t0, -200($sp)
+lw $t0, -200($sp)
+sw $t0, 0($fp)
+addi $fp, $fp, 4
+lw $t1, -24($sp)
 move $t0, $t1
-sw $t0, -1036($sp)
-lw $t1, -1036($sp)
-li $t2, 1
+sw $t0, -204($sp)
+lw $t1, -204($sp)
+move $t0, $t1
+sw $t0, -208($sp)
+lw $t0, -208($sp)
+sw $t0, 0($fp)
+addi $fp, $fp, 4
+lw $t1, -16($sp)
+move $t0, $t1
+sw $t0, -212($sp)
+lw $t1, -212($sp)
+move $t0, $t1
+sw $t0, -216($sp)
+lw $t1, -24($sp)
+move $t0, $t1
+sw $t0, -220($sp)
+lw $t1, -216($sp)
+lw $t2, -220($sp)
 add $t0, $t1, $t2
-sw $t0, -1036($sp)
-lw $t1, -1036($sp)
+sw $t0, -216($sp)
+lw $t0, -216($sp)
+sw $t0, 0($fp)
+addi $fp, $fp, 4
+lw $t1, -12($sp)
 move $t0, $t1
-sw $t0, -556($sp)
-lw $t1, -556($sp)
+sw $t0, -224($sp)
+lw $t1, -224($sp)
 move $t0, $t1
-sw $t0, -1040($sp)
-lw $t1, -1040($sp)
-li $t2, 10
-div $t1, $t2
-mflo $t0
-sw $t0, -1040($sp)
-lw $t1, -1040($sp)
+sw $t0, -228($sp)
+lw $t1, -24($sp)
 move $t0, $t1
-sw $t0, -1044($sp)
-lw $t1, -1044($sp)
-move $t0, $t1
-sw $t0, -1048($sp)
-lw $t1, -1048($sp)
-li $t2, 10
-mult $t1, $t2
-mflo $t0
-sw $t0, -1048($sp)
-lw $t1, -1048($sp)
-move $t0, $t1
-sw $t0, -1052($sp)
-lw $t1, -1052($sp)
-move $t0, $t1
-sw $t0, -564($sp)
-lw $t1, -564($sp)
-move $t0, $t1
-sw $t0, -1056($sp)
-lw $t1, -1056($sp)
-move $t0, $t1
-sw $t0, -1060($sp)
-lw $t1, -556($sp)
-move $t0, $t1
-sw $t0, -1064($sp)
-lw $t1, -1064($sp)
-move $t0, $t1
-sw $t0, -1068($sp)
-lw $t1, -1060($sp)
-lw $t2, -1068($sp)
-seq $t0, $t1, $t2
-sw $t0, -1060($sp)
-lw $t0, -1060($sp)
-beqz $t0 complete_flower_num_L_28_else_begin
-li $v0, 4
-la $a0, String_14
-syscall
-li $v0, 11
-li $a0, 10
-syscall
-complete_flower_num_L_28_else_begin:
-complete_flower_num_L_26_else_begin:
-li $t1, 1
-move $t0, $t1
-sw $t0, -560($sp)
-lw $t1, -548($sp)
-li $t2, 1
-add $t0, $t1, $t2
-sw $t0, -548($sp)
-j complete_flower_num_L_20_for_begin
-complete_flower_num_L_21_for_over:
-lw $t1, -556($sp)
-move $t0, $t1
-sw $t0, -1072($sp)
-lw $t1, -1072($sp)
-move $t0, $t1
-sw $t0, -1076($sp)
-li $v0, 4
-la $a0, String_15
-syscall
-li $v0, 1
-lw $a0, -1076($sp)
-syscall
-li $v0, 11
-li $a0, 10
-syscall
+sw $t0, -232($sp)
+lw $t1, -228($sp)
+lw $t2, -232($sp)
+sub $t0, $t1, $t2
+sw $t0, -228($sp)
+lw $t0, -228($sp)
+sw $t0, 0($fp)
+addi $fp, $fp, 4
+sw $ra, -4($sp)
+move $t0, $sp
+subi $sp, $sp, 232
+sw $t0, -8($sp)
+jal merge
+lw $sp, -8($sp)
+lw $ra, -4($sp)
 jr $ra
 
 main:
-li $t0, 5
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-sw $ra, -4($sp)
-move $t0, $sp
-subi $sp, $sp, 12
-sw $t0, -8($sp)
-jal factorial
-lw $sp, -8($sp)
-lw $ra, -4($sp)
-sw $v0, -16($sp)
-lw $t1, -16($sp)
+li $v0, 4
+la $a0, String_0
+syscall
+li $v0, 11
+li $a0, 10
+syscall
+li $v0, 5
+syscall
+sw $v0, -12($sp)
+li $t1, 0
 move $t0, $t1
-sw $t0, -20($sp)
-lw $t1, -20($sp)
+sw $t0, -16($sp)
+main_L_18_for_begin:
+lw $t1, -16($sp)
 move $t0, $t1
 sw $t0, -24($sp)
 lw $t1, -24($sp)
 move $t0, $t1
-sw $t0, -12($sp)
+sw $t0, -28($sp)
 lw $t1, -12($sp)
 move $t0, $t1
-sw $t0, -28($sp)
-lw $t1, -28($sp)
-move $t0, $t1
 sw $t0, -32($sp)
-li $v0, 4
-la $a0, String_16
+lw $t1, -32($sp)
+move $t0, $t1
+sw $t0, -36($sp)
+lw $t1, -28($sp)
+lw $t2, -36($sp)
+slt $t0, $t1, $t2
+sw $t0, -28($sp)
+lw $t0, -28($sp)
+beqz $t0 main_L_19_for_over
+li $v0, 5
 syscall
+sw $v0, -20($sp)
+lw $t1, -16($sp)
+move $t0, $t1
+sw $t0, -40($sp)
+lw $t1, -40($sp)
+move $t0, $t1
+sw $t0, -44($sp)
+lw $t1, -20($sp)
+move $t0, $t1
+sw $t0, -48($sp)
+lw $t1, -48($sp)
+move $t0, $t1
+sw $t0, -52($sp)
+lw $t0, -52($sp)
+lw $t1, -44($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+sw $t0, 0($t2)
+lw $t1, -16($sp)
+li $t2, 1
+add $t0, $t1, $t2
+sw $t0, -16($sp)
+j main_L_18_for_begin
+main_L_19_for_over:
+li $t0, 0
+sw $t0, 0($fp)
+addi $fp, $fp, 4
+lw $t1, -12($sp)
+move $t0, $t1
+sw $t0, -56($sp)
+lw $t1, -56($sp)
+move $t0, $t1
+sw $t0, -60($sp)
+lw $t0, -60($sp)
+sw $t0, 0($fp)
+addi $fp, $fp, 4
+sw $ra, -4($sp)
+move $t0, $sp
+subi $sp, $sp, 60
+sw $t0, -8($sp)
+jal inner_merge_sort
+lw $sp, -8($sp)
+lw $ra, -4($sp)
+li $t1, 0
+move $t0, $t1
+sw $t0, -16($sp)
+main_L_20_for_begin:
+lw $t1, -16($sp)
+move $t0, $t1
+sw $t0, -64($sp)
+lw $t1, -64($sp)
+move $t0, $t1
+sw $t0, -68($sp)
+lw $t1, -12($sp)
+move $t0, $t1
+sw $t0, -72($sp)
+lw $t1, -72($sp)
+move $t0, $t1
+sw $t0, -76($sp)
+lw $t1, -68($sp)
+lw $t2, -76($sp)
+slt $t0, $t1, $t2
+sw $t0, -68($sp)
+lw $t0, -68($sp)
+beqz $t0 main_L_21_for_over
+lw $t1, -16($sp)
+move $t0, $t1
+sw $t0, -80($sp)
+lw $t1, -80($sp)
+move $t0, $t1
+sw $t0, -84($sp)
+lw $t1, -84($sp)
+sll $t1, $t1, 2
+li $t2, 0
+add $t2, $t1, $t2
+add $t2, $gp, $t2
+lw $t0, 0($t2)
+sw $t0, -88($sp)
+lw $t1, -88($sp)
+move $t0, $t1
+sw $t0, -92($sp)
+lw $t1, -92($sp)
+move $t0, $t1
+sw $t0, -96($sp)
 li $v0, 1
-lw $a0, -32($sp)
+lw $a0, -96($sp)
 syscall
 li $v0, 11
 li $a0, 10
 syscall
-li $t0, 5
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-li $t0, 10
-sw $t0, 0($fp)
-addi $fp, $fp, 4
-sw $ra, -4($sp)
-move $t0, $sp
-subi $sp, $sp, 32
-sw $t0, -8($sp)
-jal swap
-lw $sp, -8($sp)
-lw $ra, -4($sp)
-sw $ra, -4($sp)
-move $t0, $sp
-subi $sp, $sp, 32
-sw $t0, -8($sp)
-jal complete_flower_num
-lw $sp, -8($sp)
-lw $ra, -4($sp)
+lw $t1, -16($sp)
+li $t2, 1
+add $t0, $t1, $t2
+sw $t0, -16($sp)
+j main_L_20_for_begin
+main_L_21_for_over:
 jr $ra

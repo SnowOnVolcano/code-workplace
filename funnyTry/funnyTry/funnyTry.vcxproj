@@ -19,10 +19,47 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="string.c" />
+    <Text Include="error.txt" />
+    <Text Include="medi.txt" />
+    <Text Include="medi_1.txt" />
+    <Text Include="medi_2.txt" />
+    <Text Include="medi_beta.txt" />
+    <Text Include="mips.txt" />
+    <Text Include="mips_1.txt" />
+    <Text Include="mips_beta.txt" />
+    <Text Include="output.txt" />
+    <Text Include="testfile.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Text.txt" />
+    <ClInclude Include="analyseMedi.h" />
+    <ClInclude Include="code_optimize.h" />
+    <ClInclude Include="errorHandler.h" />
+    <ClInclude Include="getsym.h" />
+    <ClInclude Include="head.h" />
+    <ClInclude Include="linkList.h" />
+    <ClInclude Include="medi.h" />
+    <ClInclude Include="medi_hash.h" />
+    <ClInclude Include="parsing.h" />
+    <ClInclude Include="symbolTable.h" />
+    <ClInclude Include="uthash\utarray.h" />
+    <ClInclude Include="uthash\uthash.h" />
+    <ClInclude Include="uthash\utlist.h" />
+    <ClInclude Include="uthash\utringbuffer.h" />
+    <ClInclude Include="uthash\utstack.h" />
+    <ClInclude Include="uthash\utstring.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="analyseMedi.c" />
+    <ClCompile Include="code_optimize.c" />
+    <ClCompile Include="errorHandler.c" />
+    <ClCompile Include="getsym.c" />
+    <ClCompile Include="head.c" />
+    <ClCompile Include="linkList.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="medi.c" />
+    <ClCompile Include="medi_hash.c" />
+    <ClCompile Include="parsing.c" />
+    <ClCompile Include="symbolTable.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -86,6 +123,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

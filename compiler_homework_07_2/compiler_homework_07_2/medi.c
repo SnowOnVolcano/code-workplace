@@ -155,6 +155,9 @@ void return_medi_f(SymbolItem_t* func_item)
 	if (func_item->type != FUNC_NON_RETURN) {
 		MIPS_OUTPUT("@ret 0");
 	}
+	else {
+		MIPS_OUTPUT("@ret");
+	}
 }
 void return_medi_v() {
 	MIPS_OUTPUT("@ret");
